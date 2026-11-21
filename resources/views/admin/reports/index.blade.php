@@ -1,148 +1,186 @@
 <x-layouts.app title="Laporan Sistem">
-    <x-slot:header>Laporan & Rekapitulasi Sirkulasi</x-slot:header>
-    <x-slot:subheader>Analitik komprehensif transaksi peminjaman, buku terfavorit, dan keterlambatan pengembalian</x-slot:subheader>
+    <!-- Subheader Toolbar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70 no-print">
+        <div class="flex items-center space-x-2 text-xs text-zinc-600 font-medium">
+            <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
+                <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-zinc-500"></i>
+                <span class="font-semibold text-zinc-800">Circulation Reports</span>
+                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
+            </div>
+            <span class="text-xs text-zinc-400">Period: {{ date('d M Y', strtotime($startDate)) }} — {{ date('d M Y', strtotime($endDate)) }}</span>
+        </div>
 
-    <!-- Filter & Export Toolbar -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs space-y-4 no-print">
-        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+        <div class="flex items-center space-x-2">
+            <a
+                href="{{ route('admin.reports.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
+                class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-2xs transition-all"
+            >
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>Export CSV</span>
+            </a>
+            <button
+                type="button"
+                onclick="window.print()"
+                class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 hover:bg-zinc-50 rounded-xl shadow-2xs transition-all"
+                title="Print Report"
+            >
+                <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-500"></i>
+                <span>Print</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter & Date Range Bar -->
+    <div class="bg-white rounded-2xl border border-zinc-200/80 p-3 sm:p-4 shadow-2xs no-print">
+        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 items-end">
             <!-- Start Date -->
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Dari Tanggal</label>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">From Date</label>
                 <input
                     type="date"
                     name="start_date"
                     value="{{ $startDate }}"
-                    class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-slate-700"
+                    class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700"
                 >
             </div>
 
             <!-- End Date -->
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Sampai Tanggal</label>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">To Date</label>
                 <input
                     type="date"
                     name="end_date"
                     value="{{ $endDate }}"
-                    class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-slate-700"
+                    class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700"
                 >
             </div>
 
             <!-- Report Type -->
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Tipe Laporan</label>
-                <select name="type" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-slate-700">
-                    <option value="borrowings" {{ $reportType === 'borrowings' ? 'selected' : '' }}>Transaksi Sirkulasi</option>
-                    <option value="popular" {{ $reportType === 'popular' ? 'selected' : '' }}>Buku Terfavorit</option>
-                    <option value="users" {{ $reportType === 'users' ? 'selected' : '' }}>Aktivitas Anggota</option>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Report Focus</label>
+                <select name="type" class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700">
+                    <option value="borrowings" {{ $reportType === 'borrowings' ? 'selected' : '' }}>Lending Transactions</option>
+                    <option value="popular" {{ $reportType === 'popular' ? 'selected' : '' }}>Top Borrowed Titles</option>
+                    <option value="users" {{ $reportType === 'users' ? 'selected' : '' }}>Member Activity</option>
                 </select>
             </div>
 
             <!-- Filter Button -->
             <div>
-                <button type="submit" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-colors">
-                    Terapkan Periode
-                </button>
-            </div>
-
-            <!-- Export Buttons -->
-            <div class="flex items-center space-x-2">
-                <a
-                    href="{{ route('admin.reports.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
-                    class="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center space-x-1"
-                >
-                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
-                    <span>Ekspor CSV</span>
-                </a>
-                <button
-                    type="button"
-                    onclick="window.print()"
-                    class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
-                    title="Cetak Halaman"
-                >
-                    <i data-lucide="printer" class="w-4 h-4"></i>
+                <button type="submit" class="w-full py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl transition-colors shadow-2xs">
+                    Apply Filter
                 </button>
             </div>
         </form>
     </div>
 
-    <!-- Summary KPI for this Report Period -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <x-stat-card
-            title="Total Sirkulasi Periode Ini"
-            value="{{ number_format($totalTransactions) }}"
-            subtitle="Periode {{ date('d/m/y', strtotime($startDate)) }} - {{ date('d/m/y', strtotime($endDate)) }}"
-            icon="arrow-left-right"
-            variant="blue"
-        />
-        <x-stat-card
-            title="Buku Berhasil Dikembalikan"
-            value="{{ number_format($totalReturned) }}"
-            subtitle="Sirkulasi selesai"
-            icon="check-circle"
-            variant="emerald"
-        />
-        <x-stat-card
-            title="Kasus Keterlambatan"
-            value="{{ number_format($totalOverdue) }}"
-            subtitle="Melebihi batas tempo"
-            icon="alert-octagon"
-            variant="rose"
-        />
-        <x-stat-card
-            title="Total Denda Diterima"
-            value="Rp {{ number_format($totalFines, 0, ',', '.') }}"
-            subtitle="Pemasukan kas denda"
-            icon="circle-dollar-sign"
-            variant="amber"
-        />
+    <!-- Divided Horizontal KPI Statistics Strip (Exact Reference UI) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
+        <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
+            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
+                <span>Total Circulation</span>
+                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+            </div>
+            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+                {{ number_format($totalTransactions) }}
+            </div>
+            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
+                <span>period total</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Recorded</span>
+            </div>
+        </div>
+
+        <div class="sm:px-4 py-3 sm:py-0">
+            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
+                <span>Books Returned</span>
+                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+            </div>
+            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+                {{ number_format($totalReturned) }}
+            </div>
+            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
+                <span>completed</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Archived</span>
+            </div>
+        </div>
+
+        <div class="sm:px-4 py-3 sm:py-0">
+            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
+                <span>Overdue Cases</span>
+                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+            </div>
+            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+                {{ number_format($totalOverdue) }}
+            </div>
+            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
+                <span>delinquencies</span>
+                <span class="{{ $totalOverdue > 0 ? 'text-red-600 bg-[#FEECEC]' : 'text-zinc-600 bg-zinc-100' }} px-1.5 py-0.2 rounded font-medium">
+                    {{ $totalOverdue > 0 ? 'Requires Action' : 'All Clear' }}
+                </span>
+            </div>
+        </div>
+
+        <div class="sm:px-4 last:pr-0 py-3 sm:py-0">
+            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
+                <span>Fines Collected</span>
+                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+            </div>
+            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+                Rp {{ number_format($totalFines, 0, ',', '.') }}
+            </div>
+            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
+                <span>revenue</span>
+                <span class="text-brand-orange bg-[#FFF7F2] px-1.5 py-0.2 rounded font-medium">Settled</span>
+            </div>
+        </div>
     </div>
 
     <!-- Report Table Content based on Type -->
     @if($reportType === 'borrowings')
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-zinc-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-extrabold text-base text-slate-900">Laporan Sirkulasi & Transaksi Peminjaman</h3>
-                    <p class="text-xs text-slate-500">Rentang waktu: {{ date('d F Y', strtotime($startDate)) }} s/d {{ date('d F Y', strtotime($endDate)) }}</p>
+                    <h3 class="font-bold text-sm text-zinc-900">Circulation & Lending Transactions</h3>
+                    <p class="text-xs text-zinc-400 mt-0.5">Timeframe: {{ date('d M Y', strtotime($startDate)) }} to {{ date('d M Y', strtotime($endDate)) }}</p>
                 </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">No. Transaksi</th>
-                            <th class="py-3 px-4">Peminjam</th>
-                            <th class="py-3 px-4">Buku & ISBN</th>
-                            <th class="py-3 px-4">Tgl Pinjam</th>
-                            <th class="py-3 px-4">Jatuh Tempo</th>
-                            <th class="py-3 px-4">Tgl Kembali</th>
+                        <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
+                            <th class="py-3 px-4">Transaction Code</th>
+                            <th class="py-3 px-4">Borrower</th>
+                            <th class="py-3 px-4">Book & ISBN</th>
+                            <th class="py-3 px-4">Loan Date</th>
+                            <th class="py-3 px-4">Due Date</th>
+                            <th class="py-3 px-4">Returned Date</th>
                             <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4 text-right">Denda</th>
+                            <th class="py-3 px-4 text-right">Fines</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
                         @forelse($borrowings as $b)
-                            <tr class="hover:bg-slate-50/80 transition-colors">
-                                <td class="py-3.5 px-4 font-mono font-bold text-slate-800">{{ $b->borrowing_code }}</td>
-                                <td class="py-3.5 px-4 font-semibold text-slate-900">{{ $b->user->name ?? '-' }}</td>
+                            <tr class="hover:bg-zinc-50/60 transition-colors">
+                                <td class="py-3.5 px-4 font-mono font-medium text-zinc-900">{{ $b->borrowing_code }}</td>
+                                <td class="py-3.5 px-4 font-semibold text-zinc-900">{{ $b->user->name ?? '-' }}</td>
                                 <td class="py-3.5 px-4">
-                                    <span class="font-medium text-slate-800 block truncate max-w-xs">{{ $b->book->title ?? '-' }}</span>
-                                    <span class="text-[10px] text-slate-400 font-mono">ISBN: {{ $b->book->isbn ?? '-' }}</span>
+                                    <span class="font-medium text-zinc-800 block truncate max-w-xs">{{ $b->book->title ?? '-' }}</span>
+                                    <span class="text-[10px] text-zinc-400 font-mono">ISBN: {{ $b->book->isbn ?? '-' }}</span>
                                 </td>
-                                <td class="py-3.5 px-4 text-slate-600">{{ $b->borrow_date->format('d/m/Y') }}</td>
-                                <td class="py-3.5 px-4 text-slate-600">{{ $b->return_due_date->format('d/m/Y') }}</td>
-                                <td class="py-3.5 px-4 text-slate-600">{{ $b->actual_return_date ? $b->actual_return_date->format('d/m/Y') : '-' }}</td>
+                                <td class="py-3.5 px-4 text-zinc-500">{{ $b->borrow_date->format('d/m/Y') }}</td>
+                                <td class="py-3.5 px-4 text-zinc-500">{{ $b->return_due_date->format('d/m/Y') }}</td>
+                                <td class="py-3.5 px-4 text-zinc-500">{{ $b->actual_return_date ? $b->actual_return_date->format('d/m/Y') : '-' }}</td>
                                 <td class="py-3.5 px-4">
                                     <x-badge-status :status="$b->isOverdue() ? 'overdue' : $b->status" />
                                 </td>
-                                <td class="py-3.5 px-4 text-right font-bold {{ $b->fines > 0 ? 'text-rose-600' : 'text-slate-400' }}">
+                                <td class="py-3.5 px-4 text-right font-semibold {{ $b->fines > 0 ? 'text-red-600' : 'text-zinc-400' }}">
                                     {{ $b->fines > 0 ? 'Rp ' . number_format($b->fines, 0, ',', '.') : '-' }}
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="py-8 text-center text-slate-400">Tidak ada data transaksi peminjaman pada rentang tanggal ini.</td>
+                                <td colspan="8" class="py-8 text-center text-zinc-400">Tidak ada data transaksi peminjaman pada rentang tanggal ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -150,61 +188,61 @@
             </div>
 
             @if($borrowings->hasPages())
-                <div class="p-4 border-t border-slate-200 bg-slate-50/50 no-print">
+                <div class="p-3.5 border-t border-zinc-100 bg-white no-print">
                     {{ $borrowings->links() }}
                 </div>
             @endif
         </div>
     @elseif($reportType === 'popular')
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div class="p-5 border-b border-slate-100">
-                <h3 class="font-extrabold text-base text-slate-900">10 Buku Paling Sering Dipinjam</h3>
-                <p class="text-xs text-slate-500">Berdasarkan frekuensi permohonan sirkulasi pada periode terpilih</p>
+        <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-zinc-100">
+                <h3 class="font-bold text-sm text-zinc-900">Top 10 Most Borrowed Books</h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Based on circulation frequency during selected period</p>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">Peringkat</th>
-                            <th class="py-3 px-4">Judul Buku</th>
-                            <th class="py-3 px-4">Kategori</th>
-                            <th class="py-3 px-4">Penulis & Penerbit</th>
-                            <th class="py-3 px-4">Total Stok</th>
-                            <th class="py-3 px-4 text-right">Frekuensi Dipinjam</th>
+                        <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
+                            <th class="py-3 px-4">Rank</th>
+                            <th class="py-3 px-4">Book Title</th>
+                            <th class="py-3 px-4">Category</th>
+                            <th class="py-3 px-4">Author & Publisher</th>
+                            <th class="py-3 px-4">Total Stock</th>
+                            <th class="py-3 px-4 text-right">Frequency</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
                         @forelse($popularBooks as $index => $book)
-                            <tr class="hover:bg-slate-50/80 transition-colors">
+                            <tr class="hover:bg-zinc-50/60 transition-colors">
                                 <td class="py-3.5 px-4">
-                                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-extrabold flex items-center justify-center text-xs">
+                                    <span class="w-5 h-5 rounded-full bg-zinc-100 text-zinc-600 font-bold flex items-center justify-center text-[10px]">
                                         {{ $index + 1 }}
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-9 h-12 rounded bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-8 h-10 rounded bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
                                             <img src="{{ $book->cover_url }}" alt="" class="w-full h-full object-cover">
                                         </div>
                                         <div>
-                                            <span class="font-bold text-slate-900 block">{{ $book->title }}</span>
-                                            <span class="font-mono text-[10px] text-slate-400">ISBN: {{ $book->isbn }}</span>
+                                            <span class="font-semibold text-zinc-900 block">{{ $book->title }}</span>
+                                            <span class="font-mono text-[10px] text-zinc-400">ISBN: {{ $book->isbn }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3.5 px-4 font-semibold text-slate-700">{{ $book->category->name ?? '-' }}</td>
-                                <td class="py-3.5 px-4 text-slate-600">{{ $book->author }} ({{ $book->publisher }})</td>
-                                <td class="py-3.5 px-4 font-semibold text-slate-700">{{ $book->stock }} eksemplar</td>
+                                <td class="py-3.5 px-4 font-medium text-zinc-700">{{ $book->category->name ?? '-' }}</td>
+                                <td class="py-3.5 px-4 text-zinc-500">{{ $book->author }} ({{ $book->publisher }})</td>
+                                <td class="py-3.5 px-4 font-medium text-zinc-700">{{ $book->stock }} copies</td>
                                 <td class="py-3.5 px-4 text-right">
-                                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
-                                        {{ $book->borrowings_count }} kali
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#EEF2FF] text-[#4F46E5]">
+                                        {{ $book->borrowings_count }}x borrowed
                                     </span>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-8 text-center text-slate-400">Tidak ada catatan peminjaman pada periode ini.</td>
+                                <td colspan="6" class="py-8 text-center text-zinc-400">Tidak ada catatan peminjaman pada periode ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -212,46 +250,46 @@
             </div>
         </div>
     @else
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div class="p-5 border-b border-slate-100">
-                <h3 class="font-extrabold text-base text-slate-900">Laporan Aktivitas Anggota Perpustakaan</h3>
-                <p class="text-xs text-slate-500">Anggota dengan tingkat partisipasi peminjaman tertinggi</p>
+        <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-zinc-100">
+                <h3 class="font-bold text-sm text-zinc-900">Member Borrowing Activity</h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Members with the highest circulation participation</p>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">Peringkat</th>
-                            <th class="py-3 px-4">Nama Anggota</th>
-                            <th class="py-3 px-4">Email & Kontak</th>
-                            <th class="py-3 px-4">Alamat Domisili</th>
-                            <th class="py-3 px-4 text-right">Jumlah Peminjaman</th>
+                        <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
+                            <th class="py-3 px-4">Rank</th>
+                            <th class="py-3 px-4">Member Name</th>
+                            <th class="py-3 px-4">Email & Phone</th>
+                            <th class="py-3 px-4">Address</th>
+                            <th class="py-3 px-4 text-right">Total Borrowed</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
                         @forelse($activeUsers as $index => $u)
-                            <tr class="hover:bg-slate-50/80 transition-colors">
+                            <tr class="hover:bg-zinc-50/60 transition-colors">
                                 <td class="py-3.5 px-4">
-                                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-extrabold flex items-center justify-center text-xs">
+                                    <span class="w-5 h-5 rounded-full bg-zinc-100 text-zinc-600 font-bold flex items-center justify-center text-[10px]">
                                         {{ $index + 1 }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4 font-bold text-slate-900">{{ $u->name }}</td>
+                                <td class="py-3.5 px-4 font-semibold text-zinc-900">{{ $u->name }}</td>
                                 <td class="py-3.5 px-4">
-                                    <span class="text-slate-800 block">{{ $u->email }}</span>
-                                    <span class="text-slate-400 text-[10px] block">{{ $u->phone ?: '-' }}</span>
+                                    <span class="text-zinc-800 block">{{ $u->email }}</span>
+                                    <span class="text-zinc-400 text-[10px] block">{{ $u->phone ?: '-' }}</span>
                                 </td>
-                                <td class="py-3.5 px-4 text-slate-600 max-w-xs truncate">{{ $u->address ?: '-' }}</td>
+                                <td class="py-3.5 px-4 text-zinc-500 max-w-xs truncate">{{ $u->address ?: '-' }}</td>
                                 <td class="py-3.5 px-4 text-right">
-                                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                        {{ $u->borrowings_count }} buku
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0FDF4] text-[#16A34A]">
+                                        {{ $u->borrowings_count }} books
                                     </span>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="py-8 text-center text-slate-400">Tidak ada catatan peminjaman anggota pada periode ini.</td>
+                                <td colspan="5" class="py-8 text-center text-zinc-400">Tidak ada catatan peminjaman anggota pada periode ini.</td>
                             </tr>
                         @endforelse
                     </tbody>

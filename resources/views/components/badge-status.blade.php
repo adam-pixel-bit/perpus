@@ -5,44 +5,36 @@
     $configs = [
         'pending' => [
             'label' => 'Menunggu Persetujuan',
-            'bg' => 'bg-amber-50 text-amber-700 border-amber-200',
-            'dot' => 'bg-amber-500',
+            'bg' => 'bg-[#FEF6E8] text-[#D97706]', // Restock pastel amber
         ],
         'approved' => [
             'label' => 'Disetujui',
-            'bg' => 'bg-blue-50 text-blue-700 border-blue-200',
-            'dot' => 'bg-blue-500',
+            'bg' => 'bg-[#EEF2FF] text-[#4F46E5]', // Pastel Indigo
         ],
         'borrowed' => [
             'label' => 'Sedang Dipinjam',
-            'bg' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
-            'dot' => 'bg-emerald-500',
+            'bg' => 'bg-[#F0FDF4] text-[#16A34A]', // Pastel Emerald
         ],
         'returned' => [
             'label' => 'Sudah Dikembalikan',
-            'bg' => 'bg-slate-100 text-slate-700 border-slate-200',
-            'dot' => 'bg-slate-400',
+            'bg' => 'bg-zinc-100 text-zinc-600',
         ],
         'rejected' => [
             'label' => 'Ditolak',
-            'bg' => 'bg-rose-50 text-rose-700 border-rose-200',
-            'dot' => 'bg-rose-500',
+            'bg' => 'bg-[#FEECEC] text-[#DC2626]', // Pastel Rose
         ],
         'overdue' => [
             'label' => 'Terlambat',
-            'bg' => 'bg-red-50 text-red-700 border-red-200 animate-pulse',
-            'dot' => 'bg-red-600',
+            'bg' => 'bg-[#FEE2E2] text-[#B91C1C] ring-1 ring-red-300',
         ],
     ];
 
     $cfg = $configs[$status] ?? [
         'label' => ucfirst($status),
-        'bg' => 'bg-slate-50 text-slate-700 border-slate-200',
-        'dot' => 'bg-slate-500',
+        'bg' => 'bg-zinc-100 text-zinc-700',
     ];
 @endphp
 
-<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border {{ $cfg['bg'] }}">
-    <span class="w-1.5 h-1.5 rounded-full {{ $cfg['dot'] }}"></span>
-    <span>{{ $cfg['label'] }}</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight {{ $cfg['bg'] }}">
+    {{ $cfg['label'] }}
 </span>

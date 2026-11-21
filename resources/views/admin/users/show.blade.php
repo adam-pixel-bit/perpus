@@ -1,119 +1,110 @@
 <x-layouts.app title="Detail Pengguna">
-    <x-slot:header>Profil & Riwayat Pengguna</x-slot:header>
-    <x-slot:subheader>Rincian data keanggotaan dan seluruh rekam jejak transaksi sirkulasi</x-slot:subheader>
-
     <div class="space-y-6">
         <!-- Back Link & Action Bar -->
-        <div class="flex items-center justify-between">
-            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 transition-colors">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                <span>Kembali ke Daftar Pengguna</span>
+        <div class="flex items-center justify-between pb-2 border-b border-zinc-200/70">
+            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-zinc-600 hover:text-zinc-950 bg-white border border-zinc-200/80 shadow-2xs transition-colors">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                <span>Back to Users</span>
             </a>
             <div class="flex items-center space-x-2">
-                <a href="{{ route('admin.users.edit', $user->id) }}" class="inline-flex items-center space-x-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
-                    <i data-lucide="edit-3" class="w-4 h-4"></i>
-                    <span>Edit Data</span>
+                <a href="{{ route('admin.users.edit', $user->id) }}" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-semibold shadow-2xs transition-all">
+                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                    <span>Edit Profile</span>
                 </a>
             </div>
         </div>
 
         <!-- User Profile Card -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 pb-6 border-b border-slate-100">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr {{ $user->isAdmin() ? 'from-indigo-600 to-purple-600' : 'from-blue-600 to-teal-500' }} text-white font-extrabold flex items-center justify-center text-2xl shadow-md">
+        <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs p-5 sm:p-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-5 pb-5 border-b border-zinc-100">
+                <div class="w-16 h-16 rounded-2xl {{ $user->isAdmin() ? 'bg-zinc-950 text-white' : 'bg-zinc-100 text-zinc-800' }} border border-zinc-200 font-bold flex items-center justify-center text-xl shadow-2xs">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="space-y-1">
                     <div class="flex items-center space-x-2">
-                        <h1 class="text-2xl font-extrabold text-slate-900">{{ $user->name }}</h1>
+                        <h1 class="text-xl font-bold text-zinc-900">{{ $user->name }}</h1>
                         @if($user->isAdmin())
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 uppercase">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-zinc-950 text-white">
                                 Administrator
                             </span>
                         @else
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase">
-                                Anggota
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-zinc-100 text-zinc-700">
+                                Member
                             </span>
                         @endif
 
                         @if($user->is_active)
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                Aktif
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0FDF4] text-[#16A34A]">
+                                Active
                             </span>
                         @else
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                                Nonaktif
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#FEECEC] text-[#DC2626]">
+                                Inactive
                             </span>
                         @endif
                     </div>
-                    <p class="text-xs text-slate-500 font-medium">{{ $user->email }} • Bergabung sejak {{ $user->created_at->format('d F Y') }}</p>
+                    <p class="text-xs text-zinc-400 font-medium">{{ $user->email }} • Joined {{ $user->created_at->format('d M Y') }}</p>
                 </div>
             </div>
 
             <!-- Profile Details Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 text-xs">
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span class="text-slate-400 block font-semibold uppercase text-[10px]">Nomor Telepon</span>
-                    <span class="font-bold text-slate-800 text-sm">{{ $user->phone ?: 'Tidak dicantumkan' }}</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-5 text-xs">
+                <div class="p-3.5 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-0.5">
+                    <span class="text-zinc-400 block font-medium text-[11px]">Phone Number</span>
+                    <span class="font-semibold text-zinc-800 text-xs">{{ $user->phone ?: '-' }}</span>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1 sm:col-span-2">
-                    <span class="text-slate-400 block font-semibold uppercase text-[10px]">Alamat Domisili</span>
-                    <span class="font-medium text-slate-800 text-sm">{{ $user->address ?: 'Tidak dicantumkan' }}</span>
+                <div class="p-3.5 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-0.5 sm:col-span-2">
+                    <span class="text-zinc-400 block font-medium text-[11px]">Address</span>
+                    <span class="font-medium text-zinc-800 text-xs">{{ $user->address ?: '-' }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Borrowing History of this User -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-zinc-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-extrabold text-base text-slate-900">Riwayat Peminjaman Buku</h3>
-                    <p class="text-xs text-slate-500">Seluruh catatan transaksi sirkulasi yang dilakukan oleh {{ $user->name }}</p>
+                    <h3 class="font-bold text-sm text-zinc-900">Borrowing History</h3>
+                    <p class="text-xs text-zinc-400 mt-0.5">All transactions requested by {{ $user->name }}</p>
                 </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                            <th class="py-3 px-4">Kode Peminjaman</th>
-                            <th class="py-3 px-4">Judul Buku</th>
-                            <th class="py-3 px-4">Tanggal Pinjam</th>
-                            <th class="py-3 px-4">Batas Kembali</th>
-                            <th class="py-3 px-4">Tanggal Pengembalian</th>
+                        <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
+                            <th class="py-3 px-4">Transaction Code</th>
+                            <th class="py-3 px-4">Book Title</th>
+                            <th class="py-3 px-4">Borrow Date</th>
+                            <th class="py-3 px-4">Due Date</th>
+                            <th class="py-3 px-4">Returned Date</th>
                             <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4">Denda</th>
+                            <th class="py-3 px-4">Fines</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
                         @forelse($borrowings as $b)
-                            <tr class="hover:bg-slate-50/80 transition-colors">
-                                <td class="py-3 px-4 font-mono font-bold text-slate-800">{{ $b->borrowing_code }}</td>
-                                <td class="py-3 px-4 font-semibold text-slate-900 max-w-xs truncate">{{ $b->book->title ?? '-' }}</td>
-                                <td class="py-3 px-4 text-slate-600">{{ $b->borrow_date->format('d M Y') }}</td>
-                                <td class="py-3 px-4 text-slate-600">{{ $b->return_due_date->format('d M Y') }}</td>
-                                <td class="py-3 px-4 text-slate-600">{{ $b->actual_return_date ? $b->actual_return_date->format('d M Y') : '-' }}</td>
+                            <tr class="hover:bg-zinc-50/60 transition-colors">
+                                <td class="py-3 px-4 font-mono font-medium text-zinc-900">{{ $b->borrowing_code }}</td>
+                                <td class="py-3 px-4 font-medium text-zinc-900 max-w-xs truncate">{{ $b->book->title ?? '-' }}</td>
+                                <td class="py-3 px-4 text-zinc-500">{{ $b->borrow_date->format('d M Y') }}</td>
+                                <td class="py-3 px-4 text-zinc-500">{{ $b->return_due_date->format('d M Y') }}</td>
+                                <td class="py-3 px-4 text-zinc-500">{{ $b->actual_return_date ? $b->actual_return_date->format('d M Y') : '-' }}</td>
                                 <td class="py-3 px-4">
                                     <x-badge-status :status="$b->isOverdue() ? 'overdue' : $b->status" />
                                 </td>
-                                <td class="py-3 px-4 font-semibold {{ $b->fines > 0 ? 'text-rose-600 font-bold' : 'text-slate-400' }}">
+                                <td class="py-3 px-4 font-semibold {{ $b->fines > 0 ? 'text-red-600 font-bold' : 'text-zinc-400' }}">
                                     {{ $b->fines > 0 ? 'Rp ' . number_format($b->fines, 0, ',', '.') : '-' }}
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-8 text-center text-slate-400">Pengguna belum memiliki riwayat peminjaman.</td>
+                                <td colspan="7" class="py-8 text-center text-zinc-400">Belum ada riwayat transaksi peminjaman.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
-            @if($borrowings->hasPages())
-                <div class="p-4 border-t border-slate-200 bg-slate-50/50">
-                    {{ $borrowings->links() }}
-                </div>
-            @endif
         </div>
     </div>
 </x-layouts.app>

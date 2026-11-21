@@ -1,103 +1,123 @@
 <x-layouts.app title="Riwayat Peminjaman">
-    <x-slot:header>Riwayat & Status Peminjaman Saya</x-slot:header>
-    <x-slot:subheader>Daftar lengkap permohonan sirkulasi, buku yang sedang Anda baca, dan arsip pengembalian</x-slot:subheader>
+    <!-- Subheader Toolbar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70">
+        <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-600 font-medium">
+            <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
+                <i data-lucide="history" class="w-3.5 h-3.5 text-zinc-500"></i>
+                <span class="font-semibold text-zinc-800">My Loan History</span>
+                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
+            </div>
 
-    <!-- Status Tabs -->
-    <div class="flex flex-wrap gap-2">
-        <a href="{{ route('user.borrowings.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ empty($status) || $status === 'all' ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
-            Semua Riwayat
-        </a>
-        <a href="{{ route('user.borrowings.index', ['status' => 'pending']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $status === 'pending' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
-            Menunggu Verifikasi
-        </a>
-        <a href="{{ route('user.borrowings.index', ['status' => 'borrowed']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $status === 'borrowed' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
-            Sedang Dipinjam
-        </a>
-        <a href="{{ route('user.borrowings.index', ['status' => 'returned']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $status === 'returned' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
-            Selesai Dikembalikan
-        </a>
-        <a href="{{ route('user.borrowings.index', ['status' => 'overdue']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $status === 'overdue' ? 'bg-rose-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
-            Terlambat
-        </a>
+            <!-- Status Tabs -->
+            <a href="{{ route('user.borrowings.index') }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ empty($status) || $status === 'all' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+                All Records
+            </a>
+            <a href="{{ route('user.borrowings.index', ['status' => 'pending']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ $status === 'pending' ? 'bg-brand-orange text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+                Pending
+            </a>
+            <a href="{{ route('user.borrowings.index', ['status' => 'borrowed']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ $status === 'borrowed' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+                Active Loans
+            </a>
+            <a href="{{ route('user.borrowings.index', ['status' => 'returned']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ $status === 'returned' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+                Returned
+            </a>
+            <a href="{{ route('user.borrowings.index', ['status' => 'overdue']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ $status === 'overdue' ? 'bg-red-600 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+                Overdue
+            </a>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <a href="{{ route('user.catalog.index') }}" class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-2xs transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>Borrow More</span>
+            </a>
+        </div>
     </div>
 
-    <!-- Borrowing Records Table -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <!-- Borrowing Records Table (Styled like Reference Table) -->
+    <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                    <tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                        <th class="py-3 px-4">Buku & Kode Transaksi</th>
-                        <th class="py-3 px-4">Kategori</th>
-                        <th class="py-3 px-4">Tgl Pinjam</th>
-                        <th class="py-3 px-4">Jatuh Tempo</th>
-                        <th class="py-3 px-4">Tgl Pengembalian</th>
+                    <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
+                        <th class="py-3 px-4 w-10">
+                            <input type="checkbox" class="w-3.5 h-3.5 rounded border-zinc-300 text-brand-orange focus:ring-0">
+                        </th>
+                        <th class="py-3 px-4">Book Title & Code</th>
+                        <th class="py-3 px-4">Category</th>
+                        <th class="py-3 px-4">Loan Date</th>
+                        <th class="py-3 px-4">Due Date</th>
+                        <th class="py-3 px-4">Returned Date</th>
                         <th class="py-3 px-4">Status</th>
-                        <th class="py-3 px-4">Denda</th>
-                        <th class="py-3 px-4 text-right">Aksi</th>
+                        <th class="py-3 px-4">Fines</th>
+                        <th class="py-3 px-4 text-right">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
                     @forelse($borrowings as $b)
-                        <tr class="hover:bg-slate-50/80 transition-colors">
+                        <tr class="hover:bg-zinc-50/60 transition-colors {{ $b->isOverdue() && in_array($b->status, ['borrowed', 'approved']) ? 'bg-[#FFF7F2]/40' : '' }}">
+                            <td class="py-3.5 px-4">
+                                <input type="checkbox" class="w-3.5 h-3.5 rounded border-zinc-300 text-brand-orange focus:ring-0">
+                            </td>
+
                             <!-- Book & Code -->
                             <td class="py-3.5 px-4">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-14 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-2xs">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-9 h-12 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
                                         <img src="{{ $b->book->cover_url }}" alt="" class="w-full h-full object-cover">
                                     </div>
                                     <div class="min-w-0 max-w-xs">
-                                        <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="font-bold text-slate-900 hover:text-blue-600 transition-colors block truncate">
+                                        <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="font-semibold text-zinc-900 hover:text-brand-orange transition-colors block truncate">
                                             {{ $b->book->title ?? 'Buku' }}
                                         </a>
-                                        <span class="font-mono text-[10px] text-slate-400 block">Kode: {{ $b->borrowing_code }}</span>
-                                        <span class="text-[10px] text-slate-500 block truncate">Penulis: {{ $b->book->author ?? '-' }}</span>
+                                        <span class="font-mono text-[10px] text-zinc-400 block">{{ $b->borrowing_code }}</span>
+                                        <span class="text-[10px] text-zinc-400 block truncate">{{ $b->book->author ?? '-' }}</span>
                                     </div>
                                 </div>
                             </td>
 
                             <!-- Category -->
                             <td class="py-3.5 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">
-                                    {{ $b->book->category->name ?? 'Umum' }}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-zinc-100 text-zinc-700">
+                                    {{ $b->book->category->name ?? 'General' }}
                                 </span>
                             </td>
 
                             <!-- Borrow Date -->
-                            <td class="py-3.5 px-4 text-slate-700 font-medium">
+                            <td class="py-3.5 px-4 text-zinc-700 font-medium">
                                 {{ $b->borrow_date->format('d M Y') }}
                             </td>
 
                             <!-- Return Due Date -->
                             <td class="py-3.5 px-4">
-                                <span class="font-semibold block {{ $b->isOverdue() && in_array($b->status, ['borrowed', 'approved']) ? 'text-rose-600' : 'text-slate-700' }}">
+                                <span class="font-semibold block {{ $b->isOverdue() && in_array($b->status, ['borrowed', 'approved']) ? 'text-red-600' : 'text-zinc-700' }}">
                                     {{ $b->return_due_date->format('d M Y') }}
                                 </span>
                                 @if($b->isOverdue() && in_array($b->status, ['borrowed', 'approved']))
-                                    <span class="text-[10px] text-rose-500 font-bold block mt-0.5">
-                                        Terlambat {{ $b->daysOverdue() }} hari
+                                    <span class="text-[10px] text-red-500 font-semibold block mt-0.5">
+                                        Overdue {{ $b->daysOverdue() }}d
                                     </span>
                                 @endif
                             </td>
 
                             <!-- Actual Return Date -->
-                            <td class="py-3.5 px-4 text-slate-600 font-medium">
-                                {{ $b->actual_return_date ? $b->actual_return_date->format('d M Y') : '-' }}
+                            <td class="py-3.5 px-4 text-zinc-500">
+                                {{ $b->actual_return_date ? $b->actual_return_date->format('d M Y') : '—' }}
                             </td>
 
                             <!-- Status -->
                             <td class="py-3.5 px-4">
                                 <x-badge-status :status="$b->isOverdue() ? 'overdue' : $b->status" />
                                 @if($b->status === 'rejected' && $b->admin_note)
-                                    <span class="text-[10px] text-rose-500 block mt-1" title="{{ $b->admin_note }}">
-                                        Alasan: {{ Str::limit($b->admin_note, 25) }}
+                                    <span class="text-[10px] text-red-500 block mt-1" title="{{ $b->admin_note }}">
+                                        Reason: {{ Str::limit($b->admin_note, 22) }}
                                     </span>
                                 @endif
                             </td>
 
                             <!-- Fines -->
-                            <td class="py-3.5 px-4 font-bold {{ $b->fines > 0 ? 'text-rose-600' : 'text-slate-400' }}">
-                                {{ $b->fines > 0 ? 'Rp ' . number_format($b->fines, 0, ',', '.') : '-' }}
+                            <td class="py-3.5 px-4 font-semibold {{ $b->fines > 0 ? 'text-red-600' : 'text-zinc-400' }}">
+                                {{ $b->fines > 0 ? 'Rp ' . number_format($b->fines, 0, ',', '.') : '—' }}
                             </td>
 
                             <!-- Actions -->
@@ -106,23 +126,23 @@
                                     <form method="POST" action="{{ route('user.borrowings.cancel', $b->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan permohonan peminjaman buku ini?');" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs transition-colors">
-                                            Batalkan
+                                        <button type="submit" class="px-2.5 py-1 bg-white hover:bg-red-50 text-red-600 border border-zinc-200/80 hover:border-red-200 rounded-lg font-semibold text-[11px] transition-colors">
+                                            Cancel
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="p-1.5 text-blue-600 hover:underline font-bold text-xs">
-                                        Lihat Buku
+                                    <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors">
+                                        Details
                                     </a>
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="py-12 text-center text-slate-400">
-                                <i data-lucide="history" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
-                                <p class="font-bold text-slate-700">Tidak ada riwayat peminjaman</p>
-                                <p class="text-xs text-slate-400 mt-1">Anda belum memiliki catatan sirkulasi pada kategori status ini.</p>
+                            <td colspan="9" class="py-12 text-center text-zinc-400">
+                                <i data-lucide="history" class="w-8 h-8 mx-auto mb-2 text-zinc-300"></i>
+                                <p class="font-semibold text-zinc-700">No borrowing records</p>
+                                <p class="text-xs text-zinc-400 mt-1">You do not have any circulation history in this status tab.</p>
                             </td>
                         </tr>
                     @endforelse
@@ -131,7 +151,7 @@
         </div>
 
         @if($borrowings->hasPages())
-            <div class="p-4 border-t border-slate-200 bg-slate-50/50">
+            <div class="p-3.5 border-t border-zinc-100 bg-white">
                 {{ $borrowings->links() }}
             </div>
         @endif
