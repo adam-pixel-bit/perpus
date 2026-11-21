@@ -1,5 +1,5 @@
-<x-layouts.app title="Product — Manajemen Buku">
-    <x-slot:pageTitle>Product <span class="text-xs font-normal text-zinc-400 ml-1.5 hidden sm:inline">Manajemen Buku</span><span class="sr-only">Manajemen Buku</span></x-slot:pageTitle>
+<x-layouts.app title="Katalog Buku — Manajemen Buku">
+    <x-slot:pageTitle>Katalog Buku <span class="text-xs font-normal text-zinc-400 ml-1.5 hidden sm:inline">Manajemen Buku</span><span class="sr-only">Manajemen Buku</span></x-slot:pageTitle>
 
     <!-- Subheader Filter & Action Bar -->
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
@@ -9,7 +9,7 @@
             <div class="relative">
                 <button type="button" class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs">
                     <i data-lucide="table" class="w-3.5 h-3.5 text-zinc-500"></i>
-                    <span>Table View</span>
+                    <span>Tampilan Tabel</span>
                     <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400 ml-1"></i>
                 </button>
             </div>
@@ -18,7 +18,7 @@
             <button
                 type="button"
                 onclick="toggleFilterBox()"
-                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs"
+                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs cursor-pointer"
             >
                 <i data-lucide="filter" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Filter</span>
@@ -27,16 +27,16 @@
             <!-- Sort Trigger -->
             <button
                 type="button"
-                onclick="toggleSortMenu()"
-                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs"
+                onclick="toggleFilterBox()"
+                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs cursor-pointer"
             >
                 <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Sort</span>
+                <span>Urutkan</span>
             </button>
 
             <!-- Show Statistics Toggle Switch -->
             <label class="inline-flex items-center space-x-2.5 ml-1 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
-                <span>Show Statistics</span>
+                <span>Tampilkan Statistik</span>
                 <div class="relative inline-block w-8 h-4 transition duration-200 ease-in-out align-middle select-none">
                     <input
                         type="checkbox"
@@ -53,9 +53,9 @@
         <!-- Right Controls -->
         <div class="flex items-center space-x-2.5">
             <!-- Customize -->
-            <button class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-700 transition-colors shadow-2xs">
+            <button class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-700 transition-colors shadow-2xs cursor-pointer">
                 <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Customize</span>
+                <span>Kustomisasi</span>
             </button>
 
             <!-- Export -->
@@ -64,7 +64,7 @@
                 class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-700 transition-colors shadow-2xs"
             >
                 <i data-lucide="upload" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Export</span>
+                <span>Ekspor</span>
             </a>
 
             <!-- Add New Product (High-Contrast Black Button) -->
@@ -73,7 +73,7 @@
                 class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/20 active:scale-[0.98]"
             >
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>Add New Product</span>
+                <span>+ Tambah Buku Baru</span>
             </a>
         </div>
     </div>
@@ -82,7 +82,7 @@
     <div id="filter-box" class="hidden p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 animate-in fade-in duration-150">
         <form method="GET" action="{{ route('admin.books.index') }}" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Search Keywords</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Kata Kunci Pencarian</label>
                 <input
                     type="text"
                     name="search"
@@ -92,7 +92,7 @@
                 >
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Category</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Kategori</label>
                 <select name="category_id" class="w-full px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800">
                     <option value="all">Semua Kategori</option>
                     @foreach($categories as $cat)
@@ -101,16 +101,16 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Stock Status</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Status Ketersediaan</label>
                 <select name="status" class="w-full px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800">
                     <option value="all">Semua Ketersediaan</option>
-                    <option value="available" {{ $status === 'available' ? 'selected' : '' }}>In Stock (Tersedia)</option>
-                    <option value="unavailable" {{ $status === 'unavailable' ? 'selected' : '' }}>Out of Stock / Restock</option>
+                    <option value="available" {{ $status === 'available' ? 'selected' : '' }}>Tersedia (In Stock)</option>
+                    <option value="unavailable" {{ $status === 'unavailable' ? 'selected' : '' }}>Stok Habis / Perlu Restok</option>
                 </select>
             </div>
             <div class="flex items-center space-x-2">
-                <button type="submit" class="flex-1 py-1.5 bg-zinc-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-colors">
-                    Apply Filter
+                <button type="submit" class="flex-1 py-1.5 bg-zinc-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-colors cursor-pointer">
+                    Terapkan Filter
                 </button>
                 <a href="{{ route('admin.books.index') }}" class="p-1.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-700 rounded-xl" title="Reset">
                     <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
@@ -122,70 +122,70 @@
     <!-- 4 Horizontal KPI Statistics Strip (Exact as screenshot) -->
     <div id="statistics-container" class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
         <div class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200/80">
-            <!-- Metric 1: Total Product -->
+            <!-- Metric 1: Total Judul Buku -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Total Product</span>
+                    <span>Total Judul Buku</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
                     {{ \App\Models\Book::count() }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs last month</span>
+                    <span>vs bulan lalu</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
-                        + 3 product
+                        + 3 judul buku
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 2: Product Revenue -->
+            <!-- Metric 2: Pemasukan Kas Denda -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Product Revenue</span>
+                    <span>Kas Denda Terkumpul</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
-                    ${{ number_format(\App\Models\Book::sum('stock') * 45.2, 0) }}
+                    Rp {{ number_format(\App\Models\Borrowing::sum('fines'), 0, ',', '.') }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs last month</span>
+                    <span>tertib administrasi</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
                         + 9%
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 3: Product Sold / Borrowed -->
+            <!-- Metric 3: Sirkulasi Dipinjam -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Product Sold</span>
+                    <span>Total Sirkulasi Dipinjam</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
-                    {{ number_format(\App\Models\Borrowing::count() * 12 + 2355) }}
+                    {{ number_format(\App\Models\Borrowing::count()) }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs last month</span>
+                    <span>vs bulan lalu</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
                         + 7%
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 4: Avg. Monthly Sales -->
+            <!-- Metric 4: Peminjaman Bulanan -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Avg. Monthly Sales</span>
+                    <span>Peminjaman Aktif</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
-                    {{ number_format(\App\Models\Borrowing::where('status', 'borrowed')->count() * 25 + 890) }}
+                    {{ number_format(\App\Models\Borrowing::where('status', 'borrowed')->count()) }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs last month</span>
+                    <span>buku sedang beredar</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
-                        + 5%
+                        Aktif
                     </span>
                 </div>
             </div>
@@ -206,11 +206,11 @@
                                 class="w-3.5 h-3.5 rounded text-orange-600 border-zinc-300 focus:ring-0 cursor-pointer"
                             >
                         </th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Product</th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Price</th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Sales</th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Revenue</th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Stock</th>
+                        <th class="py-3 px-4 font-semibold text-zinc-700">Judul Buku</th>
+                        <th class="py-3 px-4 font-semibold text-zinc-700">Kategori</th>
+                        <th class="py-3 px-4 font-semibold text-zinc-700">Penulis & Penerbit</th>
+                        <th class="py-3 px-4 font-semibold text-zinc-700">Lokasi Rak</th>
+                        <th class="py-3 px-4 font-semibold text-zinc-700">Stok</th>
                         <th class="py-3 px-4 font-semibold text-zinc-700">Status</th>
                         <th class="py-3 px-4 font-semibold text-zinc-700">Rating</th>
                         <th class="py-3 px-4 text-center w-8 text-zinc-400 font-bold">+</th>
@@ -219,25 +219,16 @@
                 <tbody class="divide-y divide-zinc-100 text-zinc-700">
                     @forelse($books as $index => $book)
                         @php
-                            // Derive status styling as shown in reference:
-                            // 'In Stock' (pastel purple/indigo)
-                            // 'Out of Stock' (pastel rose/peach)
-                            // 'Restock' (pastel amber)
                             if ($book->available_stock > 3) {
                                 $badgeClass = 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]';
-                                $badgeText = 'In Stock';
+                                $badgeText = 'Tersedia';
                             } elseif ($book->available_stock > 0) {
                                 $badgeClass = 'bg-[#FFF8EB] text-[#B87A04] border-[#FDEBC8]';
-                                $badgeText = 'Restock';
+                                $badgeText = 'Perlu Restok';
                             } else {
                                 $badgeClass = 'bg-[#FDF2F2] text-[#D84545] border-[#FCDADA]';
-                                $badgeText = 'Out of Stock';
+                                $badgeText = 'Stok Habis';
                             }
-
-                            // Dynamic mock metrics matching visual aesthetic
-                            $mockPrice = 1.35 * ($index + 1);
-                            $mockSales = 400 + ($index * 15);
-                            $mockRevenue = '$' . number_format($mockPrice * $mockSales, 2);
                             $rating = number_format(4.7 + (($index % 4) * 0.1), 1);
                         @endphp
                         <tr id="row-{{ $book->id }}" class="hover:bg-zinc-50/70 transition-colors group">
@@ -253,30 +244,36 @@
                             <!-- Product Name & Title -->
                             <td class="py-3 px-4">
                                 <div class="flex items-center space-x-2.5">
-                                    <a href="{{ route('admin.books.show', $book->id) }}" class="font-medium text-zinc-900 hover:text-orange-600 transition-colors truncate max-w-xs block">
-                                        {{ $book->title }}
-                                    </a>
+                                    <div class="w-8 h-10 rounded bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
+                                        <img src="{{ $book->cover_url }}" alt="" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="truncate max-w-xs">
+                                        <a href="{{ route('admin.books.edit', $book->id) }}" class="font-medium text-zinc-900 hover:text-orange-600 transition-colors truncate block">
+                                            {{ $book->title }}
+                                        </a>
+                                        <span class="text-[10px] text-zinc-400 font-mono block">ISBN: {{ $book->isbn }}</span>
+                                    </div>
                                 </div>
                             </td>
 
-                            <!-- Price -->
+                            <!-- Kategori -->
                             <td class="py-3 px-4 font-semibold text-zinc-900">
-                                ${{ number_format($mockPrice, 2) }}
+                                {{ $book->category->name ?? '-' }}
                             </td>
 
-                            <!-- Sales -->
+                            <!-- Penulis & Penerbit -->
                             <td class="py-3 px-4 text-zinc-500 font-medium">
-                                {{ $mockSales }} pcs
+                                {{ $book->author }} ({{ $book->publication_year }})
                             </td>
 
-                            <!-- Revenue -->
-                            <td class="py-3 px-4 font-semibold text-zinc-900">
-                                {{ $mockRevenue }}
+                            <!-- Lokasi Rak -->
+                            <td class="py-3 px-4 font-mono font-medium text-zinc-800">
+                                {{ $book->shelf_location }}
                             </td>
 
-                            <!-- Stock -->
+                            <!-- Stok -->
                             <td class="py-3 px-4 font-medium text-zinc-800">
-                                {{ $book->available_stock }}
+                                {{ $book->available_stock }} / {{ $book->stock }}
                             </td>
 
                             <!-- Status Badge -->
@@ -296,7 +293,7 @@
 
                             <!-- Action Column '+' -->
                             <td class="py-3 px-4 text-center">
-                                <a href="{{ route('admin.books.edit', $book->id) }}" class="text-zinc-300 group-hover:text-zinc-600 transition-colors p-1" title="Edit Product">
+                                <a href="{{ route('admin.books.edit', $book->id) }}" class="text-zinc-300 group-hover:text-zinc-600 transition-colors p-1" title="Edit Buku">
                                     <i data-lucide="more-horizontal" class="w-3.5 h-3.5"></i>
                                 </a>
                             </td>
@@ -304,7 +301,7 @@
                     @empty
                         <tr>
                             <td colspan="9" class="py-12 text-center text-zinc-400">
-                                No products found in this view.
+                                Tidak ada koleksi buku yang ditemukan.
                             </td>
                         </tr>
                     @endforelse
@@ -314,31 +311,31 @@
 
         <!-- Add Column Bar at Bottom of Table -->
         <div class="px-4 py-2.5 border-t border-zinc-100 bg-white flex items-center">
-            <button class="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors">
+            <a href="{{ route('admin.books.create') }}" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>Add Column</span>
-            </button>
+                <span>Tambah Buku Baru</span>
+            </a>
         </div>
 
         <!-- Floating Multi-Select Action Bar (Exact match to screenshot bottom bar) -->
         <div id="floating-action-bar" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-white border border-zinc-200/90 shadow-2xl rounded-2xl px-4 py-2 items-center space-x-3 text-xs animate-in slide-in-from-bottom-3 duration-200">
             <span class="font-bold text-zinc-900 text-[11px] pr-2 border-r border-zinc-200">
-                <span id="selected-count">0</span> Selected
+                <span id="selected-count">0</span> Dipilih
             </span>
-            <button type="button" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors">
+            <button type="button" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors cursor-pointer">
                 <i data-lucide="tag" class="w-3.5 h-3.5 text-zinc-400"></i>
-                <span>Apply Code</span>
+                <span>Terapkan Kode</span>
             </button>
-            <button type="button" onclick="editFirstSelected()" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors">
+            <button type="button" onclick="editFirstSelected()" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors cursor-pointer">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5 text-zinc-400"></i>
                 <span>Edit Info</span>
             </button>
-            <button type="button" onclick="deleteSelected()" class="inline-flex items-center space-x-1.5 text-rose-600 hover:text-rose-700 font-semibold transition-colors">
+            <button type="button" onclick="deleteSelected()" class="inline-flex items-center space-x-1.5 text-rose-600 hover:text-rose-700 font-semibold transition-colors cursor-pointer">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-500"></i>
-                <span>Delete</span>
+                <span>Hapus</span>
             </button>
             <span class="text-zinc-300">—</span>
-            <button type="button" onclick="clearSelection()" class="text-zinc-400 hover:text-zinc-700 p-1" title="Deselect all">
+            <button type="button" onclick="clearSelection()" class="text-zinc-400 hover:text-zinc-700 p-1 cursor-pointer" title="Batal Pilih Semua">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
         </div>
@@ -348,7 +345,7 @@
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 text-xs text-zinc-500">
         <!-- Showing Per Page -->
         <div class="flex items-center space-x-2">
-            <span>Showing per page</span>
+            <span>Menampilkan per halaman</span>
             <select class="px-2.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-800 focus:outline-none">
                 <option value="10">10</option>
                 <option value="25">25</option>
@@ -376,10 +373,10 @@
 
         <!-- Go to Page Input -->
         <div class="flex items-center space-x-2">
-            <span>Go to page</span>
+            <span>Ke halaman</span>
             <input type="text" class="w-9 px-1.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs text-center font-bold text-zinc-800 focus:outline-none">
-            <button type="button" class="font-bold text-zinc-800 hover:text-orange-600 transition-colors">
-                Go >
+            <button type="button" class="font-bold text-zinc-800 hover:text-orange-600 transition-colors cursor-pointer">
+                Buka >
             </button>
         </div>
     </div>
@@ -456,8 +453,7 @@
         }
 
         function deleteSelected() {
-            if (selectedIds.length > 0 && confirm('Delete selected ' + selectedIds.length + ' products?')) {
-                // Post form delete
+            if (selectedIds.length > 0 && confirm('Hapus ' + selectedIds.length + ' buku terpilih?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '/admin/books/' + selectedIds[0];

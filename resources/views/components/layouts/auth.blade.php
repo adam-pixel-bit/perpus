@@ -21,19 +21,19 @@
                         w.
                     </div>
                     <div>
-                        <h1 class="text-sm font-bold tracking-tight text-white leading-tight">Uxerflow Lib.</h1>
-                        <p class="text-[11px] text-zinc-400">Library Operating System</p>
+                        <h1 class="text-sm font-bold tracking-tight text-white leading-tight">SIPUS Digital</h1>
+                        <p class="text-[11px] text-zinc-400">Sistem Informasi Perpustakaan</p>
                     </div>
                 </div>
 
                 <div class="pt-6 space-y-3">
                     <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-zinc-800 text-brand-orange text-[10px] font-semibold tracking-wide">
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-orange"></span>
-                        <span>Enterprise Cloud v2.4</span>
+                        <span>Sistem Modern v2.4</span>
                     </div>
-                    <h2 class="text-xl font-bold leading-snug text-white">Next-Generation Library Circulation & Catalog System</h2>
+                    <h2 class="text-xl font-bold leading-snug text-white">Sirkulasi & Pengelolaan Buku Perpustakaan Modern</h2>
                     <p class="text-xs text-zinc-400 leading-relaxed">
-                        Precision tracking of bibliographic resources, instant member reservations, automated overdue calculations, and Supabase PostgreSQL integration.
+                        Pengelolaan koleksi buku fisik, pengajuan sirkulasi instan, kalkulasi otomatis denda keterlambatan, dan terintegrasi dengan database Supabase PostgreSQL.
                     </p>
                 </div>
             </div>
@@ -42,15 +42,15 @@
             <div class="relative z-10 pt-6 border-t border-zinc-800 space-y-2.5 text-xs text-zinc-300 font-medium">
                 <div class="flex items-center space-x-2">
                     <i data-lucide="check" class="w-3.5 h-3.5 text-brand-orange"></i>
-                    <span>Real-time availability & stack inventory</span>
+                    <span>Katalog buku terupdate dengan pencarian instan</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <i data-lucide="check" class="w-3.5 h-3.5 text-brand-orange"></i>
-                    <span>Role-Based Access Control (Admin & Member)</span>
+                    <span>Kontrol Akses Berbasis Peran (Admin & Anggota)</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <i data-lucide="check" class="w-3.5 h-3.5 text-brand-orange"></i>
-                    <span>Reliable transactional state consistency</span>
+                    <span>Konsistensi data transaksi dan stok realtime</span>
                 </div>
             </div>
         </div>

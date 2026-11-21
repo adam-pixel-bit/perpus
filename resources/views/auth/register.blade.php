@@ -1,8 +1,8 @@
-<x-layouts.auth title="Pendaftaran Anggota — Uxerflow Library OS">
+<x-layouts.auth title="Pendaftaran Anggota — Sistem Informasi Perpustakaan">
     <div class="space-y-4">
         <div>
-            <h2 class="text-xl font-bold text-zinc-900 tracking-tight">Create Member Account</h2>
-            <p class="text-xs text-zinc-400 mt-0.5">Register for your personal digital library membership</p>
+            <h2 class="text-xl font-bold text-zinc-900 tracking-tight">Pendaftaran Anggota Baru</h2>
+            <p class="text-xs text-zinc-400 mt-0.5">Lengkapi data diri Anda untuk membuat kartu anggota digital perpustakaan</p>
         </div>
 
         <form method="POST" action="{{ route('register.post') }}" class="space-y-3">
@@ -11,7 +11,7 @@
             <!-- Name -->
             <div>
                 <label for="name" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                    Full Name <span class="text-red-500">*</span>
+                    Nama Lengkap <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -24,7 +24,7 @@
                         value="{{ old('name') }}"
                         required
                         autofocus
-                        placeholder="e.g. Budi Santoso"
+                        placeholder="Contoh: Budi Santoso"
                         class="w-full pl-8.5 pr-3.5 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 placeholder-zinc-400"
                     >
                 </div>
@@ -36,7 +36,7 @@
             <!-- Email -->
             <div>
                 <label for="email" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                    Email Address <span class="text-red-500">*</span>
+                    Alamat Email <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -61,7 +61,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
                     <label for="phone" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Phone Number
+                        Nomor Telepon / WhatsApp
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -80,7 +80,7 @@
 
                 <div>
                     <label for="address" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Home City / Address
+                        Alamat Domisili
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -102,7 +102,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
                     <label for="password" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Password <span class="text-red-500">*</span>
+                        Kata Sandi <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -113,7 +113,7 @@
                             type="password"
                             name="password"
                             required
-                            placeholder="Min 6 characters"
+                            placeholder="Minimal 6 karakter"
                             class="w-full pl-8.5 pr-3.5 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 placeholder-zinc-400"
                         >
                     </div>
@@ -124,7 +124,7 @@
 
                 <div>
                     <label for="password_confirmation" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Confirm Password <span class="text-red-500">*</span>
+                        Ulangi Kata Sandi <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -135,7 +135,7 @@
                             type="password"
                             name="password_confirmation"
                             required
-                            placeholder="Repeat password"
+                            placeholder="Ulangi kata sandi"
                             class="w-full pl-8.5 pr-3.5 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 placeholder-zinc-400"
                         >
                     </div>
@@ -148,15 +148,15 @@
                 class="w-full py-2 px-4 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-all flex items-center justify-center space-x-1.5 mt-3 cursor-pointer"
             >
                 <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
-                <span>Complete Registration</span>
+                <span>Selesaikan Pendaftaran</span>
             </button>
         </form>
 
         <div class="text-center pt-1">
             <p class="text-xs text-zinc-400">
-                Already registered?
+                Sudah memiliki akun?
                 <a href="{{ route('login') }}" class="font-semibold text-zinc-900 hover:text-brand-orange transition-colors">
-                    Sign in here
+                    Masuk di sini
                 </a>
             </p>
         </div>

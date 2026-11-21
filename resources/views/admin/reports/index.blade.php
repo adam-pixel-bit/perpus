@@ -1,13 +1,15 @@
 <x-layouts.app title="Laporan Sistem">
+    <x-slot:pageTitle>Laporan Sirkulasi & Analitik</x-slot:pageTitle>
+
     <!-- Subheader Toolbar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70 no-print">
         <div class="flex items-center space-x-2 text-xs text-zinc-600 font-medium">
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span class="font-semibold text-zinc-800">Circulation Reports</span>
+                <span class="font-semibold text-zinc-800">Laporan Sirkulasi</span>
                 <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
-            <span class="text-xs text-zinc-400">Period: {{ date('d M Y', strtotime($startDate)) }} — {{ date('d M Y', strtotime($endDate)) }}</span>
+            <span class="text-xs text-zinc-400">Periode: {{ date('d M Y', strtotime($startDate)) }} — {{ date('d M Y', strtotime($endDate)) }}</span>
         </div>
 
         <div class="flex items-center space-x-2">
@@ -16,16 +18,16 @@
                 class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-2xs transition-all"
             >
                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                <span>Export CSV</span>
+                <span>Ekspor CSV</span>
             </a>
             <button
                 type="button"
                 onclick="window.print()"
-                class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 hover:bg-zinc-50 rounded-xl shadow-2xs transition-all"
-                title="Print Report"
+                class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 hover:bg-zinc-50 rounded-xl shadow-2xs transition-all cursor-pointer"
+                title="Cetak Laporan"
             >
                 <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Print</span>
+                <span>Cetak</span>
             </button>
         </div>
     </div>
@@ -35,7 +37,7 @@
         <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 items-end">
             <!-- Start Date -->
             <div>
-                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">From Date</label>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Dari Tanggal</label>
                 <input
                     type="date"
                     name="start_date"
@@ -46,7 +48,7 @@
 
             <!-- End Date -->
             <div>
-                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">To Date</label>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Sampai Tanggal</label>
                 <input
                     type="date"
                     name="end_date"
@@ -57,80 +59,80 @@
 
             <!-- Report Type -->
             <div>
-                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Report Focus</label>
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Fokus Laporan</label>
                 <select name="type" class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700">
-                    <option value="borrowings" {{ $reportType === 'borrowings' ? 'selected' : '' }}>Lending Transactions</option>
-                    <option value="popular" {{ $reportType === 'popular' ? 'selected' : '' }}>Top Borrowed Titles</option>
-                    <option value="users" {{ $reportType === 'users' ? 'selected' : '' }}>Member Activity</option>
+                    <option value="borrowings" {{ $reportType === 'borrowings' ? 'selected' : '' }}>Transaksi Sirkulasi</option>
+                    <option value="popular" {{ $reportType === 'popular' ? 'selected' : '' }}>Buku Terfavorit</option>
+                    <option value="users" {{ $reportType === 'users' ? 'selected' : '' }}>Aktivitas Anggota</option>
                 </select>
             </div>
 
             <!-- Filter Button -->
             <div>
-                <button type="submit" class="w-full py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl transition-colors shadow-2xs">
-                    Apply Filter
+                <button type="submit" class="w-full py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl transition-colors shadow-2xs cursor-pointer">
+                    Terapkan Periode
                 </button>
             </div>
         </form>
     </div>
 
-    <!-- Divided Horizontal KPI Statistics Strip (Exact Reference UI) -->
+    <!-- Divided Horizontal KPI Statistics Strip -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
         <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Total Circulation</span>
+                <span>Total Sirkulasi</span>
                 <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
             </div>
             <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($totalTransactions) }}
             </div>
             <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>period total</span>
-                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Recorded</span>
+                <span>total periode</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Terekam</span>
             </div>
         </div>
 
         <div class="sm:px-4 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Books Returned</span>
+                <span>Buku Dikembalikan</span>
                 <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
             </div>
             <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($totalReturned) }}
             </div>
             <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>completed</span>
-                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Archived</span>
+                <span>selesai dipinjam</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Diarsipkan</span>
             </div>
         </div>
 
         <div class="sm:px-4 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Overdue Cases</span>
+                <span>Kasus Keterlambatan</span>
                 <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
             </div>
             <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($totalOverdue) }}
             </div>
             <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>delinquencies</span>
+                <span>tunggakan sirkulasi</span>
                 <span class="{{ $totalOverdue > 0 ? 'text-red-600 bg-[#FEECEC]' : 'text-zinc-600 bg-zinc-100' }} px-1.5 py-0.2 rounded font-medium">
-                    {{ $totalOverdue > 0 ? 'Requires Action' : 'All Clear' }}
+                    {{ $totalOverdue > 0 ? 'Perlu Tindak Lanjut' : 'Nihil' }}
                 </span>
             </div>
         </div>
 
         <div class="sm:px-4 last:pr-0 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Fines Collected</span>
+                <span>Denda Diterima</span>
                 <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
             </div>
             <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 Rp {{ number_format($totalFines, 0, ',', '.') }}
             </div>
             <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>revenue</span>
-                <span class="text-brand-orange bg-[#FFF7F2] px-1.5 py-0.2 rounded font-medium">Settled</span>
+                <span>kas kasir</span>
+                <span class="text-brand-orange bg-[#FFF7F2] px-1.5 py-0.2 rounded font-medium">Lunas</span>
             </div>
         </div>
     </div>
@@ -140,8 +142,8 @@
         <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-zinc-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-bold text-sm text-zinc-900">Circulation & Lending Transactions</h3>
-                    <p class="text-xs text-zinc-400 mt-0.5">Timeframe: {{ date('d M Y', strtotime($startDate)) }} to {{ date('d M Y', strtotime($endDate)) }}</p>
+                    <h3 class="font-bold text-sm text-zinc-900">Sirkulasi & Transaksi Peminjaman</h3>
+                    <p class="text-xs text-zinc-400 mt-0.5">Rentang: {{ date('d M Y', strtotime($startDate)) }} s/d {{ date('d M Y', strtotime($endDate)) }}</p>
                 </div>
             </div>
 
@@ -149,14 +151,14 @@
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
-                            <th class="py-3 px-4">Transaction Code</th>
-                            <th class="py-3 px-4">Borrower</th>
-                            <th class="py-3 px-4">Book & ISBN</th>
-                            <th class="py-3 px-4">Loan Date</th>
-                            <th class="py-3 px-4">Due Date</th>
-                            <th class="py-3 px-4">Returned Date</th>
+                            <th class="py-3 px-4">Kode Transaksi</th>
+                            <th class="py-3 px-4">Peminjam</th>
+                            <th class="py-3 px-4">Buku & ISBN</th>
+                            <th class="py-3 px-4">Tgl Pinjam</th>
+                            <th class="py-3 px-4">Jatuh Tempo</th>
+                            <th class="py-3 px-4">Tgl Kembali</th>
                             <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4 text-right">Fines</th>
+                            <th class="py-3 px-4 text-right">Denda</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
@@ -196,20 +198,20 @@
     @elseif($reportType === 'popular')
         <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-zinc-100">
-                <h3 class="font-bold text-sm text-zinc-900">Top 10 Most Borrowed Books</h3>
-                <p class="text-xs text-zinc-400 mt-0.5">Based on circulation frequency during selected period</p>
+                <h3 class="font-bold text-sm text-zinc-900">10 Buku Paling Sering Dipinjam</h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Berdasarkan frekuensi permohonan sirkulasi pada periode terpilih</p>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
-                            <th class="py-3 px-4">Rank</th>
-                            <th class="py-3 px-4">Book Title</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4">Author & Publisher</th>
-                            <th class="py-3 px-4">Total Stock</th>
-                            <th class="py-3 px-4 text-right">Frequency</th>
+                            <th class="py-3 px-4">Peringkat</th>
+                            <th class="py-3 px-4">Judul Buku</th>
+                            <th class="py-3 px-4">Kategori</th>
+                            <th class="py-3 px-4">Penulis & Penerbit</th>
+                            <th class="py-3 px-4">Total Stok</th>
+                            <th class="py-3 px-4 text-right">Frekuensi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
@@ -233,10 +235,10 @@
                                 </td>
                                 <td class="py-3.5 px-4 font-medium text-zinc-700">{{ $book->category->name ?? '-' }}</td>
                                 <td class="py-3.5 px-4 text-zinc-500">{{ $book->author }} ({{ $book->publisher }})</td>
-                                <td class="py-3.5 px-4 font-medium text-zinc-700">{{ $book->stock }} copies</td>
+                                <td class="py-3.5 px-4 font-medium text-zinc-700">{{ $book->stock }} eksemplar</td>
                                 <td class="py-3.5 px-4 text-right">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#EEF2FF] text-[#4F46E5]">
-                                        {{ $book->borrowings_count }}x borrowed
+                                        {{ $book->borrowings_count }}x dipinjam
                                     </span>
                                 </td>
                             </tr>
@@ -252,19 +254,19 @@
     @else
         <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-zinc-100">
-                <h3 class="font-bold text-sm text-zinc-900">Member Borrowing Activity</h3>
-                <p class="text-xs text-zinc-400 mt-0.5">Members with the highest circulation participation</p>
+                <h3 class="font-bold text-sm text-zinc-900">Aktivitas Peminjaman Anggota</h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Anggota dengan partisipasi peminjaman tertinggi</p>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
-                            <th class="py-3 px-4">Rank</th>
-                            <th class="py-3 px-4">Member Name</th>
-                            <th class="py-3 px-4">Email & Phone</th>
-                            <th class="py-3 px-4">Address</th>
-                            <th class="py-3 px-4 text-right">Total Borrowed</th>
+                            <th class="py-3 px-4">Peringkat</th>
+                            <th class="py-3 px-4">Nama Anggota</th>
+                            <th class="py-3 px-4">Email & No. HP</th>
+                            <th class="py-3 px-4">Alamat Domisili</th>
+                            <th class="py-3 px-4 text-right">Buku Dipinjam</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
@@ -283,7 +285,7 @@
                                 <td class="py-3.5 px-4 text-zinc-500 max-w-xs truncate">{{ $u->address ?: '-' }}</td>
                                 <td class="py-3.5 px-4 text-right">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0FDF4] text-[#16A34A]">
-                                        {{ $u->borrowings_count }} books
+                                        {{ $u->borrowings_count }} buku
                                     </span>
                                 </td>
                             </tr>

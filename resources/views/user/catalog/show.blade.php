@@ -1,10 +1,12 @@
 <x-layouts.app title="{{ $book->title }}">
+    <x-slot:pageTitle>Rincian Koleksi Buku</x-slot:pageTitle>
+
     <div class="space-y-6">
         <!-- Back Link -->
         <div class="pb-2 border-b border-zinc-200/70">
             <a href="{{ route('user.catalog.index') }}" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-zinc-600 hover:text-zinc-900 bg-white border border-zinc-200/80 shadow-2xs transition-colors">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                <span>Back to Catalog</span>
+                <span>Kembali ke Katalog</span>
             </a>
         </div>
 
@@ -23,34 +25,34 @@
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#EEF2FF] text-[#4F46E5]">
-                                {{ $book->category->name ?? 'General Category' }}
+                                {{ $book->category->name ?? 'Kategori Umum' }}
                             </span>
                             @if($book->is_available && $book->available_stock > 0)
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0FDF4] text-[#16A34A]">
-                                    Available ({{ $book->available_stock }} of {{ $book->stock }} copies)
+                                    Tersedia ({{ $book->available_stock }} dari {{ $book->stock }} eksemplar)
                                 </span>
                             @else
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#FEECEC] text-[#DC2626]">
-                                    Out of Stock / Checked Out
+                                    Stok Habis / Sedang Dipinjam
                                 </span>
                             @endif
                         </div>
                         <h1 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">{{ $book->title }}</h1>
-                        <p class="text-xs font-medium text-zinc-500 mt-1">Author: {{ $book->author }} • Publisher: {{ $book->publisher }} ({{ $book->publication_year }})</p>
+                        <p class="text-xs font-medium text-zinc-500 mt-1">Penulis: {{ $book->author }} • Penerbit: {{ $book->publisher }} ({{ $book->publication_year }})</p>
                     </div>
 
                     <!-- Metadata Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3.5 rounded-xl bg-zinc-50/70 border border-zinc-200/80 text-xs">
                         <div>
-                            <span class="text-zinc-400 block font-medium text-[10px]">ISBN</span>
+                            <span class="text-zinc-400 block font-medium text-[10px]">Nomor ISBN</span>
                             <span class="font-mono font-semibold text-zinc-800 text-xs">{{ $book->isbn }}</span>
                         </div>
                         <div>
-                            <span class="text-zinc-400 block font-medium text-[10px]">Publication Year</span>
+                            <span class="text-zinc-400 block font-medium text-[10px]">Tahun Terbit</span>
                             <span class="font-semibold text-zinc-800 text-xs">{{ $book->publication_year }}</span>
                         </div>
                         <div>
-                            <span class="text-zinc-400 block font-medium text-[10px]">Shelf Location</span>
+                            <span class="text-zinc-400 block font-medium text-[10px]">Lokasi Rak</span>
                             <span class="font-mono font-semibold text-zinc-800 text-xs flex items-center space-x-1">
                                 <i data-lucide="map-pin" class="w-3 h-3 text-brand-orange"></i>
                                 <span>{{ $book->shelf_location }}</span>
@@ -60,9 +62,9 @@
 
                     <!-- Synopsis -->
                     <div class="space-y-1.5">
-                        <h3 class="text-[11px] font-semibold text-zinc-700">Synopsis & Summary</h3>
+                        <h3 class="text-[11px] font-semibold text-zinc-700">Sinopsis & Ringkasan Buku</h3>
                         <p class="text-xs text-zinc-600 leading-relaxed whitespace-pre-line">
-                            {{ $book->description ?: 'No synopsis available for this book.' }}
+                            {{ $book->description ?: 'Belum ada ringkasan yang tersedia untuk buku ini.' }}
                         </p>
                     </div>
 
@@ -71,8 +73,8 @@
                         @if($book->is_available && $book->available_stock > 0)
                             <div class="p-4 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-3">
                                 <div>
-                                    <h4 class="font-bold text-xs text-zinc-900">Request to Borrow This Book</h4>
-                                    <p class="text-[11px] text-zinc-500 mt-0.5">Application will be processed by library staff. Maximum loan period is 14 days.</p>
+                                    <h4 class="font-bold text-xs text-zinc-900">Ajukan Peminjaman Buku Ini</h4>
+                                    <p class="text-[11px] text-zinc-500 mt-0.5">Permohonan akan diverifikasi oleh staf perpustakaan. Maksimal pinjam 14 hari.</p>
                                 </div>
 
                                 <form method="POST" action="{{ route('user.borrowings.store') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
@@ -81,7 +83,7 @@
 
                                     <div class="sm:col-span-4">
                                         <label for="duration_days" class="block text-[10px] font-semibold text-zinc-700 mb-1">
-                                            Duration
+                                            Durasi Peminjaman
                                         </label>
                                         <select
                                             id="duration_days"
@@ -89,22 +91,22 @@
                                             required
                                             class="w-full px-2.5 py-1.5 text-xs bg-white border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 text-zinc-800"
                                         >
-                                            <option value="3">3 Days</option>
-                                            <option value="7" selected>7 Days (Standard)</option>
-                                            <option value="10">10 Days</option>
-                                            <option value="14">14 Days (Maximum)</option>
+                                            <option value="3">3 Hari</option>
+                                            <option value="7" selected>7 Hari (Standar)</option>
+                                            <option value="10">10 Hari</option>
+                                            <option value="14">14 Hari (Maksimal)</option>
                                         </select>
                                     </div>
 
                                     <div class="sm:col-span-5">
                                         <label for="notes" class="block text-[10px] font-semibold text-zinc-700 mb-1">
-                                            Purpose Note (Optional)
+                                            Catatan Keperluan
                                         </label>
                                         <input
                                             type="text"
                                             id="notes"
                                             name="notes"
-                                            placeholder="e.g. Research / coursework"
+                                            placeholder="Contoh: Keperluan tugas akhir / skripsi"
                                             class="w-full px-2.5 py-1.5 text-xs bg-white border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 text-zinc-900"
                                         >
                                     </div>
@@ -112,10 +114,10 @@
                                     <div class="sm:col-span-3">
                                         <button
                                             type="submit"
-                                            class="w-full py-1.5 px-3 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-all flex items-center justify-center space-x-1.5"
+                                            class="w-full py-1.5 px-3 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
                                         >
                                             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                                            <span>Request Loan</span>
+                                            <span>Ajukan Pinjam</span>
                                         </button>
                                     </div>
                                 </form>
@@ -123,7 +125,7 @@
                         @else
                             <div class="p-3.5 rounded-xl bg-[#FEECEC] border border-red-200 text-red-700 text-xs flex items-center space-x-2">
                                 <i data-lucide="alert-octagon" class="w-4 h-4 text-red-500 flex-shrink-0"></i>
-                                <span>All copies are currently borrowed by members. Please check back later.</span>
+                                <span>Maaf, semua eksemplar buku ini sedang dipinjam oleh anggota lain.</span>
                             </div>
                         @endif
                     </div>
@@ -136,8 +138,8 @@
             <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs p-5 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                     <div>
-                        <h3 class="font-bold text-sm text-zinc-900">More in {{ $book->category->name ?? 'This Category' }}</h3>
-                        <p class="text-xs text-zinc-400 mt-0.5">Explore related titles in the same discipline</p>
+                        <h3 class="font-bold text-sm text-zinc-900">Buku Lainnya dalam Kategori Ini</h3>
+                        <p class="text-xs text-zinc-400 mt-0.5">Koleksi terkait dalam bidang {{ $book->category->name ?? 'yang sama' }}</p>
                     </div>
                 </div>
 

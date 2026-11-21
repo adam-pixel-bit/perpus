@@ -1,13 +1,15 @@
 <x-layouts.app title="Katalog Buku">
+    <x-slot:pageTitle>Katalog Buku Perpustakaan</x-slot:pageTitle>
+
     <!-- Subheader Toolbar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70">
         <div class="flex items-center space-x-2 text-xs text-zinc-600 font-medium">
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="book" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span class="font-semibold text-zinc-800">Library Catalog</span>
+                <span class="font-semibold text-zinc-800">Katalog Perpustakaan</span>
                 <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
-            <span class="text-xs text-zinc-400">Total {{ $books->total() }} titles found</span>
+            <span class="text-xs text-zinc-400">Total {{ $books->total() }} judul buku</span>
         </div>
     </div>
 
@@ -23,7 +25,7 @@
                     type="text"
                     name="search"
                     value="{{ $search }}"
-                    placeholder="Search title, author, or ISBN..."
+                    placeholder="Ketik judul buku, pengarang, atau ISBN..."
                     class="w-full pl-8.5 pr-4 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 placeholder-zinc-400"
                 >
             </div>
@@ -31,7 +33,7 @@
             <!-- Category Filter -->
             <div>
                 <select name="category_id" class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700">
-                    <option value="all">All Categories</option>
+                    <option value="all">Semua Kategori</option>
                     @foreach($categories as $c)
                         <option value="{{ $c->id }}" {{ $categoryId == $c->id ? 'selected' : '' }}>
                             {{ $c->name }} ({{ $c->books_count }})
@@ -43,15 +45,15 @@
             <!-- Availability -->
             <div>
                 <select name="availability" class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-700">
-                    <option value="all">All Availability</option>
-                    <option value="available" {{ $availability === 'available' ? 'selected' : '' }}>In Stock Only</option>
+                    <option value="all">Semua Ketersediaan</option>
+                    <option value="available" {{ $availability === 'available' ? 'selected' : '' }}>Hanya yang Tersedia</option>
                 </select>
             </div>
 
             <!-- Buttons -->
             <div class="flex items-center space-x-2">
-                <button type="submit" class="flex-1 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl transition-colors shadow-2xs">
-                    Search
+                <button type="submit" class="flex-1 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl transition-colors shadow-2xs cursor-pointer">
+                    Cari Buku
                 </button>
                 @if($search || ($categoryId && $categoryId !== 'all') || ($availability && $availability !== 'all'))
                     <a href="{{ route('user.catalog.index') }}" class="p-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-600 rounded-xl transition-colors" title="Reset Filter">
@@ -65,7 +67,7 @@
     <!-- Category Pills Quick Filter -->
     <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 text-xs">
         <a href="{{ route('user.catalog.index', array_merge(request()->except('category_id'), ['category_id' => 'all'])) }}" class="px-3 py-1 rounded-lg text-xs font-semibold transition-all {{ empty($categoryId) || $categoryId === 'all' ? 'bg-zinc-950 text-white' : 'bg-white border border-zinc-200/80 text-zinc-600 hover:bg-zinc-50' }}">
-            All ({{ $books->total() }})
+            Semua ({{ $books->total() }})
         </a>
         @foreach($categories as $cat)
             <a href="{{ route('user.catalog.index', array_merge(request()->except('category_id'), ['category_id' => $cat->id])) }}" class="px-3 py-1 rounded-lg text-xs font-semibold transition-all whitespace-nowrap {{ $categoryId == $cat->id ? 'bg-zinc-950 text-white' : 'bg-white border border-zinc-200/80 text-zinc-600 hover:bg-zinc-50' }}">
@@ -89,11 +91,11 @@
                         <!-- Stock Status Floating Badge -->
                         @if($book->is_available && $book->available_stock > 0)
                             <span class="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[#F0FDF4] text-[#16A34A] shadow-xs">
-                                In Stock: {{ $book->available_stock }}
+                                Tersedia: {{ $book->available_stock }}
                             </span>
                         @else
                             <span class="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[#FEECEC] text-[#DC2626] shadow-xs">
-                                Out of Stock
+                                Stok Habis
                             </span>
                         @endif
 
@@ -106,7 +108,7 @@
                     <div>
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-semibold text-brand-orange uppercase tracking-tight">
-                                {{ $book->category->name ?? 'General' }}
+                                {{ $book->category->name ?? 'Umum' }}
                             </span>
                             <span class="text-[10px] font-medium text-amber-500 flex items-center space-x-0.5">
                                 <span>★</span> <span>5.0</span>
@@ -125,17 +127,17 @@
                         href="{{ route('user.catalog.show', $book->slug) }}"
                         class="flex-1 py-1.5 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 text-zinc-700 text-xs font-semibold rounded-xl text-center transition-colors"
                     >
-                        Details
+                        Rincian
                     </a>
                     @if($book->is_available && $book->available_stock > 0)
                         <button
                             type="button"
                             onclick="openBorrowModal({{ $book->id }}, '{{ addslashes($book->title) }}', '{{ $book->available_stock }}')"
-                            class="py-1.5 px-3 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-colors flex items-center justify-center space-x-1"
-                            title="Borrow This Book"
+                            class="py-1.5 px-3 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+                            title="Ajukan Peminjaman"
                         >
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                            <span class="hidden sm:inline">Borrow</span>
+                            <span class="hidden sm:inline">Pinjam</span>
                         </button>
                     @endif
                 </div>
@@ -143,8 +145,8 @@
         @empty
             <div class="col-span-full py-16 text-center text-zinc-400 bg-white rounded-2xl border border-dashed border-zinc-200">
                 <i data-lucide="book-x" class="w-8 h-8 mx-auto mb-2 text-zinc-300"></i>
-                <h3 class="font-semibold text-sm text-zinc-700">No books found matching criteria</h3>
-                <p class="text-xs text-zinc-400 mt-1">Try another keyword or reset the filter.</p>
+                <h3 class="font-semibold text-sm text-zinc-700">Tidak ada buku yang sesuai dengan pencarian</h3>
+                <p class="text-xs text-zinc-400 mt-1">Coba gunakan kata kunci lain atau bersihkan filter.</p>
             </div>
         @endforelse
     </div>
@@ -164,17 +166,17 @@
                     <div class="w-7 h-7 rounded-lg bg-zinc-100 text-zinc-800 flex items-center justify-center">
                         <i data-lucide="book-open" class="w-4 h-4"></i>
                     </div>
-                    <h3 class="font-bold text-sm text-zinc-900">Borrow Book Request</h3>
+                    <h3 class="font-bold text-sm text-zinc-900">Ajukan Peminjaman Buku</h3>
                 </div>
-                <button type="button" onclick="closeBorrowModal()" class="text-zinc-400 hover:text-zinc-600 p-1">
+                <button type="button" onclick="closeBorrowModal()" class="text-zinc-400 hover:text-zinc-600 p-1 cursor-pointer">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
 
             <div>
-                <p class="text-xs text-zinc-400">Book Title:</p>
+                <p class="text-xs text-zinc-400">Judul Buku:</p>
                 <p id="modal-book-title" class="text-xs font-bold text-zinc-900 mt-0.5"></p>
-                <p class="text-[11px] text-[#16A34A] font-semibold mt-0.5">Available stock: <span id="modal-book-stock"></span> copies</p>
+                <p class="text-[11px] text-[#16A34A] font-semibold mt-0.5">Stok tersedia: <span id="modal-book-stock"></span> eksemplar</p>
             </div>
 
             <form method="POST" action="{{ route('user.borrowings.store') }}" class="space-y-3">
@@ -183,7 +185,7 @@
 
                 <div>
                     <label for="duration_days" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Loan Duration <span class="text-red-500">*</span>
+                        Durasi Peminjaman <span class="text-red-500">*</span>
                     </label>
                     <select
                         id="duration_days"
@@ -191,32 +193,32 @@
                         required
                         class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-800"
                     >
-                        <option value="3">3 Days</option>
-                        <option value="7" selected>7 Days (Standard)</option>
-                        <option value="10">10 Days</option>
-                        <option value="14">14 Days (Maximum)</option>
+                        <option value="3">3 Hari</option>
+                        <option value="7" selected>7 Hari (Standar Perpustakaan)</option>
+                        <option value="10">10 Hari</option>
+                        <option value="14">14 Hari (Maksimal)</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="notes" class="block text-[11px] font-semibold text-zinc-700 mb-1">
-                        Purpose Note (Optional)
+                        Catatan Keperluan (Opsional)
                     </label>
                     <textarea
                         id="notes"
                         name="notes"
                         rows="2"
-                        placeholder="e.g. For academic research or thesis reference..."
+                        placeholder="Contoh: Untuk referensi tugas akhir atau praktikum mandiri..."
                         class="w-full px-3 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 resize-none"
                     ></textarea>
                 </div>
 
                 <div class="pt-2 flex items-center justify-end space-x-2">
-                    <button type="button" onclick="closeBorrowModal()" class="px-3.5 py-1.5 text-xs font-semibold text-zinc-600 bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors">
-                        Cancel
+                    <button type="button" onclick="closeBorrowModal()" class="px-3.5 py-1.5 text-xs font-semibold text-zinc-600 bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors cursor-pointer">
+                        Batal
                     </button>
-                    <button type="submit" class="px-4 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-colors">
-                        Submit Request
+                    <button type="submit" class="px-4 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-2xs transition-colors cursor-pointer">
+                        Kirim Permohonan
                     </button>
                 </div>
             </form>

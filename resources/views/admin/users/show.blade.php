@@ -1,15 +1,17 @@
 <x-layouts.app title="Detail Pengguna">
+    <x-slot:pageTitle>Detail Pengguna</x-slot:pageTitle>
+
     <div class="space-y-6">
         <!-- Back Link & Action Bar -->
         <div class="flex items-center justify-between pb-2 border-b border-zinc-200/70">
             <a href="{{ route('admin.users.index') }}" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-zinc-600 hover:text-zinc-950 bg-white border border-zinc-200/80 shadow-2xs transition-colors">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                <span>Back to Users</span>
+                <span>Kembali ke Data Pengguna</span>
             </a>
             <div class="flex items-center space-x-2">
                 <a href="{{ route('admin.users.edit', $user->id) }}" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-semibold shadow-2xs transition-all">
                     <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                    <span>Edit Profile</span>
+                    <span>Edit Profil</span>
                 </a>
             </div>
         </div>
@@ -29,32 +31,32 @@
                             </span>
                         @else
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-zinc-100 text-zinc-700">
-                                Member
+                                Anggota
                             </span>
                         @endif
 
                         @if($user->is_active)
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0FDF4] text-[#16A34A]">
-                                Active
+                                Aktif
                             </span>
                         @else
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#FEECEC] text-[#DC2626]">
-                                Inactive
+                                Nonaktif
                             </span>
                         @endif
                     </div>
-                    <p class="text-xs text-zinc-400 font-medium">{{ $user->email }} • Joined {{ $user->created_at->format('d M Y') }}</p>
+                    <p class="text-xs text-zinc-400 font-medium">{{ $user->email }} • Bergabung sejak {{ $user->created_at->format('d M Y') }}</p>
                 </div>
             </div>
 
             <!-- Profile Details Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-5 text-xs">
                 <div class="p-3.5 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-0.5">
-                    <span class="text-zinc-400 block font-medium text-[11px]">Phone Number</span>
+                    <span class="text-zinc-400 block font-medium text-[11px]">Nomor Telepon</span>
                     <span class="font-semibold text-zinc-800 text-xs">{{ $user->phone ?: '-' }}</span>
                 </div>
                 <div class="p-3.5 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-0.5 sm:col-span-2">
-                    <span class="text-zinc-400 block font-medium text-[11px]">Address</span>
+                    <span class="text-zinc-400 block font-medium text-[11px]">Alamat Domisili</span>
                     <span class="font-medium text-zinc-800 text-xs">{{ $user->address ?: '-' }}</span>
                 </div>
             </div>
@@ -64,8 +66,8 @@
         <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-zinc-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-bold text-sm text-zinc-900">Borrowing History</h3>
-                    <p class="text-xs text-zinc-400 mt-0.5">All transactions requested by {{ $user->name }}</p>
+                    <h3 class="font-bold text-sm text-zinc-900">Riwayat Peminjaman Buku</h3>
+                    <p class="text-xs text-zinc-400 mt-0.5">Semua riwayat permohonan sirkulasi oleh {{ $user->name }}</p>
                 </div>
             </div>
 
@@ -73,13 +75,13 @@
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
-                            <th class="py-3 px-4">Transaction Code</th>
-                            <th class="py-3 px-4">Book Title</th>
-                            <th class="py-3 px-4">Borrow Date</th>
-                            <th class="py-3 px-4">Due Date</th>
-                            <th class="py-3 px-4">Returned Date</th>
+                            <th class="py-3 px-4">Kode Transaksi</th>
+                            <th class="py-3 px-4">Judul Buku</th>
+                            <th class="py-3 px-4">Tanggal Pinjam</th>
+                            <th class="py-3 px-4">Jatuh Tempo</th>
+                            <th class="py-3 px-4">Tanggal Kembali</th>
                             <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4">Fines</th>
+                            <th class="py-3 px-4">Denda</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-100/70 text-zinc-700">
