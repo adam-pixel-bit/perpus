@@ -10,19 +10,19 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-2 sm:p-4 lg:p-6 flex flex-col justify-center">
+<body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-0 sm:p-4 lg:p-6 flex flex-col justify-center">
 
     <!-- macOS / Browser Window Frame Container (Exact match to Uxerflow Reference UI) -->
-    <div class="w-full max-w-[1520px] mx-auto bg-white rounded-3xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 overflow-hidden flex flex-col min-h-[92vh]">
+    <div class="w-full max-w-[1520px] mx-auto bg-white rounded-none sm:rounded-3xl border-0 sm:border border-zinc-200/80 shadow-none sm:shadow-xl sm:shadow-zinc-200/40 overflow-hidden flex flex-col min-h-screen sm:min-h-[92vh]">
         
         <!-- Browser Chrome Window Topbar -->
-        <div class="h-10 px-4 border-b border-zinc-200/80 bg-zinc-50/80 flex items-center justify-between flex-shrink-0 select-none">
+        <div class="h-9 sm:h-10 px-3 sm:px-4 border-b border-zinc-200/80 bg-zinc-50/80 flex items-center justify-between shrink-0 select-none">
             <!-- Left: macOS Traffic Light Buttons + History Controls -->
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] inline-block"></span>
-                    <span class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] inline-block"></span>
-                    <span class="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] inline-block"></span>
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] inline-block"></span>
+                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] inline-block"></span>
+                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] inline-block"></span>
                 </div>
                 <div class="hidden sm:flex items-center space-x-2 text-zinc-400">
                     <i data-lucide="chevron-left" class="w-3.5 h-3.5 cursor-pointer hover:text-zinc-600"></i>
@@ -32,14 +32,14 @@
             </div>
 
             <!-- Center: URL Omnibox (Matching Screenshot uxerflow.orbit.com) -->
-            <div class="flex items-center space-x-1.5 px-3 py-1 bg-white border border-zinc-200/80 rounded-lg text-[11px] font-mono text-zinc-500 shadow-2xs w-60 sm:w-80 justify-center">
-                <i data-lucide="paperclip" class="w-3 h-3 text-zinc-400"></i>
+            <div class="flex items-center space-x-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-white border border-zinc-200/80 rounded-lg text-[10px] sm:text-[11px] font-mono text-zinc-500 shadow-2xs w-44 sm:w-72 md:w-80 justify-center">
+                <i data-lucide="paperclip" class="w-3 h-3 text-zinc-400 shrink-0"></i>
                 <span class="truncate">uxerflow.orbit.com{{ request()->path() === 'login' ? '/auth/login' : '/auth/register' }}</span>
             </div>
 
             <!-- Right: Workspace Status -->
-            <div class="flex items-center space-x-2 text-zinc-400">
-                <span class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider hidden sm:inline">Uxerflow Cloud</span>
+            <div class="flex items-center space-x-1.5 sm:space-x-2 text-zinc-400 shrink-0">
+                <span class="text-[9px] sm:text-[10px] font-semibold text-zinc-400 uppercase tracking-wider hidden sm:inline">Uxerflow Cloud</span>
                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-zinc-400"></i>
             </div>
         </div>

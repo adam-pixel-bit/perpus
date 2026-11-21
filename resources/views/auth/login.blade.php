@@ -2,7 +2,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(92vh-2.5rem)] divide-y lg:divide-y-0 lg:divide-x divide-zinc-200/80">
         
         <!-- LEFT PANEL: LOGIN FORM (Exact Layout from Reference Image) -->
-        <div class="lg:col-span-6 xl:col-span-6 p-6 sm:p-10 lg:p-12 flex flex-col justify-between bg-white">
+        <div class="lg:col-span-6 xl:col-span-6 p-4 sm:p-8 lg:p-12 flex flex-col justify-between bg-white">
             <!-- Brand Logo Top Left -->
             <div class="flex items-center space-x-2.5">
                 <div class="w-8 h-8 rounded-xl bg-zinc-950 text-white font-black text-sm flex items-center justify-center tracking-tighter shadow-xs">
@@ -185,9 +185,9 @@
         </div>
 
         <!-- RIGHT PANEL: HERO SHOWCASE (Matching structure & dashboard palette) -->
-        <div class="lg:col-span-6 xl:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-center items-center bg-[#F8F9FB]">
+        <div class="lg:col-span-6 xl:col-span-6 p-4 sm:p-8 lg:p-10 flex flex-col justify-center items-center bg-[#F8F9FB]">
             <!-- Inner Hero Card -->
-            <div class="w-full max-w-lg bg-zinc-950 text-white rounded-[28px] border border-zinc-800 shadow-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[500px]">
+            <div class="w-full max-w-lg bg-zinc-950 text-white rounded-[24px] sm:rounded-[28px] border border-zinc-800 shadow-2xl p-4 sm:p-7 lg:p-8 flex flex-col justify-between relative overflow-hidden min-h-[460px] sm:min-h-[500px]">
                 
                 <!-- Ambient Subtle Glows -->
                 <div class="absolute -top-16 -right-16 w-48 h-48 bg-orange-600/20 rounded-full blur-3xl pointer-events-none"></div>

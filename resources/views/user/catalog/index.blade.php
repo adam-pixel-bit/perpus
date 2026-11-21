@@ -7,7 +7,6 @@
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="book" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Katalog Perpustakaan</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
             <span class="text-xs text-zinc-400">Total {{ $books->total() }} judul buku</span>
         </div>
@@ -15,7 +14,7 @@
 
     <!-- Search & Filter Controls -->
     <div class="bg-white rounded-2xl border border-zinc-200/80 p-3 sm:p-4 shadow-2xs">
-        <form method="GET" action="{{ route('user.catalog.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+        <form method="GET" action="{{ route('user.catalog.index') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
             <!-- Search Keyword -->
             <div class="relative lg:col-span-2">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -77,7 +76,7 @@
     </div>
 
     <!-- Book Grid Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
         @forelse($books as $book)
             <div class="bg-white rounded-2xl border border-zinc-200/80 p-3.5 shadow-2xs hover:border-zinc-300 transition-all flex flex-col justify-between group">
                 <div class="space-y-2.5">

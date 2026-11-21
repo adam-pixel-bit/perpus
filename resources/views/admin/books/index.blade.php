@@ -38,7 +38,7 @@
         </div>
 
         <!-- Right Controls -->
-        <div class="flex items-center space-x-2.5">
+        <div class="flex items-center flex-wrap gap-2">
             <!-- Export CSV -->
             <a
                 href="{{ route('admin.reports.export') }}"
@@ -54,14 +54,14 @@
                 class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/20 active:scale-[0.98]"
             >
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>+ Tambah Buku Baru</span>
+                <span>+ Tambah Buku</span>
             </a>
         </div>
     </div>
 
     <!-- Collapsible Filter Drawer -->
     <div id="filter-box" class="{{ request()->anyFilled(['search', 'category_id', 'status', 'sort']) ? '' : 'hidden' }} p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 animate-in fade-in duration-150">
-        <form method="GET" action="{{ route('admin.books.index') }}" class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-end">
+        <form method="GET" action="{{ route('admin.books.index') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 items-end">
             <div>
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Pencarian</label>
                 <input

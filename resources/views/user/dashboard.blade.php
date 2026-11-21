@@ -7,21 +7,27 @@
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Ruang Anggota</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
             
             <span class="text-xs text-zinc-400 font-normal">Nomor Anggota: #{{ str_pad(auth()->id(), 5, '0', STR_PAD_LEFT) }}</span>
 
-            <div class="flex items-center space-x-2 pl-2">
-                <span class="text-xs text-zinc-500 font-medium">Tampilkan Statistik</span>
-                <button type="button" class="w-8 h-4.5 bg-brand-orange rounded-full relative cursor-pointer focus:outline-none transition-colors" id="stats-toggle">
-                    <span class="w-3.5 h-3.5 bg-white rounded-full absolute right-0.5 top-0.5 shadow-xs transition-transform"></span>
-                </button>
-            </div>
+            <label class="inline-flex items-center space-x-2 pl-2 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
+                <span>Tampilkan Statistik</span>
+                <div class="relative inline-block w-8 h-4 transition duration-200 ease-in-out align-middle select-none">
+                    <input
+                        type="checkbox"
+                        id="toggle-user-stats"
+                        checked
+                        onchange="toggleStatistics(this)"
+                        class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 border-zinc-300 appearance-none cursor-pointer transition-all duration-200 checked:right-0 checked:bg-orange-600 checked:border-orange-600"
+                    />
+                    <label for="toggle-user-stats" class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-200 cursor-pointer"></label>
+                </div>
+            </label>
         </div>
 
         <div class="flex items-center space-x-2">
-            <a href="{{ route('user.catalog.index') }}" class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-sm transition-all">
+            <a href="{{ route('user.catalog.index') }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-sm transition-all">
                 <i data-lucide="compass" class="w-3.5 h-3.5"></i>
                 <span>Jelajahi Katalog Buku</span>
             </a>
@@ -29,7 +35,7 @@
     </div>
 
     <!-- Divided Horizontal KPI Statistics Strip -->
-    <div id="stats-strip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
+    <div id="stats-strip" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-3 sm:p-5 shadow-2xs gap-y-3 sm:gap-y-0">
         <!-- Metric 1: Sedang Dipinjam -->
         <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">

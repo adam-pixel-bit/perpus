@@ -3,17 +3,17 @@
 
     <!-- Subheader Toolbar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70">
-        <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-600 font-medium">
-            <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
+        <div class="flex items-center overflow-x-auto pb-1 sm:pb-0 gap-2 text-xs text-zinc-600 font-medium max-w-full">
+            <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs shrink-0">
                 <i data-lucide="layers" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Tabel Sirkulasi</span>
             </div>
 
             <!-- Status Tabs -->
-            <a href="{{ route('admin.borrowings.index') }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ empty($status) || $status === 'all' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+            <a href="{{ route('admin.borrowings.index') }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 {{ empty($status) || $status === 'all' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
                 Semua ({{ $borrowedCount + $pendingCount + $overdueCount + $returnedCount }})
             </a>
-            <a href="{{ route('admin.borrowings.index', ['status' => 'pending']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 {{ $status === 'pending' ? 'bg-brand-orange text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+            <a href="{{ route('admin.borrowings.index', ['status' => 'pending']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shrink-0 {{ $status === 'pending' ? 'bg-brand-orange text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
                 <span>Menunggu Persetujuan</span>
                 @if($pendingCount > 0)
                     <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ $status === 'pending' ? 'bg-white text-brand-orange font-bold' : 'bg-[#FEF6E8] text-amber-700 font-bold' }}">
@@ -21,13 +21,13 @@
                     </span>
                 @endif
             </a>
-            <a href="{{ route('admin.borrowings.index', ['status' => 'borrowed']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 {{ $status === 'borrowed' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+            <a href="{{ route('admin.borrowings.index', ['status' => 'borrowed']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shrink-0 {{ $status === 'borrowed' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
                 <span>Sedang Dipinjam</span>
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ $status === 'borrowed' ? 'bg-white text-zinc-950 font-bold' : 'bg-zinc-100 text-zinc-700 font-bold' }}">
                     {{ $borrowedCount }}
                 </span>
             </a>
-            <a href="{{ route('admin.borrowings.index', ['status' => 'overdue']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 {{ $status === 'overdue' ? 'bg-[#EF4444] text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+            <a href="{{ route('admin.borrowings.index', ['status' => 'overdue']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shrink-0 {{ $status === 'overdue' ? 'bg-[#EF4444] text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
                 <span>Terlambat</span>
                 @if($overdueCount > 0)
                     <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ $status === 'overdue' ? 'bg-white text-red-600 font-bold' : 'bg-[#FEECEC] text-red-600 font-bold' }}">
@@ -35,12 +35,12 @@
                     </span>
                 @endif
             </a>
-            <a href="{{ route('admin.borrowings.index', ['status' => 'returned']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {{ $status === 'returned' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
+            <a href="{{ route('admin.borrowings.index', ['status' => 'returned']) }}" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 {{ $status === 'returned' ? 'bg-zinc-950 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/80 hover:bg-zinc-50' }}">
                 <span>Selesai Dikembalikan ({{ $returnedCount }})</span>
             </a>
         </div>
 
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 shrink-0">
             <a href="{{ route('admin.reports.export') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Ekspor CSV</span>
@@ -50,7 +50,7 @@
 
     <!-- Filter & Search Bar -->
     <div class="bg-white rounded-2xl border border-zinc-200/80 p-3 sm:p-4 shadow-2xs">
-        <form method="GET" action="{{ route('admin.borrowings.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+        <form method="GET" action="{{ route('admin.borrowings.index') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
             @if($status && $status !== 'all')
                 <input type="hidden" name="status" value="{{ $status }}">
             @endif

@@ -36,20 +36,20 @@
             </label>
         </div>
 
-        <div class="flex items-center space-x-2">
-            <a href="{{ route('admin.reports.export') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
+        <div class="flex items-center flex-wrap gap-2">
+            <a href="{{ route('admin.reports.export') }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Ekspor CSV</span>
             </a>
-            <a href="{{ route('admin.books.create') }}" class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-sm transition-all">
+            <a href="{{ route('admin.books.create') }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-sm transition-all">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>+ Tambah Buku Baru</span>
+                <span>+ Tambah Buku</span>
             </a>
         </div>
     </div>
 
     <!-- Divided Horizontal KPI Statistics Strip -->
-    <div id="stats-strip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
+    <div id="stats-strip" class="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-3 sm:p-5 shadow-2xs gap-y-3 sm:gap-y-0">
         <!-- Metrik 1: Total Judul Buku -->
         <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">

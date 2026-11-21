@@ -10,14 +10,14 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-2 sm:p-4 lg:p-6 flex flex-col justify-center">
+<body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-0 sm:p-4 lg:p-6 flex flex-col justify-center">
 
-    <!-- Outermost Rounded Window Container -->
-    <div class="w-full max-w-[1520px] mx-auto bg-white rounded-3xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 overflow-hidden flex flex-col min-h-[92vh]">
+    <!-- Outermost Window Container -->
+    <div class="w-full max-w-[1520px] mx-auto bg-white rounded-none sm:rounded-3xl border-0 sm:border border-zinc-200/80 shadow-none sm:shadow-xl sm:shadow-zinc-200/40 overflow-hidden flex flex-col min-h-screen sm:min-h-[92vh]">
         <div class="flex-1 flex overflow-hidden">
 
-            <!-- SIDEBAR -->
-            <aside id="sidebar" class="w-64 bg-white border-r border-zinc-200/80 flex flex-col justify-between flex-shrink-0 transition-transform duration-200 lg:translate-x-0 -translate-x-full fixed lg:static z-30 h-full">
+            <!-- SIDEBAR (Drawer on sm/md, static on lg) -->
+            <aside id="sidebar" class="w-64 sm:w-72 lg:w-64 bg-white border-r border-zinc-200/80 flex flex-col justify-between shrink-0 transition-transform duration-200 lg:translate-x-0 -translate-x-full fixed lg:static z-50 h-full shadow-2xl lg:shadow-none">
                 <div class="overflow-y-auto">
                     <!-- Brand -->
                     <div class="p-4 flex items-center justify-between border-b border-zinc-100">
@@ -224,16 +224,16 @@
             <!-- MAIN VIEW CONTAINER -->
             <div class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-white">
                 <!-- Top Header Navbar -->
-                <header class="h-16 px-6 sm:px-8 border-b border-zinc-100 flex items-center justify-between flex-shrink-0 relative">
-                    <div class="flex items-center space-x-3">
-                        <button type="button" onclick="toggleSidebar()" class="lg:hidden p-1.5 text-zinc-500 hover:bg-zinc-100 rounded-lg">
+                <header class="h-14 sm:h-16 px-3.5 sm:px-6 lg:px-8 border-b border-zinc-100 flex items-center justify-between shrink-0 relative">
+                    <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                        <button type="button" onclick="toggleSidebar()" class="lg:hidden p-1.5 text-zinc-600 hover:bg-zinc-100 rounded-lg shrink-0 cursor-pointer" title="Buka Menu">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
-                        <h1 class="text-xl font-bold text-zinc-950 tracking-tight">{{ $pageTitle ?? 'Katalog Buku' }}</h1>
+                        <h1 class="text-base sm:text-lg lg:text-xl font-bold text-zinc-950 tracking-tight truncate">{{ $pageTitle ?? 'Katalog Buku' }}</h1>
                     </div>
 
                     <!-- Top Right Utilities -->
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
                         @php
                             $unreadNotifications = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->latest()->take(6)->get() : collect();
                             $unreadCount = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count() : 0;
@@ -354,7 +354,7 @@
                 @endif
 
                 <!-- Page Content Slot -->
-                <main class="flex-1 p-6 sm:p-8 space-y-6">
+                <main class="flex-1 p-3.5 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-hidden">
                     {{ $slot }}
                 </main>
             </div>
@@ -362,7 +362,7 @@
     </div>
 
     <!-- Mobile Drawer Backdrop -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 z-20 bg-zinc-900/40 backdrop-blur-xs hidden lg:hidden"></div>
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-zinc-950/50 backdrop-blur-xs hidden lg:hidden"></div>
 
     <script>
         // Universal image error fallback to ensure no broken images appear anywhere in the app
