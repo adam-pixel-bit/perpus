@@ -58,10 +58,13 @@ class BookController extends Controller
             $query->latest();
         }
 
-        $books = $query->paginate(10)->withQueryString();
+        $perPage = (int) $request->query('per_page', 10);
+        $perPage = in_array($perPage, [10, 25, 50], true) ? $perPage : 10;
+
+        $books = $query->paginate($perPage)->withQueryString();
         $categories = Category::orderBy('name')->get();
 
-        return view('admin.books.index', compact('books', 'categories', 'search', 'categoryId', 'status', 'sort'));
+        return view('admin.books.index', compact('books', 'categories', 'search', 'categoryId', 'status', 'sort', 'perPage'));
     }
 
     /**

@@ -6,8 +6,7 @@
         <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-600 font-medium">
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span class="font-semibold text-zinc-800">Mode Ringkasan</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
+                <span class="font-semibold text-zinc-800">Ringkasan Sistem</span>
             </div>
             
             <a href="{{ route('admin.borrowings.index', ['status' => 'pending']) }}" class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs hover:bg-zinc-50 transition-colors">
@@ -22,18 +21,25 @@
                 </a>
             @endif
 
-            <div class="flex items-center space-x-2 pl-2">
-                <span class="text-xs text-zinc-500 font-medium">Tampilkan Statistik</span>
-                <button type="button" class="w-8 h-4.5 bg-brand-orange rounded-full relative cursor-pointer focus:outline-none transition-colors" id="stats-toggle">
-                    <span class="w-3.5 h-3.5 bg-white rounded-full absolute right-0.5 top-0.5 shadow-xs transition-transform"></span>
-                </button>
-            </div>
+            <label class="inline-flex items-center space-x-2 pl-2 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
+                <span>Tampilkan Statistik</span>
+                <div class="relative inline-block w-8 h-4 transition duration-200 ease-in-out align-middle select-none">
+                    <input
+                        type="checkbox"
+                        id="toggle-dash-stats"
+                        checked
+                        onchange="toggleStatistics(this)"
+                        class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 border-zinc-300 appearance-none cursor-pointer transition-all duration-200 checked:right-0 checked:bg-orange-600 checked:border-orange-600"
+                    />
+                    <label for="toggle-dash-stats" class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-200 cursor-pointer"></label>
+                </div>
+            </label>
         </div>
 
         <div class="flex items-center space-x-2">
-            <a href="{{ route('admin.reports.index') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
+            <a href="{{ route('admin.reports.export') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Ekspor Laporan</span>
+                <span>Ekspor CSV</span>
             </a>
             <a href="{{ route('admin.books.create') }}" class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-sm transition-all">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
@@ -202,7 +208,7 @@
                                 {{ $index + 1 }}
                             </span>
                             <div class="w-9 h-12 rounded-md bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                                <img src="{{ $pb->cover_url }}" alt="{{ $pb->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $pb->cover_url }}" alt="{{ $pb->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-xs font-semibold text-zinc-900 truncate">{{ $pb->title }}</p>

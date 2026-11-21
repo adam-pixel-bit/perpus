@@ -5,13 +5,10 @@
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <!-- Left Controls -->
         <div class="flex flex-wrap items-center gap-2.5">
-            <!-- View Selector Dropdown -->
-            <div class="relative">
-                <button type="button" class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs">
-                    <i data-lucide="table" class="w-3.5 h-3.5 text-zinc-500"></i>
-                    <span>Tampilan Tabel</span>
-                    <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400 ml-1"></i>
-                </button>
+            <!-- Table Status Indicator -->
+            <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-800 shadow-2xs">
+                <i data-lucide="table" class="w-3.5 h-3.5 text-zinc-500"></i>
+                <span>Koleksi Buku ({{ $books->total() }})</span>
             </div>
 
             <!-- Filter Trigger -->
@@ -21,17 +18,7 @@
                 class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs cursor-pointer"
             >
                 <i data-lucide="filter" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Filter</span>
-            </button>
-
-            <!-- Sort Trigger -->
-            <button
-                type="button"
-                onclick="toggleFilterBox()"
-                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-800 transition-colors shadow-2xs cursor-pointer"
-            >
-                <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Urutkan</span>
+                <span>Filter & Urutkan</span>
             </button>
 
             <!-- Show Statistics Toggle Switch -->
@@ -52,22 +39,16 @@
 
         <!-- Right Controls -->
         <div class="flex items-center space-x-2.5">
-            <!-- Customize -->
-            <button class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-700 transition-colors shadow-2xs cursor-pointer">
-                <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Kustomisasi</span>
-            </button>
-
-            <!-- Export -->
+            <!-- Export CSV -->
             <a
                 href="{{ route('admin.reports.export') }}"
                 class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white hover:bg-zinc-50 text-xs font-semibold text-zinc-700 transition-colors shadow-2xs"
             >
                 <i data-lucide="upload" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Ekspor</span>
+                <span>Ekspor CSV</span>
             </a>
 
-            <!-- Add New Product (High-Contrast Black Button) -->
+            <!-- Add New Book -->
             <a
                 href="{{ route('admin.books.create') }}"
                 class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/20 active:scale-[0.98]"
@@ -79,15 +60,15 @@
     </div>
 
     <!-- Collapsible Filter Drawer -->
-    <div id="filter-box" class="hidden p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 animate-in fade-in duration-150">
-        <form method="GET" action="{{ route('admin.books.index') }}" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+    <div id="filter-box" class="{{ request()->anyFilled(['search', 'category_id', 'status', 'sort']) ? '' : 'hidden' }} p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 animate-in fade-in duration-150">
+        <form method="GET" action="{{ route('admin.books.index') }}" class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-end">
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Kata Kunci Pencarian</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Pencarian</label>
                 <input
                     type="text"
                     name="search"
                     value="{{ $search }}"
-                    placeholder="Judul, ISBN, atau penulis..."
+                    placeholder="Judul, ISBN, penulis..."
                     class="w-full px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800"
                 >
             </div>
@@ -104,22 +85,31 @@
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Status Ketersediaan</label>
                 <select name="status" class="w-full px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800">
                     <option value="all">Semua Ketersediaan</option>
-                    <option value="available" {{ $status === 'available' ? 'selected' : '' }}>Tersedia (In Stock)</option>
+                    <option value="available" {{ $status === 'available' ? 'selected' : '' }}>Tersedia</option>
                     <option value="unavailable" {{ $status === 'unavailable' ? 'selected' : '' }}>Stok Habis / Perlu Restok</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Urutkan</label>
+                <select name="sort" class="w-full px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800">
+                    <option value="latest" {{ $sort === 'latest' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="oldest" {{ $sort === 'oldest' ? 'selected' : '' }}>Terlama</option>
+                    <option value="title_asc" {{ $sort === 'title_asc' ? 'selected' : '' }}>Judul (A - Z)</option>
+                    <option value="stock_desc" {{ $sort === 'stock_desc' ? 'selected' : '' }}>Stok Terbanyak</option>
                 </select>
             </div>
             <div class="flex items-center space-x-2">
                 <button type="submit" class="flex-1 py-1.5 bg-zinc-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-colors cursor-pointer">
-                    Terapkan Filter
+                    Terapkan
                 </button>
-                <a href="{{ route('admin.books.index') }}" class="p-1.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-700 rounded-xl" title="Reset">
+                <a href="{{ route('admin.books.index') }}" class="p-1.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-700 rounded-xl" title="Reset Filter">
                     <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
                 </a>
             </div>
         </form>
     </div>
 
-    <!-- 4 Horizontal KPI Statistics Strip (Exact as screenshot) -->
+    <!-- 4 Horizontal KPI Statistics Strip -->
     <div id="statistics-container" class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
         <div class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200/80">
             <!-- Metric 1: Total Judul Buku -->
@@ -132,14 +122,14 @@
                     {{ \App\Models\Book::count() }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs bulan lalu</span>
+                    <span>koleksi perpustakaan</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
-                        + 3 judul buku
+                        Aktif
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 2: Pemasukan Kas Denda -->
+            <!-- Metric 2: Kas Denda -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
                     <span>Kas Denda Terkumpul</span>
@@ -151,32 +141,32 @@
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
                     <span>tertib administrasi</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
-                        + 9%
+                        Kas Masuk
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 3: Sirkulasi Dipinjam -->
+            <!-- Metric 3: Total Sirkulasi -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Total Sirkulasi Dipinjam</span>
+                    <span>Total Sirkulasi Pinjam</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
                     {{ number_format(\App\Models\Borrowing::count()) }}
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
-                    <span>vs bulan lalu</span>
+                    <span>sepanjang waktu</span>
                     <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
-                        + 7%
+                        Tercatat
                     </span>
                 </div>
             </div>
 
-            <!-- Metric 4: Peminjaman Bulanan -->
+            <!-- Metric 4: Peminjaman Berjalan -->
             <div class="p-5 space-y-2">
                 <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
-                    <span>Peminjaman Aktif</span>
+                    <span>Buku Sedang Dipinjam</span>
                     <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-zinc-950 tracking-tight">
@@ -184,7 +174,7 @@
                 </div>
                 <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
                     <span>buku sedang beredar</span>
-                    <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
+                    <span class="inline-flex items-center text-orange-600 font-bold bg-orange-50 px-1.5 py-0.2 rounded-md">
                         Aktif
                     </span>
                 </div>
@@ -212,12 +202,11 @@
                         <th class="py-3 px-4 font-semibold text-zinc-700">Lokasi Rak</th>
                         <th class="py-3 px-4 font-semibold text-zinc-700">Stok</th>
                         <th class="py-3 px-4 font-semibold text-zinc-700">Status</th>
-                        <th class="py-3 px-4 font-semibold text-zinc-700">Rating</th>
-                        <th class="py-3 px-4 text-center w-8 text-zinc-400 font-bold">+</th>
+                        <th class="py-3 px-4 text-center font-semibold text-zinc-700 w-24">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-100 text-zinc-700">
-                    @forelse($books as $index => $book)
+                    @forelse($books as $book)
                         @php
                             if ($book->available_stock > 3) {
                                 $badgeClass = 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]';
@@ -229,7 +218,6 @@
                                 $badgeClass = 'bg-[#FDF2F2] text-[#D84545] border-[#FCDADA]';
                                 $badgeText = 'Stok Habis';
                             }
-                            $rating = number_format(4.7 + (($index % 4) * 0.1), 1);
                         @endphp
                         <tr id="row-{{ $book->id }}" class="hover:bg-zinc-50/70 transition-colors group">
                             <!-- Checkbox -->
@@ -245,7 +233,7 @@
                             <td class="py-3 px-4">
                                 <div class="flex items-center space-x-2.5">
                                     <div class="w-8 h-10 rounded bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                                        <img src="{{ $book->cover_url }}" alt="" class="w-full h-full object-cover">
+                                        <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                                     </div>
                                     <div class="truncate max-w-xs">
                                         <a href="{{ route('admin.books.edit', $book->id) }}" class="font-medium text-zinc-900 hover:text-orange-600 transition-colors truncate block">
@@ -283,24 +271,25 @@
                                 </span>
                             </td>
 
-                            <!-- Rating -->
-                            <td class="py-3 px-4">
-                                <div class="flex items-center space-x-1 font-semibold text-zinc-700">
-                                    <span class="text-amber-400 text-xs">★</span>
-                                    <span>{{ $rating }}</span>
-                                </div>
-                            </td>
-
-                            <!-- Action Column '+' -->
+                            <!-- Aksi -->
                             <td class="py-3 px-4 text-center">
-                                <a href="{{ route('admin.books.edit', $book->id) }}" class="text-zinc-300 group-hover:text-zinc-600 transition-colors p-1" title="Edit Buku">
-                                    <i data-lucide="more-horizontal" class="w-3.5 h-3.5"></i>
-                                </a>
+                                <div class="flex items-center justify-center space-x-2">
+                                    <a href="{{ route('admin.books.edit', $book->id) }}" class="p-1 text-zinc-400 hover:text-zinc-800 transition-colors" title="Edit Buku">
+                                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.books.destroy', $book->id) }}" onsubmit="return confirm('Hapus buku {{ addslashes($book->title) }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-1 text-zinc-400 hover:text-rose-600 transition-colors cursor-pointer" title="Hapus Buku">
+                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="py-12 text-center text-zinc-400">
+                            <td colspan="8" class="py-12 text-center text-zinc-400">
                                 Tidak ada koleksi buku yang ditemukan.
                             </td>
                         </tr>
@@ -309,76 +298,84 @@
             </table>
         </div>
 
-        <!-- Add Column Bar at Bottom of Table -->
-        <div class="px-4 py-2.5 border-t border-zinc-100 bg-white flex items-center">
-            <a href="{{ route('admin.books.create') }}" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>Tambah Buku Baru</span>
-            </a>
-        </div>
-
-        <!-- Floating Multi-Select Action Bar (Exact match to screenshot bottom bar) -->
+        <!-- Floating Multi-Select Action Bar -->
         <div id="floating-action-bar" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-white border border-zinc-200/90 shadow-2xl rounded-2xl px-4 py-2 items-center space-x-3 text-xs animate-in slide-in-from-bottom-3 duration-200">
             <span class="font-bold text-zinc-900 text-[11px] pr-2 border-r border-zinc-200">
                 <span id="selected-count">0</span> Dipilih
             </span>
-            <button type="button" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors cursor-pointer">
-                <i data-lucide="tag" class="w-3.5 h-3.5 text-zinc-400"></i>
-                <span>Terapkan Kode</span>
-            </button>
             <button type="button" onclick="editFirstSelected()" class="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-zinc-950 font-semibold transition-colors cursor-pointer">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5 text-zinc-400"></i>
-                <span>Edit Info</span>
+                <span>Edit Buku</span>
             </button>
             <button type="button" onclick="deleteSelected()" class="inline-flex items-center space-x-1.5 text-rose-600 hover:text-rose-700 font-semibold transition-colors cursor-pointer">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-500"></i>
-                <span>Hapus</span>
+                <span>Hapus Terpilih</span>
             </button>
             <span class="text-zinc-300">—</span>
-            <button type="button" onclick="clearSelection()" class="text-zinc-400 hover:text-zinc-700 p-1 cursor-pointer" title="Batal Pilih Semua">
+            <button type="button" onclick="clearSelection()" class="text-zinc-400 hover:text-zinc-700 p-1 cursor-pointer" title="Batal Pilih">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
         </div>
     </div>
 
-    <!-- Bottom Pagination (Exact match to screenshot layout) -->
+    <!-- Bottom Dynamic Pagination -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 text-xs text-zinc-500">
-        <!-- Showing Per Page -->
+        <!-- Showing Per Page Functional Select -->
         <div class="flex items-center space-x-2">
-            <span>Menampilkan per halaman</span>
-            <select class="px-2.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-800 focus:outline-none">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <span>Menampilkan</span>
+            <select onchange="changePerPage(this.value)" class="px-2.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-800 focus:outline-none cursor-pointer">
+                <option value="10" {{ $books->perPage() == 10 ? 'selected' : '' }}>10 / hal</option>
+                <option value="25" {{ $books->perPage() == 25 ? 'selected' : '' }}>25 / hal</option>
+                <option value="50" {{ $books->perPage() == 50 ? 'selected' : '' }}>50 / hal</option>
             </select>
+            <span>dari {{ $books->total() }} buku</span>
         </div>
 
-        <!-- Center Numeric Pagination with Orange Active Pill -->
-        <div class="flex items-center space-x-1 font-semibold">
-            <a href="#" class="px-2 py-1 text-zinc-400 hover:text-zinc-700">«</a>
-            <a href="#" class="px-2 py-1 text-zinc-400 hover:text-zinc-700"><</a>
-            
-            <!-- Active 1 with Orange Color from Screenshot -->
-            <span class="w-6 h-6 rounded-md bg-orange-600 text-white font-bold flex items-center justify-center text-xs shadow-xs">
-                1
-            </span>
-            <a href="#" class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs">2</a>
-            <a href="#" class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs">3</a>
-            <span class="px-1 text-zinc-400">...</span>
-            <a href="#" class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs">25</a>
-            
-            <a href="#" class="px-2 py-1 text-zinc-400 hover:text-zinc-700">></a>
-            <a href="#" class="px-2 py-1 text-zinc-400 hover:text-zinc-700">»</a>
-        </div>
+        <!-- Center Numeric Pagination -->
+        @if($books->hasPages())
+            <div class="flex items-center space-x-1 font-semibold">
+                {{-- Previous Page Link --}}
+                @if ($books->onFirstPage())
+                    <span class="px-2 py-1 text-zinc-300 cursor-not-allowed">«</span>
+                @else
+                    <a href="{{ $books->previousPageUrl() }}" class="px-2 py-1 text-zinc-600 hover:text-zinc-950 transition-colors">«</a>
+                @endif
 
-        <!-- Go to Page Input -->
-        <div class="flex items-center space-x-2">
+                {{-- Pagination Elements --}}
+                @foreach ($books->getUrlRange(max(1, $books->currentPage() - 2), min($books->lastPage(), $books->currentPage() + 2)) as $page => $url)
+                    @if ($page == $books->currentPage())
+                        <span class="w-6 h-6 rounded-md bg-orange-600 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                            {{ $page }}
+                        </span>
+                    @else
+                        <a href="{{ $url }}" class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs transition-colors">
+                            {{ $page }}
+                        </a>
+                    @endif
+                @endforeach
+
+                {{-- Next Page Link --}}
+                @if ($books->hasMorePages())
+                    <a href="{{ $books->nextPageUrl() }}" class="px-2 py-1 text-zinc-600 hover:text-zinc-950 transition-colors">»</a>
+                @else
+                    <span class="px-2 py-1 text-zinc-300 cursor-not-allowed">»</span>
+                @endif
+            </div>
+        @endif
+
+        <!-- Quick Jump Form -->
+        <form method="GET" action="{{ route('admin.books.index') }}" class="flex items-center space-x-2">
+            @if($search)<input type="hidden" name="search" value="{{ $search }}">@endif
+            @if($categoryId)<input type="hidden" name="category_id" value="{{ $categoryId }}">@endif
+            @if($status)<input type="hidden" name="status" value="{{ $status }}">@endif
+            @if($sort)<input type="hidden" name="sort" value="{{ $sort }}">@endif
+            <input type="hidden" name="per_page" value="{{ $books->perPage() }}">
             <span>Ke halaman</span>
-            <input type="text" class="w-9 px-1.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs text-center font-bold text-zinc-800 focus:outline-none">
-            <button type="button" class="font-bold text-zinc-800 hover:text-orange-600 transition-colors cursor-pointer">
+            <input type="number" name="page" min="1" max="{{ $books->lastPage() }}" placeholder="{{ $books->currentPage() }}" class="w-12 px-1.5 py-1 bg-white border border-zinc-200 rounded-lg text-xs text-center font-bold text-zinc-800 focus:outline-none focus:ring-1 focus:ring-orange-500">
+            <button type="submit" class="font-bold text-zinc-800 hover:text-orange-600 transition-colors cursor-pointer">
                 Buka >
             </button>
-        </div>
+        </form>
     </div>
 
     <!-- Selection & Floating Bar JavaScript -->
@@ -410,7 +407,10 @@
             });
 
             if (masterCheckbox.checked) {
-                selectedIds = Array.from(checkboxes).map(cb => cb.getAttribute('onchange').match(/'([^']+)'\)$/)[1]);
+                selectedIds = Array.from(checkboxes).map(cb => {
+                    const match = cb.getAttribute('onchange').match(/'([^']+)'\)$/);
+                    return match ? match[1] : null;
+                }).filter(Boolean);
             } else {
                 selectedIds = [];
             }
@@ -461,6 +461,13 @@
                 document.body.appendChild(form);
                 form.submit();
             }
+        }
+
+        function changePerPage(perPage) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('per_page', perPage);
+            url.searchParams.set('page', 1);
+            window.location.href = url.toString();
         }
     </script>
 </x-layouts.app>

@@ -66,7 +66,7 @@
                             <td class="py-3.5 px-4">
                                 <div class="flex items-center space-x-2.5">
                                     <div class="w-9 h-12 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                                        <img src="{{ $b->book->cover_url }}" alt="" class="w-full h-full object-cover">
+                                        <img src="{{ $b->book->cover_url }}" alt="{{ $b->book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                                     </div>
                                     <div class="min-w-0 max-w-xs">
                                         <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="font-semibold text-zinc-900 hover:text-brand-orange transition-colors block truncate">

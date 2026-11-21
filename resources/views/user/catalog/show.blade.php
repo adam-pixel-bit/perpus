@@ -16,7 +16,7 @@
                 <!-- Cover Image (4 cols) -->
                 <div class="md:col-span-4 lg:col-span-3">
                     <div class="rounded-xl overflow-hidden border border-zinc-200/80 shadow-xs aspect-[3/4] bg-zinc-100">
-                        <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
+                        <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@
                     @foreach($relatedBooks as $rb)
                         <a href="{{ route('user.catalog.show', $rb->slug) }}" class="group block rounded-xl border border-zinc-200/80 p-2.5 hover:border-zinc-300 transition-all">
                             <div class="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-100 mb-2 border border-zinc-200/60">
-                                <img src="{{ $rb->cover_url }}" alt="{{ $rb->title }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-200">
+                                <img src="{{ $rb->cover_url }}" alt="{{ $rb->title }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-200" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                             </div>
                             <h4 class="font-semibold text-xs text-zinc-900 line-clamp-1 group-hover:text-brand-orange transition-colors">{{ $rb->title }}</h4>
                             <p class="text-[10px] text-zinc-400 line-clamp-1 mt-0.5">{{ $rb->author }}</p>

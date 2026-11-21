@@ -12,46 +12,50 @@
 </head>
 <body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-2 sm:p-4 lg:p-6 flex flex-col justify-center">
 
-    <!-- Outermost Rounded Window Container (Exact Reference UI) -->
+    <!-- Outermost Rounded Window Container -->
     <div class="w-full max-w-[1520px] mx-auto bg-white rounded-3xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 overflow-hidden flex flex-col min-h-[92vh]">
         <div class="flex-1 flex overflow-hidden">
 
-            <!-- SIDEBAR (Matches Reference Image) -->
+            <!-- SIDEBAR -->
             <aside id="sidebar" class="w-64 bg-white border-r border-zinc-200/80 flex flex-col justify-between flex-shrink-0 transition-transform duration-200 lg:translate-x-0 -translate-x-full fixed lg:static z-30 h-full">
                 <div class="overflow-y-auto">
-                    <!-- Brand / Workspace Switcher -->
+                    <!-- Brand -->
                     <div class="p-4 flex items-center justify-between border-b border-zinc-100">
                         <div class="flex items-center space-x-2.5">
                             <div class="w-9 h-9 rounded-xl bg-zinc-950 text-white font-black text-lg flex items-center justify-center tracking-tighter shadow-xs">
-                                w.
+                                P
                             </div>
                             <div class="leading-tight">
                                 <h2 class="text-xs font-bold text-zinc-900 tracking-tight flex items-center space-x-1">
                                     <span>SIPUS Digital</span>
                                 </h2>
-                                <span class="text-[10px] text-zinc-400 font-medium">Uxerflow Cloud</span>
+                                <span class="text-[10px] text-zinc-400 font-medium">Sistem Perpustakaan</span>
                             </div>
                         </div>
-                        <button type="button" class="text-zinc-400 hover:text-zinc-600 p-1" title="Tutup Menu">
+                        <button type="button" onclick="toggleSidebar()" class="lg:hidden text-zinc-400 hover:text-zinc-600 p-1" title="Tutup Menu">
                             <i data-lucide="chevrons-left" class="w-4 h-4"></i>
                         </button>
                     </div>
 
-                    <!-- Search Input (⌘ K) -->
+                    <!-- Functional Search Bar -->
                     <div class="p-3">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-zinc-400">
-                                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                        <form method="GET" action="{{ auth()->user()?->isAdmin() ? route('admin.books.index') : route('user.catalog.index') }}">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-zinc-400">
+                                    <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}"
+                                    placeholder="Cari judul, ISBN..."
+                                    class="w-full pl-8 pr-12 py-1.5 text-xs bg-zinc-50 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 focus:bg-white text-zinc-800 placeholder-zinc-400"
+                                >
+                                <button type="submit" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-[10px] text-zinc-400 hover:text-orange-600 font-semibold cursor-pointer">
+                                    Cari
+                                </button>
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Cari menu, buku..."
-                                class="w-full pl-8 pr-12 py-1.5 text-xs bg-zinc-50 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-800 placeholder-zinc-400"
-                            >
-                            <span class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-[10px] text-zinc-400 font-medium pointer-events-none">
-                                ⌘ K
-                            </span>
-                        </div>
+                        </form>
                     </div>
 
                     <!-- Navigation Sections -->
@@ -61,7 +65,7 @@
                             <span class="px-3 text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">MENU UTAMA</span>
                             
                             @if(auth()->user()?->isAdmin())
-                                <!-- Dashboard -->
+                                <!-- Dashboard Admin -->
                                 <a href="{{ route('admin.dashboard') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
                                     @if(request()->routeIs('admin.dashboard'))
                                         <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
@@ -72,7 +76,7 @@
                                     </div>
                                 </a>
 
-                                <!-- Product / Buku (Active Style as Screenshot) -->
+                                <!-- Katalog Buku -->
                                 <a href="{{ route('admin.books.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.books.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
                                     @if(request()->routeIs('admin.books.*'))
                                         <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
@@ -81,6 +85,9 @@
                                         <i data-lucide="box" class="w-4 h-4 {{ request()->routeIs('admin.books.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
                                         <span>Katalog Buku</span>
                                     </div>
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-100 text-zinc-600">
+                                        {{ \App\Models\Book::count() }}
+                                    </span>
                                 </a>
 
                                 <!-- Sirkulasi Peminjaman -->
@@ -96,7 +103,7 @@
                                         $pendingCountBadge = \App\Models\Borrowing::where('status', 'pending')->count();
                                     @endphp
                                     @if($pendingCountBadge > 0)
-                                        <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700">
+                                        <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700 animate-pulse">
                                             {{ $pendingCountBadge }}
                                         </span>
                                     @endif
@@ -111,6 +118,9 @@
                                         <i data-lucide="users-round" class="w-4 h-4 {{ request()->routeIs('admin.users.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
                                         <span>Data Anggota</span>
                                     </div>
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-100 text-zinc-600">
+                                        {{ \App\Models\User::where('role', 'user')->count() }}
+                                    </span>
                                 </a>
 
                                 <!-- Kategori Buku -->
@@ -119,7 +129,7 @@
                                         <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
                                     @endif
                                     <div class="flex items-center space-x-2.5">
-                                        <i data-lucide="message-square" class="w-4 h-4 {{ request()->routeIs('admin.categories.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
+                                        <i data-lucide="tags" class="w-4 h-4 {{ request()->routeIs('admin.categories.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
                                         <span>Kategori Buku</span>
                                     </div>
                                     <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-100 text-zinc-600">
@@ -146,6 +156,9 @@
                                         <i data-lucide="book-open" class="w-4 h-4 {{ request()->routeIs('user.catalog.*') ? 'text-zinc-950' : 'text-zinc-400' }}"></i>
                                         <span>Katalog Koleksi</span>
                                     </div>
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-100 text-zinc-600">
+                                        {{ \App\Models\Book::where('is_available', true)->count() }}
+                                    </span>
                                 </a>
 
                                 <a href="{{ route('user.borrowings.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('user.borrowings.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
@@ -160,100 +173,48 @@
                             @endif
                         </div>
 
-                        <!-- ALAT & KONTROL -->
-                        <div class="space-y-0.5">
-                            <span class="px-3 text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">ALAT & KONTROL</span>
-                            
-                            @if(auth()->user()?->isAdmin())
-                                <a href="{{ route('admin.reports.index') }}" class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-zinc-50 hover:text-zinc-900 transition-colors {{ request()->routeIs('admin.reports.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : '' }}">
-                                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-zinc-400 group-hover:text-zinc-600"></i>
-                                    <span>Laporan & Statistik</span>
+                        <!-- LAPORAN & KONTROL (HANYA UNTUK ADMIN) -->
+                        @if(auth()->user()?->isAdmin())
+                            <div class="space-y-0.5">
+                                <span class="px-3 text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">LAPORAN & ANALITIK</span>
+                                
+                                <a href="{{ route('admin.reports.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.reports.index') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('admin.reports.index'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="bar-chart-2" class="w-4 h-4 {{ request()->routeIs('admin.reports.index') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
+                                        <span>Laporan & Statistik</span>
+                                    </div>
                                 </a>
-                            @endif
 
-                            <div class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer">
-                                <i data-lucide="mail" class="w-4 h-4"></i>
-                                <span>Notifikasi Email</span>
+                                <a href="{{ route('admin.reports.export') }}" class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">
+                                    <i data-lucide="download" class="w-4 h-4 text-zinc-400 group-hover:text-zinc-600"></i>
+                                    <span>Unduh Laporan CSV</span>
+                                </a>
                             </div>
-                            <div class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer">
-                                <i data-lucide="workflow" class="w-4 h-4"></i>
-                                <span>Otomasi Sistem</span>
-                            </div>
-                            <div class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer">
-                                <i data-lucide="cable" class="w-4 h-4"></i>
-                                <span>Integrasi Supabase</span>
-                            </div>
-                        </div>
-
-                        <!-- AREA KERJA -->
-                        <div class="space-y-0.5">
-                            <div class="px-3 flex items-center justify-between text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1.5">
-                                <span>AREA KERJA</span>
-                                <i data-lucide="chevron-up" class="w-3 h-3 text-zinc-400"></i>
-                            </div>
-                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl text-zinc-600 hover:bg-zinc-50 cursor-pointer">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2.5 h-2.5 rounded-xs bg-indigo-600"></span>
-                                    <span class="text-xs">Program Literasi</span>
-                                </div>
-                                <span class="text-[10px] font-bold text-zinc-400 px-1.5 py-0.2 rounded-full bg-zinc-100">5</span>
-                            </div>
-                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl text-zinc-600 hover:bg-zinc-50 cursor-pointer">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2.5 h-2.5 rounded-xs bg-pink-500"></span>
-                                    <span class="text-xs">Pengadaan Buku</span>
-                                </div>
-                                <span class="text-[10px] font-bold text-zinc-400 px-1.5 py-0.2 rounded-full bg-zinc-100">4</span>
-                            </div>
-                        </div>
+                        @endif
                     </nav>
                 </div>
 
-                <!-- Sidebar Bottom Items -->
-                <div class="p-4 border-t border-zinc-100 space-y-3">
-                    <div class="space-y-1 text-xs text-zinc-600 font-medium">
-                        <div class="flex items-center space-x-2.5 px-3 py-1.5 hover:text-zinc-950 cursor-pointer">
-                            <i data-lucide="help-circle" class="w-3.5 h-3.5 text-zinc-400"></i>
-                            <span>Pusat Bantuan</span>
-                        </div>
-                        <div class="flex items-center space-x-2.5 px-3 py-1.5 hover:text-zinc-950 cursor-pointer">
-                            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-zinc-400"></i>
-                            <span>Kritik & Masukan</span>
-                        </div>
-                        <div class="flex items-center space-x-2.5 px-3 py-1.5 hover:text-zinc-950 cursor-pointer">
-                            <i data-lucide="settings" class="w-3.5 h-3.5 text-zinc-400"></i>
-                            <span>Pengaturan</span>
-                        </div>
-                    </div>
-
-                    <!-- Upgrade & Unlock Card (Bottom Sidebar) -->
-                    <div class="p-3 rounded-2xl bg-zinc-50 border border-zinc-200/80 flex items-center justify-between group hover:border-orange-300 transition-colors cursor-pointer">
-                        <div class="flex items-center space-x-2.5">
-                            <div class="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center shadow-xs">
-                                <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-[11px] font-bold text-zinc-900 leading-tight">Tingkatkan Akses</p>
-                                <p class="text-[10px] text-zinc-400 truncate">semua fitur</p>
-                            </div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-zinc-400 group-hover:text-orange-600 transition-colors"></i>
-                    </div>
-
-                    <!-- User Account / Logout -->
-                    <div class="pt-2 border-t border-zinc-100 flex items-center justify-between">
-                        <div class="flex items-center space-x-2 min-w-0">
-                            <div class="w-7 h-7 rounded-full bg-zinc-900 text-white font-bold flex items-center justify-center text-[10px]">
+                <!-- Sidebar Bottom: Akun & Logout -->
+                <div class="p-4 border-t border-zinc-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-full bg-zinc-950 text-white font-bold flex items-center justify-center text-xs shadow-xs">
                                 {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-bold text-zinc-900 truncate max-w-[110px]">{{ auth()->user()?->name ?? 'Tamu' }}</p>
+                                <p class="text-xs font-bold text-zinc-900 truncate max-w-[120px]">{{ auth()->user()?->name ?? 'Tamu' }}</p>
+                                <p class="text-[10px] text-zinc-400 font-medium">
+                                    {{ auth()->user()?->isAdmin() ? 'Administrator' : 'Anggota Perpus' }}
+                                </p>
                             </div>
                         </div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" title="Keluar / Logout" class="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-zinc-100 rounded-lg transition-colors cursor-pointer">
-                                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                            <button type="submit" title="Keluar / Logout" class="p-2 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer">
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
                             </button>
                         </form>
                     </div>
@@ -263,7 +224,7 @@
             <!-- MAIN VIEW CONTAINER -->
             <div class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-white">
                 <!-- Top Header Navbar -->
-                <header class="h-16 px-6 sm:px-8 border-b border-zinc-100 flex items-center justify-between flex-shrink-0">
+                <header class="h-16 px-6 sm:px-8 border-b border-zinc-100 flex items-center justify-between flex-shrink-0 relative">
                     <div class="flex items-center space-x-3">
                         <button type="button" onclick="toggleSidebar()" class="lg:hidden p-1.5 text-zinc-500 hover:bg-zinc-100 rounded-lg">
                             <i data-lucide="menu" class="w-5 h-5"></i>
@@ -273,29 +234,97 @@
 
                     <!-- Top Right Utilities -->
                     <div class="flex items-center space-x-3">
-                        <button class="p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 rounded-xl border border-zinc-200/60 shadow-2xs transition-colors" title="Notifikasi">
-                            <i data-lucide="bell" class="w-4 h-4"></i>
-                        </button>
+                        @php
+                            $unreadNotifications = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->latest()->take(6)->get() : collect();
+                            $unreadCount = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count() : 0;
+                        @endphp
 
-                        <!-- Avatar Group (+3) -->
-                        <div class="flex items-center -space-x-1.5">
-                            <img class="w-7 h-7 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Avatar">
-                            <img class="w-7 h-7 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Avatar">
-                            <span class="w-7 h-7 rounded-full border-2 border-white bg-orange-100 text-orange-800 text-[10px] font-bold flex items-center justify-center">
-                                +3
-                            </span>
+                        <!-- Notification Bell Dropdown Button -->
+                        <div class="relative">
+                            <button
+                                type="button"
+                                onclick="toggleNotificationDropdown()"
+                                class="relative p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 rounded-xl border border-zinc-200/80 shadow-2xs transition-colors cursor-pointer"
+                                title="Notifikasi Sistem"
+                            >
+                                <i data-lucide="bell" class="w-4 h-4"></i>
+                                @if($unreadCount > 0)
+                                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                                        {{ $unreadCount }}
+                                    </span>
+                                @endif
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in duration-150">
+                                <div class="p-3.5 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/70">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs font-bold text-zinc-900">Notifikasi</span>
+                                        @if($unreadCount > 0)
+                                            <span class="px-1.5 py-0.2 bg-orange-100 text-orange-700 text-[10px] font-bold rounded-full">
+                                                {{ $unreadCount }} baru
+                                            </span>
+                                        @endif
+                                    </div>
+                                    @if($unreadCount > 0)
+                                        <form method="POST" action="{{ route('notifications.readAll') }}">
+                                            @csrf
+                                            <button type="submit" class="text-[11px] font-semibold text-orange-600 hover:text-orange-700 cursor-pointer">
+                                                Tandai semua dibaca
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+
+                                <div class="max-h-72 overflow-y-auto divide-y divide-zinc-100 text-xs">
+                                    @forelse($unreadNotifications as $notif)
+                                        <div class="p-3 hover:bg-zinc-50/80 transition-colors {{ !$notif->is_read ? 'bg-orange-50/30' : '' }}">
+                                            <div class="flex items-start justify-between gap-2">
+                                                <div class="flex-1">
+                                                    <p class="font-bold text-zinc-900 text-xs">{{ $notif->title }}</p>
+                                                    <p class="text-[11px] text-zinc-500 mt-0.5 leading-relaxed">{{ $notif->message }}</p>
+                                                    <span class="text-[10px] text-zinc-400 mt-1 block">{{ $notif->created_at->diffForHumans() }}</span>
+                                                </div>
+                                                @if(!$notif->is_read)
+                                                    <form method="POST" action="{{ route('notifications.read', $notif->id) }}">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" title="Tandai dibaca" class="text-zinc-400 hover:text-orange-600 p-1 cursor-pointer">
+                                                            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="py-8 text-center text-zinc-400 text-xs">
+                                            Tidak ada notifikasi saat ini.
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Invite User Icon -->
-                        <button class="p-2 text-zinc-600 hover:bg-zinc-100 rounded-xl border border-zinc-200/60 transition-colors" title="Undang Anggota">
-                            <i data-lucide="user-plus" class="w-4 h-4"></i>
-                        </button>
-
-                        <!-- Customize Widget Button -->
-                        <button class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/80 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 transition-colors">
-                            <i data-lucide="layout-template" class="w-3.5 h-3.5 text-zinc-500"></i>
-                            <span>Atur Widget</span>
-                        </button>
+                        <!-- Quick Context Action Button -->
+                        @if(auth()->user()?->isAdmin())
+                            <a
+                                href="{{ route('admin.books.create') }}"
+                                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/10 active:scale-[0.98]"
+                            >
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                <span class="hidden sm:inline">Tambah Buku Baru</span>
+                                <span class="sm:hidden">Tambah</span>
+                            </a>
+                        @else
+                            <a
+                                href="{{ route('user.catalog.index') }}"
+                                class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/10 active:scale-[0.98]"
+                            >
+                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                                <span class="hidden sm:inline">Katalog Buku</span>
+                                <span class="sm:hidden">Katalog</span>
+                            </a>
+                        @endif
                     </div>
                 </header>
 
@@ -336,6 +365,18 @@
     <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 z-20 bg-zinc-900/40 backdrop-blur-xs hidden lg:hidden"></div>
 
     <script>
+        // Universal image error fallback to ensure no broken images appear anywhere in the app
+        const FALLBACK_BOOK_COVER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160" fill="%23f3f4f6"><rect width="120" height="160" rx="6" fill="%23f4f5f7"/><path d="M38 55h44M38 72h32M38 89h40" stroke="%239ca3af" stroke-width="3" stroke-linecap="round"/><rect x="26" y="32" width="68" height="96" rx="6" fill="none" stroke="%23cbd5e1" stroke-width="2.5"/><text x="60" y="145" font-family="sans-serif" font-size="9" fill="%2394a3b8" text-anchor="middle" font-weight="bold">BUKU</text></svg>';
+
+        document.addEventListener('error', function (e) {
+            if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+                if (!e.target.dataset.triedFallback) {
+                    e.target.dataset.triedFallback = 'true';
+                    e.target.src = FALLBACK_BOOK_COVER;
+                }
+            }
+        }, true);
+
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const bd = document.getElementById('sidebar-backdrop');
@@ -345,7 +386,7 @@
 
         // Toggle KPI statistics container
         function toggleStatistics(checkbox) {
-            const container = document.getElementById('statistics-container');
+            const container = document.getElementById('statistics-container') || document.getElementById('stats-strip');
             if (container) {
                 if (checkbox.checked) {
                     container.classList.remove('hidden');
@@ -354,6 +395,23 @@
                 }
             }
         }
+
+        // Notification dropdown toggle
+        function toggleNotificationDropdown() {
+            const dd = document.getElementById('notification-dropdown');
+            if (dd) {
+                dd.classList.toggle('hidden');
+            }
+        }
+
+        // Close dropdown when clicked outside
+        document.addEventListener('click', function(event) {
+            const dd = document.getElementById('notification-dropdown');
+            const btn = event.target.closest('button[onclick="toggleNotificationDropdown()"]');
+            if (dd && !dd.contains(event.target) && !btn) {
+                dd.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

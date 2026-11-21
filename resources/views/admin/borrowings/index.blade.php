@@ -7,7 +7,6 @@
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="layers" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Tabel Sirkulasi</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
 
             <!-- Status Tabs -->
@@ -42,9 +41,9 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <a href="{{ route('admin.reports.index') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
+            <a href="{{ route('admin.reports.export') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Ekspor</span>
+                <span>Ekspor CSV</span>
             </a>
         </div>
     </div>

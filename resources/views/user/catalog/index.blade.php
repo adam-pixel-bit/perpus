@@ -87,6 +87,7 @@
                             src="{{ $book->cover_url }}"
                             alt="{{ $book->title }}"
                             class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-200"
+                            onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;"
                         >
                         <!-- Stock Status Floating Badge -->
                         @if($book->is_available && $book->available_stock > 0)

@@ -8,8 +8,8 @@ use App\Models\Borrowing;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {
@@ -69,7 +69,7 @@ class ReportController extends Controller
     /**
      * Export reports to CSV.
      */
-    public function export(Request $request): Response
+    public function export(Request $request): StreamedResponse
     {
         $startDate = $request->query('start_date', Carbon::now()->startOfMonth()->toDateString());
         $endDate = $request->query('end_date', Carbon::now()->toDateString());

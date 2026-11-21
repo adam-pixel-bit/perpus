@@ -179,7 +179,7 @@
 
                     <div class="flex items-center space-x-3.5 mb-2">
                         <div class="w-12 h-16 rounded-lg bg-zinc-100 overflow-hidden border border-zinc-200/80 flex-shrink-0">
-                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                         </div>
                         <div class="text-xs text-zinc-500">
                             <span class="font-semibold text-zinc-800 block">Sampul Saat Ini</span>

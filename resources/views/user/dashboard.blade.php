@@ -113,7 +113,7 @@
                     <div class="p-4 flex items-center justify-between space-x-3 hover:bg-zinc-50/60 transition-colors">
                         <div class="flex items-center space-x-3 min-w-0">
                             <div class="w-10 h-14 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                                <img src="{{ $b->book->cover_url }}" alt="{{ $b->book->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $b->book->cover_url }}" alt="{{ $b->book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                             </div>
                             <div class="min-w-0">
                                 <h4 class="font-semibold text-zinc-900 truncate">{{ $b->book->title ?? 'Buku' }}</h4>
@@ -171,7 +171,7 @@
                     <div class="rounded-xl border border-zinc-200/80 p-2.5 hover:border-zinc-300 transition-all flex flex-col justify-between bg-white group">
                         <div class="space-y-2">
                             <div class="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-100 relative border border-zinc-200/60">
-                                <img src="{{ $rb->cover_url }}" alt="{{ $rb->title }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-200">
+                                <img src="{{ $rb->cover_url }}" alt="{{ $rb->title }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-200" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                                 <span class="absolute top-1.5 right-1.5 px-1.5 py-0.2 rounded text-[9px] font-semibold bg-zinc-950/80 text-white backdrop-blur-xs">
                                     {{ $rb->available_stock }} eks
                                 </span>

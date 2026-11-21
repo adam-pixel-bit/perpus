@@ -7,7 +7,6 @@
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="folder-tree" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Tabel Kategori</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
             <span class="text-xs text-zinc-400">Total {{ $categories->total() }} klasifikasi bidang ilmu</span>
         </div>

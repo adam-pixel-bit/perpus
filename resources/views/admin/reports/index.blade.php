@@ -7,7 +7,6 @@
             <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span class="font-semibold text-zinc-800">Laporan Sirkulasi</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
             </div>
             <span class="text-xs text-zinc-400">Periode: {{ date('d M Y', strtotime($startDate)) }} — {{ date('d M Y', strtotime($endDate)) }}</span>
         </div>
@@ -225,7 +224,7 @@
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center space-x-2.5">
                                         <div class="w-8 h-10 rounded bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                                            <img src="{{ $book->cover_url }}" alt="" class="w-full h-full object-cover">
+                                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src=FALLBACK_BOOK_COVER;">
                                         </div>
                                         <div>
                                             <span class="font-semibold text-zinc-900 block">{{ $book->title }}</span>
