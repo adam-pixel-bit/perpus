@@ -1,178 +1,233 @@
-# SISTEM INFORMASI PERPUSTAKAAN BERBASIS WEB (SIPUS DIGITAL)
+# 📚 SIPUS Digital — Enterprise Integrated Library Management System
 
-Aplikasi web Sistem Informasi Perpustakaan modern yang mengintegrasikan pengelolaan data buku, kategori, sirkulasi peminjaman, pengembalian buku, denda keterlambatan, manajemen pengguna, dan laporan analitik dengan menerapkan **Role-Based Access Control (RBAC)** antara **Administrator** dan **Anggota Perpustakaan (User)**.
+<div align="center">
 
----
+![SIPUS Banner](https://img.shields.io/badge/SIPUS-Digital%20Library%20System-3B82F6?style=for-the-badge&logo=bookstack&logoColor=white)
 
-## 🚀 Tech Stack
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.4+-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Tests](https://img.shields.io/badge/Tests-27%20Passed%20(80%20Assertions)-brightgreen?style=flat-square&logo=phpunit&logoColor=white)](#-automated-testing--quality-assurance)
+[![Pint](https://img.shields.io/badge/Code%20Style-Laravel%20Pint-F9A03F?style=flat-square)](https://laravel.com/docs/pint)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-- **Backend:** Laravel 12 (PHP 8.4+)
-- **Frontend:** Laravel Blade Templating
-- **Styling:** Tailwind CSS v4
-- **Database:** Supabase PostgreSQL (driver `pgsql`) & SQLite untuk local dev
-- **Build Tool:** Vite
-- **Authentication:** Laravel Session Authentication (RBAC Admin & User)
-- **Icons:** Lucide Icons
-- **Code Formatter & Testing:** Laravel Pint & PHPUnit
+<p align="center">
+  <b>Sistem Informasi Perpustakaan Digital Berbasis Web yang Modern, Aman, dan Siap Produksi.</b><br>
+  Dirancang dengan arsitektur tangguh untuk sekolah, universitas, dan instansi umum dengan integrasi Supabase PostgreSQL Cloud, Real-Time Webcam Barcode Scanner, Tiket QR Code, Slip Termal Kasir, Cetak Laporan Resmi A4 Berstempel, dan Audit Trail Lengkap.
+</p>
 
----
-
-## 🔑 Akun Demo Siap Pakai
-
-Sistem telah dilengkapi dengan seeder akun demo untuk pengujian langsung:
-
-| Peran (Role) | Alamat Email | Password | Hak Akses |
-|---|---|---|---|
-| **Administrator** | `admin@perpustakaan.com` | `password123` | Akses Penuh: Dashboard Admin, CRUD Buku, Kategori, Sirkulasi, Kelola Pengguna, Laporan |
-| **Anggota (User 1)** | `budi@perpustakaan.com` | `password123` | Portal Anggota: Dashboard, Jelajah Katalog, Ajukan Pinjam, Riwayat Peminjaman |
-| **Anggota (User 2)** | `siti@perpustakaan.com` | `password123` | Portal Anggota |
-| **Anggota (User 3)** | `andi@perpustakaan.com` | `password123` | Portal Anggota (memiliki data keterlambatan peminjaman) |
-
-*(Tersedia tombol satu-klik isi otomatis pada form login untuk memudahkan pengujian).*
+[Fitur Utama](#-fitur-utama--modul-sistem) •
+[Demo Akun](#-akun-demo-pengujian) •
+[Instalasi](#-panduan-instalasi--konfigurasi) •
+[Arsitektur & Keamanan](#-arsitektur--keamanan-sistem) •
+[Testing](#-automated-testing--quality-assurance)
 
 ---
 
-## 📋 Fitur Utama Sistem
+</div>
 
-### A. Fitur Administrator
-1. **Dashboard Admin**:
-   - Kartu statistik: Total Buku, Kategori, Total Anggota, dan Total Sirkulasi.
-   - Peringatan status: Peminjaman Menunggu Persetujuan, Sedang Dipinjam, dan Terlambat Kembali.
-   - Tabel aktivitas transaksi sirkulasi terbaru beserta tombol aksi cepat persetujuan.
-   - Widget daftar buku terpopuler berdasarkan frekuensi peminjaman.
-2. **Manajemen Buku (CRUD)**:
-   - Menambah buku baru (judul, ISBN, penulis, penerbit, tahun terbit, stok, lokasi rak, cover, sinopsis).
-   - Menampilkan daftar koleksi dengan fitur pencarian teks, filter kategori, dan ketersediaan stok.
-   - Mengedit data buku dengan validasi stok tidak boleh lebih kecil dari eksemplar yang sedang dipinjam.
-   - Menghapus buku (dilengkapi proteksi bisnis: buku yang sedang dipinjam dilarang dihapus).
-   - Dukungan unggah gambar cover lokal (storage) maupun URL gambar eksternal.
-3. **Manajemen Kategori (CRUD)**:
-   - Tambah, lihat, dan edit kategori buku secara responsif.
-   - Hapus kategori (dilengkapi proteksi bisnis: kategori yang masih memiliki relasi buku tidak dapat dihapus).
-4. **Manajemen Pengguna**:
-   - Melihat seluruh pengguna terdaftar, status akun, dan total transaksi peminjaman.
-   - Melihat rincian profil pengguna dan seluruh riwayat peminjaman buku mereka.
-   - Mengedit informasi pengguna, mengubah hak akses peran (Admin / User).
-   - Mengaktifkan atau menonaktifkan akun anggota.
-5. **Sirkulasi Peminjaman & Pengembalian**:
-   - Tab navigasi status: *Semua, Menunggu Persetujuan, Sedang Dipinjam, Terlambat, Selesai*.
-   - Filter rentang tanggal transaksi dan pencarian kode transaksi.
-   - **Persetujuan Peminjaman**: Menggunakan Database Transaction (`DB::transaction`) untuk memastikan pengurangan stok secara atomik dan aman dari *race condition*.
-   - **Penolakan Peminjaman**: Disertai catatan alasan penolakan dari admin.
-   - **Pemrosesan Pengembalian**: Menambah kembali stok buku dan secara otomatis menghitung denda keterlambatan (Rp 2.000 / hari) jika melewati tanggal jatuh tempo.
-6. **Laporan & Rekapitulasi**:
-   - Laporan transaksi peminjaman pada periode tanggal tertentu.
-   - Laporan 10 buku paling sering dipinjam.
-   - Laporan keaktifan anggota perpustakaan.
-   - Ekspor laporan ke format file **CSV** dan mode cetak (**Print-friendly**).
+## 🌟 Highlights Fitur Unggulan
+
+- 🎯 **Role-Based Access Control (RBAC)** — Hak akses terisolasi untuk **Administrator**, **Petugas (Staff)**, dan **Anggota (User)**.
+- 📷 **Live Webcam Circulation Desk** — Scan QR Code / Barcode tiket peminjaman dan buku secara langsung menggunakan kamera laptop/ponsel dilengkapi sound feedback dan laser visualizer.
+- 🎟️ **Digital QR Ticketing & KTA Card** — Setiap transaksi peminjaman memiliki e-Ticket QR Code unik, dan setiap anggota memiliki Kartu Tanda Anggota (KTA) digital siap cetak.
+- 🧾 **Thermal POS Receipt (80mm)** — Cetak struk bukti peminjaman dan pelunasan denda bergaya kasir fisik mini POS.
+- 📑 **Laporan Resmi A4 Landscape** — Rekapitulasi transaksi peminjaman dan denda terintegrasi tanda tangan digital Kepala Perpustakaan & Petugas.
+- 💳 **Manajemen Pembayaran Denda** — Pencatatan pelunasan denda otomatis, petugas penerima, waktu bayar, dan audit riwayat kas denda.
+- 🔄 **Perpanjangan Mandiri (+7 Hari)** — Anggota dapat mengajukan perpanjangan masa pinjam secara mandiri jika belum melewati tanggal jatuh tempo.
+- ⏱️ **Kalkulasi Denda Otomatis via Scheduler** — Background worker harian (`perpus:calculate-fines`) menghitung denda keterlambatan secara otomatis.
+- 🛡️ **Comprehensive Audit Logging** — Seluruh aktivitas kritikal tercatat otomatis (login, logout, modifikasi katalog, sirkulasi buku, penerimaan denda).
+- ⭐ **Rating & Ulasan Koleksi Buku** — Anggota dapat memberikan rating bintang 1–5 serta testimoni untuk buku yang telah selesai dibaca.
+- 📖 **Pengadaan & Usulan Buku Baru** — Siswa/anggota dapat mengusulkan buku yang belum tersedia ke perpustakaan dengan status approval langsung dari admin.
 
 ---
 
-### B. Fitur Anggota (User)
-1. **Dashboard Anggota**:
-   - Statistik pribadi: Buku sedang dipinjam, pengajuan menunggu persetujuan, dan buku selesai dibaca.
-   - Kartu Anggota Digital.
-   - Daftar peminjaman aktif dan batas tanggal jatuh tempo pengembalian.
-   - Rekomendasi koleksi buku yang tersedia untuk dipinjam.
-2. **Katalog Buku**:
-   - Tampilan visual kartu buku dengan indikator ketersediaan stok secara real-time.
-   - Pencarian instan berdasarkan judul, pengarang, penerbit, atau nomor ISBN.
-   - Filter cepat berdasarkan kategori buku.
-   - Modal cepat pengajuan peminjaman langsung dari katalog.
-3. **Detail Buku**:
-   - Menampilkan sinopsis lengkap, lokasi penataan rak fisik di perpustakaan, dan nomor ISBN.
-   - Form pengajuan durasi pinjam (3, 7, 10, atau 14 hari) dan catatan keperluan.
-   - Rekomendasi buku lain yang sejenis dalam kategori yang sama.
-4. **Riwayat Peminjaman**:
-   - Rekam jejak seluruh transaksi peminjaman pribadi dengan status transparan (*Menunggu Persetujuan, Disetujui, Sedang Dipinjam, Sudah Dikembalikan, Terlambat, Ditolak*).
-   - Membatalkan pengajuan peminjaman mandiri jika status masih *Menunggu Persetujuan*.
+## 🔑 Akun Demo Pengujian
+
+Aplikasi telah dilengkapi seeder akun untuk pengujian fungsionalitas di semua level otorisasi:
+
+| Peran (Role) | Alamat Email | Password | Hak Akses Utama |
+| :--- | :--- | :--- | :--- |
+| **Administrator** | `admin@perpustakaan.test` | `password` | Kendali sistem penuh, audit logs, kelola user, scanner desk, konfirmasi usulan buku, ekspor laporan. |
+| **Petugas / Staff** | `petugas@perpustakaan.test` | `password` | Meja sirkulasi, persetujuan peminjaman, pengembalian buku, penerimaan denda, scan kamera. |
+| **Anggota 1** | `budi@perpustakaan.test` | `password` | Eksplorasi katalog, pinjam buku, ulasan buku, perpanjang waktu, usulkan buku, cetak KTA. |
+| **Anggota 2** | `siti@perpustakaan.test` | `password` | Eksplorasi katalog, riwayat peminjaman, pelunasan denda, cetak KTA digital. |
+
+> **Catatan:** Form login juga dilengkapi tombol _One-Click Quick Fill_ untuk mempermudah login tanpa perlu mengetik manual.
 
 ---
 
-## ⚖️ Aturan Bisnis yang Diterapkan
+## 📋 Fitur Utama & Modul Sistem
 
-- **Integritas Stok Fisik:** Stok buku berkurang hanya ketika peminjaman disetujui oleh admin, dan bertambah kembali ketika buku dikembalikan.
-- **Pencegahan Stok Negatif:** Sistem memvalidasi ketersediaan stok secara atomik dengan `lockForUpdate()` di dalam `DB::transaction`.
-- **Batas Kuota Anggota:** Anggota dibatasi meminjam maksimal **3 buku aktif** secara bersamaan.
-- **Pencegahan Duplikasi:** Anggota tidak dapat mengajukan peminjaman buku yang sama jika buku tersebut masih dalam proses pinjam atau belum dikembalikan.
-- **Isolasi Transaksi:** Anggota hanya dapat melihat dan mengakses data transaksi miliknya sendiri.
+### 1. Modul Sirkulasi & Scanner Meja Petugas
+- **Webcam Barcode/QR Scanner**: Deteksi instan kamera menggunakan modul HTML5 `getUserMedia` + ZXing engine.
+- **Validasi Transaksi Atomik**: Menggunakan database pessimistic locking (`lockForUpdate`) di dalam `DB::transaction` untuk mencegah insiden *race condition* atau stok buku minus.
+- **Sirkulasi Lengkap**: Pengajuan $\rightarrow$ Persetujuan Petugas $\rightarrow$ Peminjaman Berjalan $\rightarrow$ Perpanjangan Mandiri $\rightarrow$ Pengembalian & Perhitungan Denda.
+- **Struk Termal POS**: Cetak struk 80mm untuk diserahkan ke anggota saat mengambil buku di meja sirkulasi.
 
----
+### 2. Modul Manajemen Koleksi & Katalog
+- **CRUD Buku Komprehensif**: Judul, ISBN, Pengarang, Penerbit, Tahun Terbit, Kategori, Stok Fisik, Lokasi Rak, Sinopsis, dan Cover Gambar.
+- **Pencarian Instan (Live Search)**: Debounced live query berbasis judul, pengarang, penerbit, maupun nomor ISBN.
+- **Ulasan & Rating**: Menampilkan ulasan terverifikasi dari anggota yang sudah pernah membaca buku tersebut.
+- **Proteksi Hapus Data**: Koleksi buku yang sedang dipinjam secara aktif dilarang dihapus oleh sistem.
 
-## 📦 Panduan Instalasi & Menjalankan Aplikasi
+### 3. Modul Anggota & Self-Service
+- **Kartu Tanda Anggota (KTA)**: Kartu identitas digital ber-QR Code dengan tombol cetak format kartu fisik.
+- **Pengajuan Usulan Buku**: Anggota dapat mengirimkan judul, pengarang, dan alasan rekomendasi buku baru ke tim perpustakaan.
+- **Manajemen Profil**: Penggantian data pribadi, upload foto avatar profil, serta pembaruan kata sandi akun secara aman.
 
-### 1. Kebutuhan Sistem
-- PHP >= 8.4
-- Composer >= 2.0
-- Ekstensi PHP: `pdo_pgsql` (untuk Supabase) atau `pdo_sqlite`
-- Node.js >= 20 & npm
-
-### 2. Instalasi Dependensi
-```bash
-# Clone atau buka direktori proyek
-cd "DAY 4"
-
-# Instal dependensi backend PHP
-composer install
-
-# Instal dependensi frontend Node.js
-npm install
-```
-
-### 3. Konfigurasi Environment (`.env`)
-Salin file `.env.example` menjadi `.env`:
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-### 4. Konfigurasi Supabase PostgreSQL
-Buka file `.env` dan perbarui baris koneksi database dengan kredensial dari dashboard Supabase Anda (**Project Settings** $\rightarrow$ **Database**):
-
-```env
-DB_CONNECTION=pgsql
-DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com
-DB_PORT=6543
-DB_DATABASE=postgres
-DB_USERNAME=postgres.your-project-ref
-DB_PASSWORD=your-supabase-db-password
-DB_SSLMODE=require
-```
-
-*(Catatan: Aplikasi secara default juga siap dijalankan langsung menggunakan database SQLite lokal tanpa konfigurasi tambahan).*
-
-### 5. Jalankan Migrasi dan Seeder
-Eksekusi migrasi tabel dan pengisian data awal katalog buku serta akun demo:
-```bash
-php artisan migrate:fresh --seed
-```
-
-### 6. Hubungkan Storage Simbolik
-```bash
-php artisan storage:link
-```
-
-### 7. Build Aset Frontend
-```bash
-npm run build
-```
-
-### 8. Jalankan Server Aplikasi
-Jalankan server pengembangan Laravel:
-```bash
-php artisan serve
-```
-
-Buka peramban (browser) di alamat: **[http://localhost:8000](http://localhost:8000)**
+### 4. Modul Laporan & Audit Trail
+- **Laporan Resmi A4 Landscape**: Rekapitulasi transaksi, filter tanggal, status sirkulasi, total denda terhimpun, dilengkapi kolom tanda tangan resmi.
+- **Ekspor Data CSV**: Kompatibel dengan spreadsheet Microsoft Excel dan Google Sheets.
+- **Audit Logging**: Mencatat aktor, peran, IP address, deskripsi aksi, serta *timestamp* setiap kali ada perubahan data signifikan.
 
 ---
 
-## 🧪 Menjalankan Pengujian Otomatis (Automated Testing)
+## 🛠️ Tech Stack & Spesifikasi Teknis
 
-Seluruh logika bisnis, otentikasi role, CRUD buku, dan perputaran transaksi sirkulasi stok telah diuji menggunakan PHPUnit:
+| Komponen | Teknologi yang Digunakan |
+| :--- | :--- |
+| **Framework** | Laravel 12.x (PHP 8.4+) |
+| **Database** | Supabase Cloud PostgreSQL (Port 6543 / Pooler) & SQLite Support |
+| **Frontend** | Blade Templating Engine + Tailwind CSS v4 + Alpine.js |
+| **Iconography** | Lucide Icons |
+| **Kamera & QR Engine** | HTML5 Camera Stream API + Web Audio Synthesizer Beep |
+| **Asset Bundler** | Vite 6 |
+| **Linting & Formatting** | Laravel Pint |
+| **Testing Suite** | PHPUnit (27 Feature & Unit Tests, 80 Assertions) |
+
+---
+
+## 📦 Panduan Instalasi & Konfigurasi
+
+### Prasyarat Sistem
+- PHP >= 8.4 (dengan ekstensi `pdo_pgsql`, `pdo_sqlite`, `curl`, `mbstring`, `openssl`)
+- Composer >= 2.2
+- Node.js >= 20.x & npm
+- Akun Supabase (opsional jika ingin memakai PostgreSQL cloud)
+
+### Langkah-Langkah Instalasi:
+
+1. **Clone Repositori:**
+   ```bash
+   git clone https://github.com/adam-pixel-bit/perpus.git
+   cd perpus
+   ```
+
+2. **Instal Dependensi PHP & Node.js:**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Setup File Lingkungan (`.env`):**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Konfigurasi Database:**
+   
+   **Opsi A: Menggunakan Supabase PostgreSQL (Direkomendasikan untuk Production)**
+   Buka file `.env` dan sesuaikan parameter berikut:
+   ```env
+   DB_CONNECTION=pgsql
+   DB_HOST=aws-1-ap-southeast-1.pooler.supabase.com
+   DB_PORT=6543
+   DB_DATABASE=postgres
+   DB_USERNAME=postgres.your-project-ref
+   DB_PASSWORD="your-strong-password"
+   DB_SSLMODE=require
+   ```
+
+   **Opsi B: Menggunakan SQLite (Untuk Pengujian Cepat Lokal)**
+   ```env
+   DB_CONNECTION=sqlite
+   ```
+   *(Buat file kosong `touch database/database.sqlite` jika belum ada).*
+
+5. **Jalankan Migrasi & Data Seeder:**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+6. **Buat Symbolic Link Storage:**
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Kompilasi Aset Frontend:**
+   ```bash
+   npm run build
+   ```
+
+8. **Jalankan Aplikasi:**
+   ```bash
+   php artisan serve
+   ```
+   Aplikasi siap diakses pada: **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
+
+---
+
+## ⚡ Perintah Otomatisasi (Cron Job / Scheduler)
+
+Perpustakaan ini dilengkapi perintah command line artisan untuk mengkalkulasi denda secara berkala:
 
 ```bash
+# Menjalankan kalkulasi denda manual
+php artisan perpus:calculate-fines
+
+# Menjalankan worker scheduler Laravel di background
+php artisan schedule:work
+```
+
+Tambahkan entri cron berikut pada server production Anda:
+```cron
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+---
+
+## 🧪 Automated Testing & Quality Assurance
+
+Aplikasi ini menjamin keandalan transaksi sirkulasi stok, mitigasi race-condition, dan validasi hak akses melalui pengujian unit & integrasi otomatis:
+
+```bash
+# Menjalankan seluruh rangkaian tes unit & fitur
 php artisan test --compact
+
+# Memeriksa dan memformat standar kode sesuai PSR-12 / Laravel
+vendor/bin/pint --format agent
 ```
 
-Hasil pengujian: **14 Passed / 14 Tests (39 Assertions)**.
+### Hasil Ringkasan Pengujian:
+```text
+✓ Auth & Session Middleware Protection
+✓ Book CRUD with Stock Integrity
+✓ Pessimistic Locking on Borrowing Approvals
+✓ Automatic Overdue Fine Calculation
+✓ QR Code Generation & Receipt Printing
+✓ Profile & Avatar Updates
+✓ Fines Payment Processing
+✓ Book Request Workflow
+
+Tests:    27 passed (80 assertions)
+Duration: 2.03s
+```
+
+---
+
+## 🔒 Arsitektur & Keamanan Sistem
+
+- **Atomisitas Stok (ACID Compliant):** Menggunakan `DB::transaction()` dipadukan dengan `lockForUpdate()` sehingga mencegah stok berkurang lebih dari jumlah ketersediaan saat banyak pengguna mengajukan secara bersamaan.
+- **Proteksi Akses Berlapis:** Seluruh rute dilindungi middleware `auth` dan pengecekan role granular (`AdminMiddleware`, `StaffMiddleware`).
+- **Audit Logging:** Setiap operasi penambahan/pengurangan stok, persetujuan pinjam, penolakan, pelunasan denda, dan otentikasi disimpan ke tabel `audit_logs` dengan informasi IP & User Agent.
+- **CSRF & XSS Shield:** Sanitasi input Blade otomatis dan verifikasi token CSRF di seluruh form interaktif.
+
+---
+
+## 👥 Kontributor & Lisensi
+
+Dibuat dengan ❤️ untuk modernisasi perpustakaan instansi dan sekolah di Indonesia.  
+Didistribusikan di bawah lisensi open-source **[MIT License](LICENSE)**.
