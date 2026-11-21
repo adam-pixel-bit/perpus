@@ -185,7 +185,7 @@
     <!-- Main Data Table Container -->
     <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden relative">
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
+            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
                 <thead>
                     <tr class="bg-zinc-50/60 border-b border-zinc-200/80 text-[11px] font-semibold text-zinc-500">
                         <th class="py-3 px-4 w-10">

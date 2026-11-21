@@ -18,16 +18,16 @@
         }
     </style>
 </head>
-<body class="bg-zinc-50 min-h-screen py-8 px-6 text-xs">
+<body class="bg-zinc-50 min-h-screen py-4 sm:py-8 px-3 sm:px-6 text-xs">
 
     <!-- Action Bar -->
-    <div class="no-print max-w-6xl mx-auto mb-6 flex items-center justify-between bg-white p-4 rounded-2xl border border-zinc-200 shadow-xs">
+    <div class="no-print max-w-6xl mx-auto mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-2xl border border-zinc-200 shadow-xs">
         <div>
             <h2 class="font-bold text-sm text-zinc-900">Pratinjau Cetak Laporan Resmi</h2>
             <p class="text-xs text-zinc-400">Siap dicetak atau disimpan sebagai dokumen PDF resmi bertanda tangan.</p>
         </div>
-        <div class="flex items-center space-x-2.5">
-            <button onclick="window.print()" class="px-5 py-2 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-2 cursor-pointer">
+        <div class="flex items-center space-x-2 sm:space-x-2.5 w-full sm:w-auto">
+            <button onclick="window.print()" class="flex-1 sm:flex-initial px-4 sm:px-5 py-2 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center justify-center space-x-2 cursor-pointer">
                 <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                 </svg>
@@ -40,23 +40,23 @@
     </div>
 
     <!-- Official Report Paper (A4 Landscape) -->
-    <div class="max-w-6xl mx-auto bg-white border border-zinc-300 p-8 sm:p-10 rounded-2xl shadow-lg print:border-none print:shadow-none print:p-0 space-y-6">
+    <div class="max-w-6xl mx-auto bg-white border border-zinc-300 p-4 sm:p-8 lg:p-10 rounded-2xl shadow-lg print:border-none print:shadow-none print:p-0 space-y-5 sm:space-y-6">
         
         <!-- Official Letterhead / Kop Surat -->
-        <div class="border-b-2 border-zinc-900 pb-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 rounded-2xl bg-zinc-950 text-orange-500 font-bold flex items-center justify-center text-xl shadow-inner border border-zinc-800">
+        <div class="border-b-2 border-zinc-900 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-950 text-orange-500 font-bold flex items-center justify-center text-lg sm:text-xl shadow-inner border border-zinc-800 shrink-0">
                     S
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold uppercase tracking-wider text-zinc-950">PERPUSTAKAAN DIGITAL TERPADU (SIPUS)</h1>
-                    <p class="text-xs text-zinc-600 font-medium">Gedung Pusat Informasi & Literasi Lt. 2, Jl. Perpustakaan No. 1, Jakarta Pusat</p>
-                    <p class="text-[10px] text-zinc-400 font-mono">Website: https://sipus.perpus.id • Email: admin@perpustakaan.com • Telp: (021) 7654-3210</p>
+                    <h1 class="text-sm sm:text-lg font-bold uppercase tracking-wider text-zinc-950">PERPUSTAKAAN DIGITAL TERPADU (SIPUS)</h1>
+                    <p class="text-[11px] sm:text-xs text-zinc-600 font-medium">Gedung Pusat Informasi & Literasi Lt. 2, Jl. Perpustakaan No. 1, Jakarta Pusat</p>
+                    <p class="text-[9px] sm:text-[10px] text-zinc-400 font-mono">Website: https://sipus.perpus.id • Email: admin@perpustakaan.com • Telp: (021) 7654-3210</p>
                 </div>
             </div>
-            <div class="text-right font-mono text-[10px] text-zinc-500">
-                <p>KODE LAPORAN: <strong class="text-zinc-900">RPT-{{ date('Ymd-His') }}</strong></p>
-                <p>TANGGAL CETAK: {{ date('d/m/Y H:i') }}</p>
+            <div class="text-left sm:text-right font-mono text-[9px] sm:text-[10px] text-zinc-500 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100 flex sm:block justify-between items-center">
+                <p>KODE: <strong class="text-zinc-900">RPT-{{ date('Ymd-His') }}</strong></p>
+                <p>TANGGAL: {{ date('d/m/Y H:i') }}</p>
             </div>
         </div>
 
@@ -68,33 +68,33 @@
             </p>
         </div>
 
-        <!-- KPI Summary Cards -->
-        <div class="grid grid-cols-5 gap-3 text-center">
-            <div class="p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
-                <span class="text-[10px] text-zinc-500 block uppercase font-medium">Total Sirkulasi</span>
-                <span class="text-base font-bold text-zinc-900">{{ $totalTransactions }}</span>
+        <!-- KPI Summary Cards (Fully Responsive Grid) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 print:grid-cols-5 gap-2 sm:gap-3 text-center">
+            <div class="p-2.5 sm:p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
+                <span class="text-[9px] sm:text-[10px] text-zinc-500 block uppercase font-medium truncate">Total Sirkulasi</span>
+                <span class="text-sm sm:text-base font-bold text-zinc-900">{{ $totalTransactions }}</span>
             </div>
-            <div class="p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
-                <span class="text-[10px] text-zinc-500 block uppercase font-medium">Sedang Dipinjam</span>
-                <span class="text-base font-bold text-blue-600">{{ $totalBorrowed }}</span>
+            <div class="p-2.5 sm:p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
+                <span class="text-[9px] sm:text-[10px] text-zinc-500 block uppercase font-medium truncate">Sedang Dipinjam</span>
+                <span class="text-sm sm:text-base font-bold text-blue-600">{{ $totalBorrowed }}</span>
             </div>
-            <div class="p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
-                <span class="text-[10px] text-zinc-500 block uppercase font-medium">Selesai Dikembalikan</span>
-                <span class="text-base font-bold text-emerald-600">{{ $totalReturned }}</span>
+            <div class="p-2.5 sm:p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
+                <span class="text-[9px] sm:text-[10px] text-zinc-500 block uppercase font-medium truncate">Dikembalikan</span>
+                <span class="text-sm sm:text-base font-bold text-emerald-600">{{ $totalReturned }}</span>
             </div>
-            <div class="p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
-                <span class="text-[10px] text-zinc-500 block uppercase font-medium">Terlambat (Overdue)</span>
-                <span class="text-base font-bold text-rose-600">{{ $totalOverdue }}</span>
+            <div class="p-2.5 sm:p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
+                <span class="text-[9px] sm:text-[10px] text-zinc-500 block uppercase font-medium truncate">Terlambat</span>
+                <span class="text-sm sm:text-base font-bold text-rose-600">{{ $totalOverdue }}</span>
             </div>
-            <div class="p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
-                <span class="text-[10px] text-zinc-500 block uppercase font-medium">Total Denda Tercatat</span>
-                <span class="text-base font-bold text-zinc-900 font-mono">Rp {{ number_format($totalFines, 0, ',', '.') }}</span>
+            <div class="col-span-2 sm:col-span-1 lg:col-span-1 print:col-span-1 p-2.5 sm:p-3 rounded-xl border border-zinc-200 bg-zinc-50/70">
+                <span class="text-[9px] sm:text-[10px] text-zinc-500 block uppercase font-medium truncate">Total Denda</span>
+                <span class="text-sm sm:text-base font-bold text-zinc-900 font-mono">Rp {{ number_format($totalFines, 0, ',', '.') }}</span>
             </div>
         </div>
 
         <!-- Data Table -->
         <div class="overflow-x-auto border border-zinc-300 rounded-xl">
-            <table class="w-full text-left text-[11px] border-collapse">
+            <table class="w-full text-left text-[11px] border-collapse min-w-[760px] print:min-w-full">
                 <thead class="bg-zinc-100 border-b border-zinc-300 text-zinc-700 font-bold uppercase tracking-wider text-[10px]">
                     <tr>
                         <th class="py-2.5 px-3 w-8">No</th>

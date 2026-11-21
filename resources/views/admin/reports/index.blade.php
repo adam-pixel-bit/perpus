@@ -11,7 +11,7 @@
             <span class="text-xs text-zinc-400">Periode: {{ date('d M Y', strtotime($startDate)) }} — {{ date('d M Y', strtotime($endDate)) }}</span>
         </div>
 
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
             <a
                 href="{{ route('admin.reports.print', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
                 target="_blank"
@@ -75,7 +75,7 @@
     </div>
 
     <!-- Divided Horizontal KPI Statistics Strip -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 bg-white border border-zinc-200/80 rounded-2xl p-3.5 sm:p-5 shadow-2xs">
         <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
             <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
                 <span>Total Sirkulasi</span>
@@ -146,7 +146,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-xs min-w-[650px]">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                             <th class="py-3 px-4">Kode Transaksi</th>
@@ -201,7 +201,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-xs min-w-[650px]">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                             <th class="py-3 px-4">Peringkat</th>
@@ -257,7 +257,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-xs min-w-[650px]">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                             <th class="py-3 px-4">Peringkat</th>

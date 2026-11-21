@@ -1,27 +1,27 @@
 <x-layouts.app title="Admin Dashboard">
     <x-slot:pageTitle>Dashboard Administrator</x-slot:pageTitle>
 
-    <!-- Subheader Toolbar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/70">
-        <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-600 font-medium">
-            <div class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
+    <!-- Subheader Toolbar (Responsive) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-zinc-200/70">
+        <div class="flex items-center flex-wrap gap-1.5 sm:gap-2 text-xs text-zinc-600 font-medium">
+            <div class="flex items-center space-x-1.5 px-2.5 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs">
                 <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span class="font-semibold text-zinc-800">Ringkasan Sistem</span>
+                <span class="font-semibold text-zinc-800">Ringkasan</span>
             </div>
             
-            <a href="{{ route('admin.borrowings.index', ['status' => 'pending']) }}" class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs hover:bg-zinc-50 transition-colors">
+            <a href="{{ route('admin.borrowings.index', ['status' => 'pending']) }}" class="flex items-center space-x-1.5 px-2.5 py-1.5 bg-white border border-zinc-200/80 rounded-xl shadow-2xs hover:bg-zinc-50 transition-colors">
                 <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span>Menunggu Persetujuan ({{ $pendingBorrowings }})</span>
+                <span>Persetujuan ({{ $pendingBorrowings }})</span>
             </a>
 
             @if($overdueBorrowings > 0)
-                <a href="{{ route('admin.borrowings.index', ['status' => 'overdue']) }}" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#FEECEC] border border-red-200 text-red-600 rounded-xl shadow-2xs transition-colors">
+                <a href="{{ route('admin.borrowings.index', ['status' => 'overdue']) }}" class="flex items-center space-x-1.5 px-2.5 py-1.5 bg-[#FEECEC] border border-red-200 text-red-600 rounded-xl shadow-2xs transition-colors">
                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-500"></i>
                     <span class="font-semibold">Terlambat ({{ $overdueBorrowings }})</span>
                 </a>
             @endif
 
-            <label class="inline-flex items-center space-x-2 pl-2 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
+            <label class="hidden sm:inline-flex items-center space-x-2 pl-2 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
                 <span>Tampilkan Statistik</span>
                 <div class="relative inline-block w-8 h-4 transition duration-200 ease-in-out align-middle select-none">
                     <input
@@ -36,7 +36,7 @@
             </label>
         </div>
 
-        <div class="flex items-center flex-wrap gap-2">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
             <a href="{{ route('admin.reports.export') }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Ekspor CSV</span>
@@ -49,64 +49,64 @@
     </div>
 
     <!-- Divided Horizontal KPI Statistics Strip -->
-    <div id="stats-strip" class="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-2xl p-3 sm:p-5 shadow-2xs gap-y-3 sm:gap-y-0">
+    <div id="stats-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-3.5 sm:p-5 bg-white border border-zinc-200/80 rounded-2xl shadow-2xs">
         <!-- Metrik 1: Total Judul Buku -->
-        <div class="sm:px-4 first:pl-0 last:pr-0 py-3 sm:py-0">
-            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Total Judul Buku</span>
-                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+        <div class="p-2 sm:p-0">
+            <div class="flex items-center space-x-1.5 text-[11px] sm:text-xs text-zinc-400 font-medium">
+                <span class="truncate">Total Judul Buku</span>
+                <i data-lucide="info" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-300 shrink-0"></i>
             </div>
-            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+            <div class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($totalBooks) }}
             </div>
-            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>klasifikasi koleksi</span>
-                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">+{{ $totalCategories }} kategori</span>
+            <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] text-zinc-400 mt-1 flex-wrap">
+                <span>koleksi</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">+{{ $totalCategories }} kat.</span>
             </div>
         </div>
 
         <!-- Metrik 2: Eksemplar Tersedia -->
-        <div class="sm:px-4 py-3 sm:py-0">
-            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Eksemplar Tersedia</span>
-                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+        <div class="p-2 sm:p-0">
+            <div class="flex items-center space-x-1.5 text-[11px] sm:text-xs text-zinc-400 font-medium">
+                <span class="truncate">Eksemplar Tersedia</span>
+                <i data-lucide="info" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-300 shrink-0"></i>
             </div>
-            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+            <div class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($availableBooksCount) }}
             </div>
-            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>siap dipinjam</span>
-                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Tersedia di Rak</span>
+            <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] text-zinc-400 mt-1 flex-wrap">
+                <span>tersedia</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">Di Rak</span>
             </div>
         </div>
 
         <!-- Metrik 3: Sedang Dipinjam -->
-        <div class="sm:px-4 py-3 sm:py-0">
-            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Buku Dipinjam</span>
-                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+        <div class="p-2 sm:p-0">
+            <div class="flex items-center space-x-1.5 text-[11px] sm:text-xs text-zinc-400 font-medium">
+                <span class="truncate">Buku Dipinjam</span>
+                <i data-lucide="info" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-300 shrink-0"></i>
             </div>
-            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+            <div class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($activeBorrowings) }}
             </div>
-            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>total transaksi</span>
+            <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] text-zinc-400 mt-1 flex-wrap">
+                <span>total</span>
                 <span class="text-zinc-600 bg-zinc-100 px-1.5 py-0.2 rounded font-medium">{{ $totalBorrowings }} sirkulasi</span>
             </div>
         </div>
 
         <!-- Metrik 4: Anggota Aktif -->
-        <div class="sm:px-4 last:pr-0 py-3 sm:py-0">
-            <div class="flex items-center space-x-1.5 text-xs text-zinc-400 font-medium">
-                <span>Anggota Terdaftar</span>
-                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-300"></i>
+        <div class="p-2 sm:p-0">
+            <div class="flex items-center space-x-1.5 text-[11px] sm:text-xs text-zinc-400 font-medium">
+                <span class="truncate">Anggota Terdaftar</span>
+                <i data-lucide="info" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-300 shrink-0"></i>
             </div>
-            <div class="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
+            <div class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mt-1">
                 {{ number_format($totalUsers) }}
             </div>
-            <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400 mt-1">
-                <span>anggota aktif</span>
-                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">100% Terverifikasi</span>
+            <div class="flex items-center space-x-1.5 text-[10px] sm:text-[11px] text-zinc-400 mt-1 flex-wrap">
+                <span>status</span>
+                <span class="text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded font-medium">100% Aktif</span>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-xs min-w-[580px]">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                             <th class="py-3 px-4">Kode Transaksi</th>

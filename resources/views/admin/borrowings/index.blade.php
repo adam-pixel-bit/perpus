@@ -40,7 +40,7 @@
             </a>
         </div>
 
-        <div class="flex items-center space-x-2 shrink-0">
+        <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
             <!-- Run Fines Auto Calculation -->
             <form method="POST" action="{{ route('admin.borrowings.runFines') }}" class="inline">
                 @csrf
@@ -123,7 +123,7 @@
     <!-- Borrowings Table -->
     <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
+            <table class="w-full text-left border-collapse text-xs min-w-[780px]">
                 <thead>
                     <tr class="border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                         <th class="py-3 px-4 w-10">

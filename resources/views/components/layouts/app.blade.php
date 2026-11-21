@@ -291,11 +291,11 @@
                         <button type="button" onclick="toggleSidebar()" class="lg:hidden p-1.5 text-zinc-600 hover:bg-zinc-100 rounded-lg shrink-0 cursor-pointer" title="Buka Menu">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
-                        <h1 class="text-base sm:text-lg lg:text-xl font-bold text-zinc-950 tracking-tight truncate">{{ $pageTitle ?? 'Katalog Buku' }}</h1>
+                        <h1 class="text-sm sm:text-lg lg:text-xl font-bold text-zinc-950 tracking-tight truncate max-w-[150px] xs:max-w-[200px] sm:max-w-md lg:max-w-none">{{ $pageTitle ?? 'Katalog Buku' }}</h1>
                     </div>
 
                     <!-- Top Right Utilities -->
-                    <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                    <div class="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
                         @php
                             $unreadNotifications = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->latest()->take(6)->get() : collect();
                             $unreadCount = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count() : 0;
@@ -317,8 +317,8 @@
                                 @endif
                             </button>
 
-                            <!-- Dropdown Menu -->
-                            <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in duration-150">
+                            <!-- Dropdown Menu (Responsive: Centered on mobile, aligned on desktop) -->
+                            <div id="notification-dropdown" class="hidden fixed sm:absolute inset-x-3 sm:inset-x-auto sm:right-0 top-16 sm:top-full mt-1.5 w-auto sm:w-96 max-w-md mx-auto sm:mx-0 bg-white border border-zinc-200 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in duration-150">
                                 <div class="p-3.5 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/70">
                                     <div class="flex items-center space-x-2">
                                         <span class="text-xs font-bold text-zinc-900">Notifikasi</span>
