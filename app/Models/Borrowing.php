@@ -24,6 +24,9 @@ class Borrowing extends Model
         'notes',
         'admin_note',
         'fines',
+        'fine_payment_status',
+        'fine_paid_at',
+        'fine_received_by',
         'approved_by',
         'returned_to',
     ];
@@ -34,6 +37,7 @@ class Borrowing extends Model
             'borrow_date' => 'date',
             'return_due_date' => 'date',
             'actual_return_date' => 'date',
+            'fine_paid_at' => 'datetime',
             'fines' => 'decimal:2',
             'renewed_count' => 'integer',
         ];
@@ -69,6 +73,14 @@ class Borrowing extends Model
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'returned_to');
+    }
+
+    /**
+     * Admin who collected/processed the fine payment.
+     */
+    public function cashier(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'fine_received_by');
     }
 
     /**

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'phone',
         'address',
+        'avatar',
         'is_active',
     ];
 
@@ -99,5 +100,37 @@ class User extends Authenticatable
     public function auditLogs(): HasMany
     {
         return $this->hasMany(AuditLog::class);
+    }
+
+    /**
+     * Book requests submitted by this member.
+     */
+    public function bookRequests(): HasMany
+    {
+        return $this->hasMany(BookRequest::class);
+    }
+
+    /**
+     * Unique formatted member code.
+     */
+    public function getMemberCodeAttribute(): string
+    {
+        return 'SIPUS-MBR-'.str_pad((string) $this->id, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Get avatar image URL or fallback to initial avatar.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar) {
+            if (str_starts_with($this->avatar, 'http://') || str_starts_with($this->avatar, 'https://')) {
+                return $this->avatar;
+            }
+
+            return asset('storage/'.$this->avatar);
+        }
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=09090b&color=ffffff&bold=true';
     }
 }

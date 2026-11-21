@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AuditLog;
 use App\Models\Book;
+use App\Models\BookRequest;
 use App\Models\Borrowing;
 use App\Models\Category;
 use App\Models\Notification;
@@ -350,5 +351,21 @@ class DatabaseSeeder extends Seeder
             'user_agent' => 'Database Seeder',
             'created_at' => now(),
         ]);
+
+        // 9. Create Sample Book Request
+        BookRequest::firstOrCreate(
+            ['title' => 'Refactoring: Improving the Design of Existing Code'],
+            [
+                'user_id' => $user1->id,
+                'author' => 'Martin Fowler',
+                'publisher' => 'Addison-Wesley Professional',
+                'publication_year' => 2018,
+                'isbn' => '978-0134757599',
+                'reason' => 'Buku ini sangat penting untuk referensi teknik refaktorisasi kode yang bersih dalam praktikum perangkat lunak.',
+                'status' => 'approved',
+                'admin_note' => 'Disetujui untuk pengadaan anggaran triwulan ini.',
+                'reviewed_by' => $admin->id,
+            ]
+        );
     }
 }

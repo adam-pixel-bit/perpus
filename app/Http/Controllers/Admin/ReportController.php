@@ -110,4 +110,35 @@ class ReportController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
+
+    /**
+     * Official printable report view for management/audits.
+     */
+    public function print(Request $request): View
+    {
+        $startDate = $request->query('start_date', Carbon::now()->startOfMonth()->toDateString());
+        $endDate = $request->query('end_date', Carbon::now()->toDateString());
+
+        $borrowings = Borrowing::with(['user', 'book'])
+            ->whereBetween('borrow_date', [$startDate, $endDate])
+            ->latest()
+            ->get();
+
+        $totalTransactions = $borrowings->count();
+        $totalReturned = $borrowings->where('status', 'returned')->count();
+        $totalBorrowed = $borrowings->where('status', 'borrowed')->count();
+        $totalOverdue = $borrowings->filter(fn ($b) => $b->isOverdue())->count();
+        $totalFines = $borrowings->sum('fines');
+
+        return view('admin.reports.print', compact(
+            'borrowings',
+            'startDate',
+            'endDate',
+            'totalTransactions',
+            'totalReturned',
+            'totalBorrowed',
+            'totalOverdue',
+            'totalFines'
+        ));
+    }
 }

@@ -13,21 +13,20 @@
 
         <div class="flex items-center space-x-2">
             <a
-                href="{{ route('admin.reports.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
-                class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-zinc-800 rounded-xl shadow-2xs transition-all"
+                href="{{ route('admin.reports.print', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
+                target="_blank"
+                class="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-black rounded-xl shadow-2xs transition-all"
             >
-                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <i data-lucide="printer" class="w-3.5 h-3.5 text-orange-400"></i>
+                <span>Cetak Laporan Resmi</span>
+            </a>
+            <a
+                href="{{ route('admin.reports.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
+                class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 hover:bg-zinc-50 rounded-xl shadow-2xs transition-all"
+            >
+                <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Ekspor CSV</span>
             </a>
-            <button
-                type="button"
-                onclick="window.print()"
-                class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 hover:bg-zinc-50 rounded-xl shadow-2xs transition-all cursor-pointer"
-                title="Cetak Laporan"
-            >
-                <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-500"></i>
-                <span>Cetak</span>
-            </button>
         </div>
     </div>
 

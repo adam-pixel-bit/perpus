@@ -159,6 +159,17 @@
                                         </a>
                                     @endif
 
+                                    <!-- Receipt Button -->
+                                    <a
+                                        href="{{ route('receipt.show', $b) }}"
+                                        target="_blank"
+                                        class="px-2 py-1 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors flex items-center gap-1"
+                                        title="Cetak Struk Sirkulasi"
+                                    >
+                                        <i data-lucide="printer" class="w-3 h-3"></i>
+                                        <span>Struk</span>
+                                    </a>
+
                                     <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="px-2 py-1 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors">
                                         Detail
                                     </a>

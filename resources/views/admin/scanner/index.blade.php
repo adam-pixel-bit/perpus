@@ -10,19 +10,45 @@
             </div>
             <span class="text-xs text-zinc-400">Scan Barcode ISBN Buku atau QR Tiket Peminjaman</span>
         </div>
+
+        <button type="button" onclick="toggleCamera()" id="btn-toggle-cam" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-800 bg-white border border-zinc-300 hover:bg-zinc-50 rounded-xl shadow-2xs transition cursor-pointer">
+            <i data-lucide="camera" class="w-3.5 h-3.5 text-orange-600"></i>
+            <span id="cam-status-text">Aktifkan Kamera Webcam</span>
+        </button>
     </div>
 
     <!-- Scanner Container -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <!-- Input & Scanner Area (Left 1 Col) -->
         <div class="lg:col-span-1 space-y-4">
+            <!-- Camera Preview Box -->
+            <div id="camera-box" class="hidden bg-black rounded-2xl border border-zinc-800 p-3 shadow-md relative overflow-hidden">
+                <div class="relative aspect-video rounded-xl overflow-hidden bg-zinc-950 flex items-center justify-center">
+                    <video id="webcam-feed" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <!-- Laser Overlay -->
+                    <div class="absolute inset-0 border-2 border-orange-500/60 rounded-xl pointer-events-none flex items-center justify-center">
+                        <div class="w-full h-0.5 bg-red-500 shadow-md shadow-red-500 animate-pulse"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-2.5 px-1">
+                    <span class="text-[10px] text-zinc-400 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span>Kamera Aktif</span>
+                    </span>
+                    <button type="button" onclick="stopCamera()" class="text-[10px] text-zinc-400 hover:text-white underline cursor-pointer">
+                        Matikan Kamera
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual / Keystroke Scan Box -->
             <div class="bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs">
                 <h3 class="text-sm font-bold text-zinc-900 mb-2 flex items-center gap-2">
                     <i data-lucide="scan" class="w-4 h-4 text-orange-600"></i>
-                    <span>Input / Scan Kode</span>
+                    <span>Input / Barcode Reader</span>
                 </h3>
                 <p class="text-xs text-zinc-500 mb-4">
-                    Gunakan scanner barcode fisik atau masukkan kode peminjaman / nomor ISBN secara manual.
+                    Tembak barcode dengan scanner fisik, atau ketikkan kode transaksi / ISBN di bawah ini.
                 </p>
 
                 <form method="GET" action="{{ route('admin.scanner.index') }}" class="space-y-3">
@@ -46,7 +72,7 @@
 
                 <!-- Quick Test Samples -->
                 <div class="mt-5 pt-4 border-t border-zinc-100">
-                    <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block mb-2">Sampel Cepat (Klik untuk Uji):</span>
+                    <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block mb-2">Sampel Uji Cepat:</span>
                     <div class="flex flex-wrap gap-1.5">
                         <a href="{{ route('admin.scanner.index', ['code' => 'BRW-202611-0001']) }}" class="px-2 py-1 bg-zinc-100 hover:bg-orange-50 hover:text-orange-700 text-zinc-600 rounded-lg text-[10px] font-mono transition">
                             BRW-202611-0001
@@ -61,18 +87,18 @@
                 </div>
             </div>
 
-            <!-- Scanner Guide Card -->
+            <!-- Guide Card -->
             <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl p-4 text-white text-xs border border-zinc-800 shadow-sm">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="p-1 rounded-md bg-orange-500/20 text-orange-400">
                         <i data-lucide="info" class="w-3.5 h-3.5"></i>
                     </span>
-                    <span class="font-bold">Panduan Serah Terima Buku</span>
+                    <span class="font-bold">Panduan Serah Terima</span>
                 </div>
                 <ul class="text-[11px] text-zinc-400 space-y-1.5 list-disc list-inside">
-                    <li>Scan tiket permohonan anggota untuk <strong class="text-white">Persetujuan</strong>.</li>
+                    <li>Scan tiket permohonan anggota untuk <strong class="text-white">Persetujuan Pinjam</strong>.</li>
                     <li>Scan barcode buku saat pengembalian untuk <strong class="text-white">Verifikasi Fisik</strong>.</li>
-                    <li>Denda otomatis dihitung jika lewat tanggal jatuh tempo.</li>
+                    <li>Pelunasan denda dapat diverifikasi langsung di kartu hasil scan.</li>
                 </ul>
             </div>
         </div>
@@ -81,7 +107,7 @@
         <div class="lg:col-span-2">
             @if($borrowing)
                 <!-- Borrowing Result -->
-                <div class="bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-5">
+                <div class="bg-white rounded-2xl border border-zinc-200/80 p-5 sm:p-6 shadow-2xs space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-100 gap-2">
                         <div>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase
@@ -95,14 +121,16 @@
                             <h2 class="text-lg font-bold text-zinc-900 mt-1 font-mono">{{ $borrowing->borrowing_code }}</h2>
                         </div>
 
-                        <!-- Fine Indicator if overdue -->
-                        @if($borrowing->isOverdue())
-                            <div class="px-3 py-1.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs">
-                                <span class="font-bold flex items-center gap-1">
-                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
-                                    Terlambat {{ $borrowing->daysOverdue() }} Hari
+                        <!-- Fine Indicator if overdue / has fine -->
+                        @if($borrowing->fines > 0)
+                            <div class="px-3.5 py-2 {{ $borrowing->fine_payment_status === 'paid' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-700' }} border rounded-xl text-xs">
+                                <div class="font-bold flex items-center gap-1.5">
+                                    <i data-lucide="{{ $borrowing->fine_payment_status === 'paid' ? 'check-circle' : 'alert-triangle' }}" class="w-3.5 h-3.5"></i>
+                                    <span>Tagihan Denda: Rp {{ number_format($borrowing->fines, 0, ',', '.') }}</span>
+                                </div>
+                                <span class="text-[10px] block mt-0.5 font-semibold">
+                                    Status Denda: {{ $borrowing->fine_payment_status === 'paid' ? 'Lunas Dibayar' : 'Belum Lunas (Tertunggak)' }}
                                 </span>
-                                <span class="text-[11px]">Denda: Rp {{ number_format($borrowing->fines, 0, ',', '.') }}</span>
                             </div>
                         @endif
                     </div>
@@ -110,33 +138,33 @@
                     <!-- Details Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <!-- Borrower Info -->
-                        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-200/70 space-y-2">
+                        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-200/70 space-y-2">
                             <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Peminjam (Anggota)</span>
                             <div class="flex items-center space-x-2.5">
-                                <div class="w-8 h-8 rounded-full bg-zinc-900 text-white font-bold flex items-center justify-center text-xs">
-                                    {{ strtoupper(substr($borrowing->user->name, 0, 1)) }}
-                                </div>
+                                <img src="{{ $borrowing->user->avatar_url }}" alt="{{ $borrowing->user->name }}" class="w-9 h-9 rounded-xl object-cover border border-zinc-200">
                                 <div>
                                     <p class="font-bold text-zinc-900">{{ $borrowing->user->name }}</p>
-                                    <p class="text-[11px] text-zinc-500">{{ $borrowing->user->email }}</p>
+                                    <p class="text-[11px] text-zinc-500 font-mono">{{ $borrowing->user->member_code }}</p>
                                 </div>
                             </div>
+                            <p class="text-[11px] text-zinc-600">Email: {{ $borrowing->user->email }}</p>
                             <p class="text-[11px] text-zinc-600">Telepon: {{ $borrowing->user->phone ?? '-' }}</p>
                         </div>
 
                         <!-- Book Info -->
-                        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-200/70 space-y-2">
+                        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-200/70 space-y-2">
                             <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Detail Buku</span>
                             <p class="font-bold text-zinc-900 line-clamp-1">{{ $borrowing->book->title }}</p>
                             <p class="text-[11px] font-mono text-zinc-500">ISBN: {{ $borrowing->book->isbn }}</p>
-                            <p class="text-[11px] text-zinc-600">Lokasi: <span class="font-semibold text-zinc-800">{{ $borrowing->book->shelf_location }}</span></p>
+                            <p class="text-[11px] text-zinc-600">Lokasi Rak: <span class="font-semibold text-zinc-800">{{ $borrowing->book->shelf_location }}</span></p>
+                            <p class="text-[11px] text-zinc-600">Sisa Stok: <span class="font-semibold text-emerald-700">{{ $borrowing->book->available_stock }} / {{ $borrowing->book->stock }}</span></p>
                         </div>
                     </div>
 
                     <!-- Dates & Timeline -->
-                    <div class="p-3.5 bg-zinc-50/70 rounded-xl border border-zinc-200/70 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                    <div class="p-3.5 bg-zinc-50/70 rounded-xl border border-zinc-200/70 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                         <div>
-                            <span class="text-[10px] text-zinc-400 block font-medium">Tanggal Pinjam</span>
+                            <span class="text-[10px] text-zinc-400 block font-medium">Tgl Pinjam</span>
                             <span class="font-semibold text-zinc-800">{{ $borrowing->borrow_date->format('d M Y') }}</span>
                         </div>
                         <div>
@@ -146,20 +174,24 @@
                             </span>
                         </div>
                         <div>
+                            <span class="text-[10px] text-zinc-400 block font-medium">Tgl Selesai</span>
+                            <span class="font-semibold text-zinc-800">{{ $borrowing->actual_return_date ? $borrowing->actual_return_date->format('d M Y') : '—' }}</span>
+                        </div>
+                        <div>
                             <span class="text-[10px] text-zinc-400 block font-medium">Perpanjangan</span>
                             <span class="font-semibold text-zinc-800">{{ $borrowing->renewed_count ?? 0 }}x diperpanjang</span>
                         </div>
                     </div>
 
                     <!-- Direct Action Buttons -->
-                    <div class="pt-3 border-t border-zinc-100 flex flex-wrap gap-2.5">
+                    <div class="pt-3 border-t border-zinc-100 flex flex-wrap items-center gap-2.5">
                         @if($borrowing->status === 'pending')
                             <form action="{{ route('admin.borrowings.approve', $borrowing) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer">
                                     <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-                                    <span>Setujui & Serahkan Buku Sekarang</span>
+                                    <span>Setujui & Serahkan Buku</span>
                                 </button>
                             </form>
                             <form action="{{ route('admin.borrowings.reject', $borrowing) }}" method="POST" class="inline">
@@ -179,16 +211,29 @@
                                     <span>Konfirmasi Buku Dikembalikan</span>
                                 </button>
                             </form>
-                        @else
-                            <div class="text-xs text-zinc-500 italic py-1">
-                                Transaksi ini sudah selesai (Status: {{ $borrowing->status }}).
-                            </div>
                         @endif
+
+                        <!-- Pay Fine Button -->
+                        @if($borrowing->fines > 0 && $borrowing->fine_payment_status !== 'paid')
+                            <form action="{{ route('admin.borrowings.payFine', $borrowing) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+                                    <i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i>
+                                    <span>Terima Pelunasan Denda Tunai</span>
+                                </button>
+                            </form>
+                        @endif
+
+                        <!-- Receipt Print Button -->
+                        <a href="{{ route('receipt.show', $borrowing) }}" target="_blank" class="px-3.5 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl border border-zinc-200/80 transition flex items-center gap-1.5">
+                            <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-600"></i>
+                            <span>Cetak Struk Sirkulasi</span>
+                        </a>
                     </div>
                 </div>
             @elseif($book)
                 <!-- Book Result -->
-                <div class="bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-4">
+                <div class="bg-white rounded-2xl border border-zinc-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
                     <div class="flex items-start gap-4">
                         <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-20 h-28 object-cover rounded-xl shadow-xs border border-zinc-200 flex-shrink-0">
                         <div class="space-y-1.5 flex-1">
@@ -228,10 +273,65 @@
                     <i data-lucide="scan-line" class="w-12 h-12 mx-auto mb-3 text-orange-500/60 animate-pulse"></i>
                     <h3 class="text-sm font-bold text-zinc-800 mb-1">Siap Menerima Scan</h3>
                     <p class="text-xs text-zinc-400 max-w-md mx-auto">
-                        Arahkan scanner ke QR Code peminjaman anggota atau ketikkan kode di sebelah kiri untuk validasi cepat.
+                        Nyalakan webcam kamera di atas atau arahkan barcode reader fisik untuk memulai verifikasi cepat.
                     </p>
                 </div>
             @endif
         </div>
     </div>
+
+    <!-- Live Webcam Script -->
+    <script>
+        let videoStream = null;
+
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime); // 880 Hz beep
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.12);
+            } catch (e) {
+                console.log('AudioContext not allowed without gesture');
+            }
+        }
+
+        async function toggleCamera() {
+            if (videoStream) {
+                stopCamera();
+            } else {
+                startCamera();
+            }
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                videoStream = stream;
+                const videoEl = document.getElementById('webcam-feed');
+                videoEl.srcObject = stream;
+                document.getElementById('camera-box').classList.remove('hidden');
+                document.getElementById('cam-status-text').innerText = 'Matikan Kamera';
+                playBeep();
+            } catch (err) {
+                alert('Tidak dapat mengakses kamera webcam. Pastikan izin kamera telah diberikan di browser Anda: ' + err.message);
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            document.getElementById('camera-box').classList.add('hidden');
+            document.getElementById('cam-status-text').innerText = 'Aktifkan Kamera Webcam';
+        }
+    </script>
 </x-layouts.app>

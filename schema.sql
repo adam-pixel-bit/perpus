@@ -6,6 +6,7 @@
 -- ==============================================================================
 
 -- 1. DROP EXISTING TABLES (Urutan dibalik agar aman dari foreign key constraint)
+DROP TABLE IF EXISTS book_requests CASCADE;
 DROP TABLE IF EXISTS audit_logs CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
@@ -48,6 +49,7 @@ CREATE TABLE users (
     role VARCHAR(50) NOT NULL DEFAULT 'user', -- 'admin' atau 'user'
     phone VARCHAR(50) NULL,
     address TEXT NULL,
+    avatar VARCHAR(500) NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     remember_token VARCHAR(100) NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -188,6 +190,9 @@ CREATE TABLE borrowings (
     notes TEXT NULL,
     admin_note TEXT NULL,
     fines NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    fine_payment_status VARCHAR(20) NOT NULL DEFAULT 'none',
+    fine_paid_at TIMESTAMP WITH TIME ZONE NULL,
+    fine_received_by BIGINT NULL REFERENCES users(id) ON DELETE SET NULL,
     approved_by BIGINT NULL REFERENCES users(id) ON DELETE SET NULL,
     returned_to BIGINT NULL REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -260,6 +265,31 @@ CREATE TABLE audit_logs (
 CREATE INDEX idx_audit_logs_user_created ON audit_logs(user_id, created_at);
 CREATE INDEX idx_audit_logs_action ON audit_logs(action);
 
+-- 15. TABEL BOOK_REQUESTS (Usulan Pengadaan Buku Anggota)
+CREATE TABLE book_requests (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    publisher VARCHAR(255) NULL,
+    publication_year SMALLINT NULL,
+    isbn VARCHAR(30) NULL,
+    reason TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'fulfilled')),
+    admin_note TEXT NULL,
+    reviewed_by BIGINT NULL REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_book_requests_user_status ON book_requests(user_id, status);
+CREATE INDEX idx_book_requests_status ON book_requests(status);
+
+CREATE TRIGGER set_timestamp_book_requests
+BEFORE UPDATE ON book_requests
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 -- ==============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES UNTUK SUPABASE
 -- ==============================================================================
@@ -272,6 +302,7 @@ ALTER TABLE borrowings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE book_requests ENABLE ROW LEVEL SECURITY;
 
 -- Buat Kebijakan Akses Penuh (Permissive) untuk koneksi aplikasi backend & service role
 CREATE POLICY "Full access for all operations on users" ON users FOR ALL USING (true) WITH CHECK (true);
@@ -281,6 +312,7 @@ CREATE POLICY "Full access for all operations on borrowings" ON borrowings FOR A
 CREATE POLICY "Full access for all operations on notifications" ON notifications FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Full access for all operations on reviews" ON reviews FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Full access for all operations on audit_logs" ON audit_logs FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Full access for all operations on book_requests" ON book_requests FOR ALL USING (true) WITH CHECK (true);
 
 -- Selesai
 COMMENT ON TABLE users IS 'Data pengguna dan kredensial login SIPUS Digital';

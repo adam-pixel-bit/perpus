@@ -236,9 +236,27 @@
                                             <i data-lucide="corner-down-left" class="w-3 h-3"></i>
                                             <span>Kembalikan</span>
                                         </button>
-                                    @else
-                                        <span class="text-[11px] text-zinc-400">Selesai</span>
                                     @endif
+
+                                    <!-- Pay Fine Action -->
+                                    @if($b->fines > 0 && $b->fine_payment_status !== 'paid')
+                                        <form method="POST" action="{{ route('admin.borrowings.payFine', $b) }}" class="inline">
+                                            @csrf
+                                            <button type="submit" title="Terima Pelunasan Denda" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-semibold text-[11px] transition cursor-pointer">
+                                                Lunas
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    <!-- Receipt Button -->
+                                    <a
+                                        href="{{ route('receipt.show', $b) }}"
+                                        target="_blank"
+                                        class="p-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-600 rounded-lg transition"
+                                        title="Cetak Struk Sirkulasi"
+                                    >
+                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

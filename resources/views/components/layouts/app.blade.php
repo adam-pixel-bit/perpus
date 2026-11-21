@@ -147,6 +147,25 @@
                                         {{ \App\Models\Category::count() }}
                                     </span>
                                 </a>
+
+                                <!-- Usulan Pengadaan Buku -->
+                                <a href="{{ route('admin.requests.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.requests.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('admin.requests.*'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="sparkles" class="w-4 h-4 {{ request()->routeIs('admin.requests.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
+                                        <span>Usulan Buku</span>
+                                    </div>
+                                    @php
+                                        $pendingReqCount = \App\Models\BookRequest::where('status', 'pending')->count();
+                                    @endphp
+                                    @if($pendingReqCount > 0)
+                                        <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                                            {{ $pendingReqCount }}
+                                        </span>
+                                    @endif
+                                </a>
                             @else
                                 <!-- MENU ANGGOTA / USER -->
                                 <a href="{{ route('user.dashboard') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('user.dashboard') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
@@ -179,6 +198,28 @@
                                     <div class="flex items-center space-x-2.5">
                                         <i data-lucide="history" class="w-4 h-4 {{ request()->routeIs('user.borrowings.*') ? 'text-zinc-950' : 'text-zinc-400' }}"></i>
                                         <span>Riwayat Pinjam</span>
+                                    </div>
+                                </a>
+
+                                <!-- Usulan Pengadaan Buku Anggota -->
+                                <a href="{{ route('user.requests.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('user.requests.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('user.requests.*'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="sparkles" class="w-4 h-4 {{ request()->routeIs('user.requests.*') ? 'text-zinc-950' : 'text-zinc-400' }}"></i>
+                                        <span>Usulan Buku Baru</span>
+                                    </div>
+                                </a>
+
+                                <!-- Profil & KTA Anggota -->
+                                <a href="{{ route('profile.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('profile.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('profile.*'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="id-card" class="w-4 h-4 {{ request()->routeIs('profile.*') ? 'text-zinc-950' : 'text-zinc-400' }}"></i>
+                                        <span>Kartu Anggota & Profil</span>
                                     </div>
                                 </a>
                             @endif
@@ -223,17 +264,15 @@
                 <!-- Sidebar Bottom: Akun & Logout -->
                 <div class="p-4 border-t border-zinc-100">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2.5 min-w-0">
-                            <div class="w-8 h-8 rounded-full bg-zinc-950 text-white font-bold flex items-center justify-center text-xs shadow-xs">
-                                {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
-                            </div>
+                        <a href="{{ route('profile.index') }}" title="Buka Pengaturan Profil & Akun" class="flex items-center space-x-2.5 min-w-0 group hover:opacity-80 transition">
+                            <img src="{{ auth()->user()?->avatar_url }}" alt="{{ auth()->user()?->name }}" class="w-8 h-8 rounded-full object-cover border border-zinc-200 shadow-xs">
                             <div class="min-w-0">
-                                <p class="text-xs font-bold text-zinc-900 truncate max-w-[120px]">{{ auth()->user()?->name ?? 'Tamu' }}</p>
+                                <p class="text-xs font-bold text-zinc-900 truncate max-w-[120px] group-hover:text-orange-600 transition-colors">{{ auth()->user()?->name ?? 'Tamu' }}</p>
                                 <p class="text-[10px] text-zinc-400 font-medium">
                                     {{ auth()->user()?->isAdmin() ? 'Administrator' : 'Anggota Perpus' }}
                                 </p>
                             </div>
-                        </div>
+                        </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" title="Keluar / Logout" class="p-2 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer">

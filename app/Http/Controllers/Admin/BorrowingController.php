@@ -199,6 +199,7 @@ class BorrowingController extends Controller
                     'status' => 'returned',
                     'actual_return_date' => $actualDate,
                     'fines' => $fineAmount,
+                    'fine_payment_status' => $fineAmount > 0 ? 'unpaid' : 'none',
                     'admin_note' => $validated['admin_note'] ?? 'Buku telah diterima kembali oleh staf perpustakaan.',
                     'returned_to' => Auth::id(),
                 ]);
@@ -220,6 +221,38 @@ class BorrowingController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal memproses pengembalian: '.$e->getMessage());
         }
+    }
+
+    /**
+     * Mark fine as paid by the member.
+     */
+    public function payFine(Borrowing $borrowing): RedirectResponse
+    {
+        if ($borrowing->fines <= 0) {
+            return back()->with('error', 'Transaksi ini tidak memiliki tagihan denda.');
+        }
+
+        if ($borrowing->fine_payment_status === 'paid') {
+            return back()->with('info', 'Denda pada transaksi ini sudah berstatus lunas.');
+        }
+
+        $borrowing->update([
+            'fine_payment_status' => 'paid',
+            'fine_paid_at' => now(),
+            'fine_received_by' => Auth::id(),
+        ]);
+
+        Notification::create([
+            'user_id' => $borrowing->user_id,
+            'title' => 'Denda Telah Dilunasi',
+            'message' => 'Pembayaran denda sebesar Rp '.number_format($borrowing->fines, 0, ',', '.')." untuk transaksi [{$borrowing->borrowing_code}] telah berhasil diterima oleh petugas.",
+            'type' => 'success',
+            'link' => route('user.borrowings.index'),
+        ]);
+
+        AuditLog::record('pay_fine', "Menerima pembayaran denda Rp {$borrowing->fines} untuk transaksi {$borrowing->borrowing_code} dari {$borrowing->user->name}.", $borrowing);
+
+        return back()->with('success', 'Pelunasan denda sebesar Rp '.number_format($borrowing->fines, 0, ',', '.').' berhasil dicatat!');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\BookController as AdminBookController;
+use App\Http\Controllers\Admin\BookRequestController as AdminBookRequestController;
 use App\Http\Controllers\Admin\BorrowingController as AdminBorrowingController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -10,7 +11,10 @@ use App\Http\Controllers\Admin\ScannerController as AdminScannerController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\User\BookCatalogController as UserBookCatalogController;
+use App\Http\Controllers\User\BookRequestController as UserBookRequestController;
 use App\Http\Controllers\User\BorrowingController as UserBorrowingController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ReviewController as UserReviewController;
@@ -50,8 +54,17 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Notifications (Authenticated)
+// Profile & Account Settings (Authenticated)
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/card', [ProfileController::class, 'memberCard'])->name('profile.card');
+
+    // Printable Circulation Receipt
+    Route::get('/borrowings/{borrowing}/receipt', [ReceiptController::class, 'show'])->name('receipt.show');
+
+    // Notifications
     Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
 });
@@ -78,7 +91,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/borrowings/{borrowing}/approve', [AdminBorrowingController::class, 'approve'])->name('borrowings.approve');
     Route::patch('/borrowings/{borrowing}/reject', [AdminBorrowingController::class, 'reject'])->name('borrowings.reject');
     Route::patch('/borrowings/{borrowing}/return', [AdminBorrowingController::class, 'returnBook'])->name('borrowings.return');
+    Route::post('/borrowings/{borrowing}/pay-fine', [AdminBorrowingController::class, 'payFine'])->name('borrowings.payFine');
     Route::post('/borrowings/run-fines-calculation', [AdminBorrowingController::class, 'runFinesCalculation'])->name('borrowings.runFines');
+
+    // Book Requests from Members
+    Route::get('/book-requests', [AdminBookRequestController::class, 'index'])->name('requests.index');
+    Route::patch('/book-requests/{bookRequest}/status', [AdminBookRequestController::class, 'updateStatus'])->name('requests.updateStatus');
 
     // QR & Barcode Scanner Desk
     Route::get('/scanner', [AdminScannerController::class, 'index'])->name('scanner.index');
@@ -86,6 +104,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Reports
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/print', [AdminReportController::class, 'print'])->name('reports.print');
     Route::get('/reports/export', [AdminReportController::class, 'export'])->name('reports.export');
 
     // Security & Audit Logs
@@ -108,4 +127,8 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(f
     Route::post('/borrowings', [UserBorrowingController::class, 'store'])->name('borrowings.store');
     Route::post('/borrowings/{borrowing}/renew', [UserBorrowingController::class, 'renew'])->name('borrowings.renew');
     Route::delete('/borrowings/{borrowing}/cancel', [UserBorrowingController::class, 'cancel'])->name('borrowings.cancel');
+
+    // Book Procurement Requests
+    Route::get('/book-requests', [UserBookRequestController::class, 'index'])->name('requests.index');
+    Route::post('/book-requests', [UserBookRequestController::class, 'store'])->name('requests.store');
 });

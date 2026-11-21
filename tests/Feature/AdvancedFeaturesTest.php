@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\AuditLog;
 use App\Models\Book;
+use App\Models\BookRequest;
 use App\Models\Borrowing;
 use App\Models\Category;
 use App\Models\User;
@@ -194,5 +195,102 @@ class AdvancedFeaturesTest extends TestCase
         $this->actingAs($this->admin)->get('/admin/audit-logs')->assertStatus(200);
         $this->actingAs($this->admin)->get('/admin/scanner')->assertStatus(200);
         $this->actingAs($this->admin)->get('/admin/scanner/lookup?code=BRW-FINE-001')->assertStatus(200);
+    }
+
+    public function test_user_can_update_profile_and_password(): void
+    {
+        $this->actingAs($this->user)->get('/profile')->assertStatus(200);
+
+        // Update profile
+        $response = $this->actingAs($this->user)->put('/profile', [
+            'name' => 'Member Updated Name',
+            'email' => 'member@test.com',
+            'phone' => '081299998888',
+            'address' => 'Jl. Baru No. 10',
+        ]);
+        $response->assertSessionHas('success');
+        $this->user->refresh();
+        $this->assertEquals('Member Updated Name', $this->user->name);
+
+        // Change password
+        $pwdResponse = $this->actingAs($this->user)->put('/profile/password', [
+            'current_password' => 'password123',
+            'password' => 'brandnewpass123',
+            'password_confirmation' => 'brandnewpass123',
+        ]);
+        $pwdResponse->assertSessionHas('success');
+        $this->user->refresh();
+        $this->assertTrue(Hash::check('brandnewpass123', $this->user->password));
+    }
+
+    public function test_user_can_view_member_card_and_circulation_receipt(): void
+    {
+        $borrowing = Borrowing::create([
+            'user_id' => $this->user->id,
+            'book_id' => $this->book->id,
+            'borrowing_code' => 'BRW-CARD-001',
+            'borrow_date' => Carbon::today(),
+            'return_due_date' => Carbon::today()->addDays(7),
+            'status' => 'borrowed',
+        ]);
+
+        $this->actingAs($this->user)->get('/profile/card')->assertStatus(200);
+        $this->actingAs($this->user)->get("/borrowings/{$borrowing->id}/receipt")->assertStatus(200);
+    }
+
+    public function test_admin_can_receive_fine_payment(): void
+    {
+        $borrowing = Borrowing::create([
+            'user_id' => $this->user->id,
+            'book_id' => $this->book->id,
+            'borrowing_code' => 'BRW-FINE-PAY',
+            'borrow_date' => Carbon::today()->subDays(10),
+            'return_due_date' => Carbon::today()->subDays(3),
+            'status' => 'returned',
+            'fines' => 6000,
+            'fine_payment_status' => 'unpaid',
+        ]);
+
+        $response = $this->actingAs($this->admin)->post("/admin/borrowings/{$borrowing->id}/pay-fine");
+        $response->assertSessionHas('success');
+
+        $borrowing->refresh();
+        $this->assertEquals('paid', $borrowing->fine_payment_status);
+        $this->assertNotNull($borrowing->fine_paid_at);
+        $this->assertEquals($this->admin->id, $borrowing->fine_received_by);
+    }
+
+    public function test_book_request_lifecycle(): void
+    {
+        // 1. Member submits book request
+        $response = $this->actingAs($this->user)->post('/user/book-requests', [
+            'title' => 'Clean Architecture',
+            'author' => 'Robert C. Martin',
+            'publisher' => 'Prentice Hall',
+            'publication_year' => 2017,
+            'reason' => 'Sangat penting untuk pembelajaran arsitektur sistem.',
+        ]);
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('book_requests', [
+            'user_id' => $this->user->id,
+            'title' => 'Clean Architecture',
+            'status' => 'pending',
+        ]);
+
+        $req = BookRequest::where('title', 'Clean Architecture')->first();
+
+        // 2. Admin reviews & approves
+        $adminResp = $this->actingAs($this->admin)->patch("/admin/book-requests/{$req->id}/status", [
+            'status' => 'approved',
+            'admin_note' => 'Akan dipesan bulan ini.',
+        ]);
+        $adminResp->assertSessionHas('success');
+        $req->refresh();
+        $this->assertEquals('approved', $req->status);
+    }
+
+    public function test_admin_can_access_official_printable_report(): void
+    {
+        $this->actingAs($this->admin)->get('/admin/reports/print')->assertStatus(200);
     }
 }

@@ -6,7 +6,7 @@
 -- ==============================================================================
 
 -- 1. BERSIHKAN DATA SEBELUMNYA (Opsional tapi aman untuk mencegah duplikasi)
-TRUNCATE TABLE audit_logs, reviews, notifications, borrowings, books, categories, users RESTART IDENTITY CASCADE;
+TRUNCATE TABLE book_requests, audit_logs, reviews, notifications, borrowings, books, categories, users RESTART IDENTITY CASCADE;
 
 -- 2. INSERT USERS (Password default semua akun: password123)
 -- Hash bcrypt '$2y$12$G.DZwCIVzsdFY3niJ6CCp.r2zhyO4t2V/NCr.jdvkYsim656Jgj3i' = 'password123'
@@ -82,3 +82,9 @@ INSERT INTO audit_logs (id, user_id, action, description, ip_address, user_agent
 (1, 1, 'system_initialized', 'Inisialisasi sistem perpustakaan SIPUS Digital berhasil dijalankan.', '127.0.0.1', 'Database Seeder', NOW());
 
 SELECT setval('audit_logs_id_seq', (SELECT MAX(id) FROM audit_logs));
+
+-- 9. INSERT SAMPLE BOOK REQUESTS
+INSERT INTO book_requests (id, user_id, title, author, publisher, publication_year, isbn, reason, status, admin_note, reviewed_by, created_at, updated_at) VALUES
+(1, 2, 'Refactoring: Improving the Design of Existing Code', 'Martin Fowler', 'Addison-Wesley Professional', 2018, '978-0134757599', 'Buku ini sangat penting untuk referensi teknik refaktorisasi kode yang bersih dalam praktikum perangkat lunak.', 'approved', 'Disetujui untuk pengadaan anggaran triwulan ini.', 1, NOW(), NOW());
+
+SELECT setval('book_requests_id_seq', (SELECT MAX(id) FROM book_requests));
