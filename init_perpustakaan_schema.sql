@@ -6,6 +6,8 @@
 -- ==============================================================================
 
 -- 1. DROP EXISTING TABLES (Urutan dibalik agar aman dari foreign key constraint)
+DROP TABLE IF EXISTS audit_logs CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS borrowings CASCADE;
 DROP TABLE IF EXISTS books CASCADE;
@@ -182,6 +184,7 @@ CREATE TABLE borrowings (
     return_due_date DATE NOT NULL,
     actual_return_date DATE NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'borrowed', 'returned', 'overdue')),
+    renewed_count SMALLINT NOT NULL DEFAULT 0,
     notes TEXT NULL,
     admin_note TEXT NULL,
     fines NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
@@ -220,6 +223,43 @@ BEFORE UPDATE ON notifications
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+-- 13. TABEL REVIEWS (Rating & Ulasan Buku)
+CREATE TABLE reviews (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    book_id BIGINT NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    borrowing_id BIGINT NULL REFERENCES borrowings(id) ON DELETE SET NULL,
+    rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_reviews_book_created ON reviews(book_id, created_at);
+
+CREATE TRIGGER set_timestamp_reviews
+BEFORE UPDATE ON reviews
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- 14. TABEL AUDIT_LOGS (Jejak Aktivitas & Keamanan Sistem)
+CREATE TABLE audit_logs (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NULL REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(255) NOT NULL,
+    model_type VARCHAR(255) NULL,
+    model_id BIGINT NULL,
+    description TEXT NOT NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent TEXT NULL,
+    old_values JSONB NULL,
+    new_values JSONB NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_audit_logs_user_created ON audit_logs(user_id, created_at);
+CREATE INDEX idx_audit_logs_action ON audit_logs(action);
+
 -- ==============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES UNTUK SUPABASE
 -- ==============================================================================
@@ -230,6 +270,8 @@ ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE books ENABLE ROW LEVEL SECURITY;
 ALTER TABLE borrowings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- Buat Kebijakan Akses Penuh (Permissive) untuk koneksi aplikasi backend & service role
 CREATE POLICY "Full access for all operations on users" ON users FOR ALL USING (true) WITH CHECK (true);
@@ -237,6 +279,8 @@ CREATE POLICY "Full access for all operations on categories" ON categories FOR A
 CREATE POLICY "Full access for all operations on books" ON books FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Full access for all operations on borrowings" ON borrowings FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Full access for all operations on notifications" ON notifications FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Full access for all operations on reviews" ON reviews FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Full access for all operations on audit_logs" ON audit_logs FOR ALL USING (true) WITH CHECK (true);
 
 -- Selesai
 COMMENT ON TABLE users IS 'Data pengguna dan kredensial login SIPUS Digital';

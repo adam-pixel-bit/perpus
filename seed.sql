@@ -6,7 +6,7 @@
 -- ==============================================================================
 
 -- 1. BERSIHKAN DATA SEBELUMNYA (Opsional tapi aman untuk mencegah duplikasi)
-TRUNCATE TABLE notifications, borrowings, books, categories, users RESTART IDENTITY CASCADE;
+TRUNCATE TABLE audit_logs, reviews, notifications, borrowings, books, categories, users RESTART IDENTITY CASCADE;
 
 -- 2. INSERT USERS (Password default semua akun: password123)
 -- Hash bcrypt '$2y$12$G.DZwCIVzsdFY3niJ6CCp.r2zhyO4t2V/NCr.jdvkYsim656Jgj3i' = 'password123'
@@ -69,3 +69,16 @@ INSERT INTO notifications (id, user_id, title, message, type, is_read, link, cre
 
 -- Sesuaikan sequence ID notifications
 SELECT setval('notifications_id_seq', (SELECT MAX(id) FROM notifications));
+
+-- 7. INSERT SAMPLE REVIEWS
+INSERT INTO reviews (id, user_id, book_id, borrowing_id, rating, comment, created_at, updated_at) VALUES
+(1, 2, 6, 4, 5, 'Buku The Lean Startup sangat membuka wawasan tentang cara membangun produk dengan efisien melalui validasi nyata.', NOW(), NOW()),
+(2, 2, 1, 1, 5, 'Clean Code wajib dibaca setiap software engineer! Pembahasannya tentang penamaan variabel dan fungsi sangat relevan.', NOW(), NOW());
+
+SELECT setval('reviews_id_seq', (SELECT MAX(id) FROM reviews));
+
+-- 8. INSERT INITIAL AUDIT LOGS
+INSERT INTO audit_logs (id, user_id, action, description, ip_address, user_agent, created_at) VALUES
+(1, 1, 'system_initialized', 'Inisialisasi sistem perpustakaan SIPUS Digital berhasil dijalankan.', '127.0.0.1', 'Database Seeder', NOW());
+
+SELECT setval('audit_logs_id_seq', (SELECT MAX(id) FROM audit_logs));

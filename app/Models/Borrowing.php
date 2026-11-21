@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Borrowing extends Model
 {
@@ -19,6 +20,7 @@ class Borrowing extends Model
         'return_due_date',
         'actual_return_date',
         'status',
+        'renewed_count',
         'notes',
         'admin_note',
         'fines',
@@ -33,6 +35,7 @@ class Borrowing extends Model
             'return_due_date' => 'date',
             'actual_return_date' => 'date',
             'fines' => 'decimal:2',
+            'renewed_count' => 'integer',
         ];
     }
 
@@ -66,6 +69,14 @@ class Borrowing extends Model
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'returned_to');
+    }
+
+    /**
+     * Review given by user for this borrowing.
+     */
+    public function review(): HasOne
+    {
+        return $this->hasOne(Review::class);
     }
 
     /**

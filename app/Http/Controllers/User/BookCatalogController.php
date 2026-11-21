@@ -4,8 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Borrowing;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class BookCatalogController extends Controller
@@ -58,7 +61,15 @@ class BookCatalogController extends Controller
      */
     public function show(Book $book): View
     {
-        $book->load('category');
+        $book->load(['category', 'reviews.user']);
+
+        // Check if user has returned this book to allow review
+        $canReview = Auth::check() && (
+            Auth::user()->isAdmin() ||
+            Borrowing::where('user_id', Auth::id())->where('book_id', $book->id)->whereIn('status', ['returned', 'borrowed'])->exists()
+        );
+
+        $userReview = Auth::check() ? Review::where('user_id', Auth::id())->where('book_id', $book->id)->first() : null;
 
         // Related books from same category
         $relatedBooks = Book::where('category_id', $book->category_id)
@@ -66,6 +77,6 @@ class BookCatalogController extends Controller
             ->take(4)
             ->get();
 
-        return view('user.catalog.show', compact('book', 'relatedBooks'));
+        return view('user.catalog.show', compact('book', 'relatedBooks', 'canReview', 'userReview'));
     }
 }

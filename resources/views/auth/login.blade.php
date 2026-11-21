@@ -141,7 +141,7 @@
                         @enderror
                     </div>
 
-                    <!-- Remember Me Checkbox (as seen in image) -->
+                    <!-- Remember Me & Forgot Password Row -->
                     <div class="flex items-center justify-between text-xs pt-0.5">
                         <label class="flex items-center space-x-2 cursor-pointer select-none">
                             <input
@@ -153,8 +153,8 @@
                             >
                             <span class="text-xs text-zinc-600 font-medium">Remember Me</span>
                         </label>
-                        <a href="{{ route('register') }}" class="text-xs font-semibold text-orange-600 hover:text-orange-700">
-                            Daftar Akun Baru →
+                        <a href="{{ route('password.request') }}" class="text-xs font-semibold text-orange-600 hover:text-orange-700">
+                            Lupa Kata Sandi?
                         </a>
                     </div>
 

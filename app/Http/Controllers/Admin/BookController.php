@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\AuditLog;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
@@ -95,7 +96,9 @@ class BookController extends Controller
             $data['cover_image'] = $request->input('cover_image_url');
         }
 
-        Book::create($data);
+        $book = Book::create($data);
+
+        AuditLog::record('create_book', "Menambahkan buku baru '{$book->title}' (ISBN: {$book->isbn}, Stok: {$book->stock})", $book);
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Buku "'.$data['title'].'" berhasil ditambahkan ke katalog!');
@@ -160,6 +163,8 @@ class BookController extends Controller
 
         $book->update($data);
 
+        AuditLog::record('update_book', "Memperbarui data buku '{$book->title}' (Stok Baru: {$book->stock}, Tersedia: {$book->available_stock})", $book);
+
         return redirect()->route('admin.books.index')
             ->with('success', 'Informasi buku "'.$book->title.'" berhasil diperbarui.');
     }
@@ -184,6 +189,8 @@ class BookController extends Controller
         }
 
         $book->delete();
+
+        AuditLog::record('delete_book', "Menghapus buku '{$title}' dari katalog perpustakaan.");
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Buku "'.$title.'" berhasil dihapus dari sistem.');

@@ -133,6 +133,108 @@
             </div>
         </div>
 
+        <!-- Reviews & Ratings Section -->
+        <div id="review-section" class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs p-5 sm:p-7 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-100 gap-3">
+                <div>
+                    <h3 class="font-bold text-base text-zinc-900 flex items-center gap-2">
+                        <span class="text-amber-500">★</span>
+                        <span>Ulasan & Rating Pembaca</span>
+                    </h3>
+                    <p class="text-xs text-zinc-400 mt-0.5">Pendapat dan evaluasi dari anggota yang telah membaca buku ini.</p>
+                </div>
+                <div class="flex items-center space-x-3 bg-zinc-50 px-4 py-2 rounded-2xl border border-zinc-200/70">
+                    <span class="text-2xl font-bold text-zinc-900">{{ $book->average_rating }}</span>
+                    <div class="text-xs">
+                        <div class="flex text-amber-400 text-xs">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span>{{ $i <= round($book->average_rating) ? '★' : '☆' }}</span>
+                            @endfor
+                        </div>
+                        <span class="text-[10px] text-zinc-400">{{ $book->reviews_count }} Ulasan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Form for eligible users -->
+            @if($canReview)
+                <div class="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-3">
+                    <h4 class="font-bold text-xs text-zinc-900 flex items-center gap-1.5">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5 text-orange-600"></i>
+                        <span>{{ $userReview ? 'Perbarui Ulasan Anda' : 'Tulis Ulasan & Beri Rating' }}</span>
+                    </h4>
+
+                    <form method="POST" action="{{ route('user.reviews.store', $book) }}" class="space-y-3">
+                        @csrf
+                        <div>
+                            <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Pilih Bintang Rating</label>
+                            <div class="flex items-center space-x-2">
+                                <select name="rating" required class="px-3 py-1.5 text-xs bg-white border border-zinc-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-800 font-semibold">
+                                    <option value="5" {{ ($userReview?->rating ?? 5) == 5 ? 'selected' : '' }}>★★★★★ (5 - Sangat Direkomendasikan)</option>
+                                    <option value="4" {{ ($userReview?->rating ?? 5) == 4 ? 'selected' : '' }}>★★★★☆ (4 - Bagus & Bermanfaat)</option>
+                                    <option value="3" {{ ($userReview?->rating ?? 5) == 3 ? 'selected' : '' }}>★★★☆☆ (3 - Cukup Baik)</option>
+                                    <option value="2" {{ ($userReview?->rating ?? 5) == 2 ? 'selected' : '' }}>★★☆☆☆ (2 - Kurang Sesuai)</option>
+                                    <option value="1" {{ ($userReview?->rating ?? 5) == 1 ? 'selected' : '' }}>★☆☆☆☆ (1 - Tidak Direkomendasikan)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Komentar / Pengalaman Membaca</label>
+                            <textarea
+                                name="comment"
+                                rows="3"
+                                required
+                                placeholder="Bagikan kesan atau wawasan yang Anda peroleh setelah membaca buku ini..."
+                                class="w-full px-3 py-2 text-xs bg-white border border-zinc-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 text-zinc-900 placeholder-zinc-400"
+                            >{{ old('comment', $userReview?->comment) }}</textarea>
+                            @error('comment')
+                                <p class="text-[10px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="px-4 py-2 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                            <span>{{ $userReview ? 'Simpan Perubahan Ulasan' : 'Kirim Ulasan' }}</span>
+                        </button>
+                    </form>
+                </div>
+            @endif
+
+            <!-- Review Items List -->
+            <div class="space-y-4">
+                @forelse($book->reviews as $rev)
+                    <div class="p-4 rounded-xl border border-zinc-100 bg-white hover:bg-zinc-50/50 transition-colors">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-full bg-zinc-900 text-white font-bold flex items-center justify-center text-[11px]">
+                                    {{ strtoupper(substr($rev->user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-xs text-zinc-900">{{ $rev->user->name }}</p>
+                                    <p class="text-[10px] text-zinc-400">{{ $rev->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                            <div class="flex text-amber-400 text-xs">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <span>{{ $i <= $rev->rating ? '★' : '☆' }}</span>
+                                @endfor
+                            </div>
+                        </div>
+                        <p class="text-xs text-zinc-600 leading-relaxed pl-9">
+                            {{ $rev->comment }}
+                        </p>
+                    </div>
+                @empty
+                    <div class="py-8 text-center text-zinc-400 bg-zinc-50/50 rounded-xl border border-dashed border-zinc-200">
+                        <i data-lucide="message-square" class="w-6 h-6 mx-auto mb-1.5 text-zinc-300"></i>
+                        <p class="text-xs font-semibold text-zinc-700">Belum ada ulasan untuk buku ini</p>
+                        <p class="text-[11px] text-zinc-400 mt-0.5">Jadilah anggota pertama yang meminjam dan mengulas buku ini!</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
         <!-- Related Books in Same Category -->
         @if($relatedBooks->count() > 0)
             <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs p-5 space-y-4">

@@ -54,6 +54,32 @@ class Book extends Model
     }
 
     /**
+     * Reviews for this book.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class)->latest();
+    }
+
+    /**
+     * Get average rating (rounded to 1 decimal place).
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        $avg = $this->reviews()->avg('rating');
+
+        return $avg ? round((float) $avg, 1) : 5.0;
+    }
+
+    /**
+     * Get total review count.
+     */
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
+
+    /**
      * Get the URL for the cover image or a default fallback.
      */
     public function getCoverUrlAttribute(): string

@@ -41,6 +41,21 @@
         </div>
 
         <div class="flex items-center space-x-2 shrink-0">
+            <!-- Run Fines Auto Calculation -->
+            <form method="POST" action="{{ route('admin.borrowings.runFines') }}" class="inline">
+                @csrf
+                <button type="submit" title="Jalankan otomatis kalkulasi denda & kirim notifikasi" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200 shadow-2xs transition-all cursor-pointer">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-500"></i>
+                    <span>Hitung Denda Otomatis</span>
+                </button>
+            </form>
+
+            <!-- Scanner Desk Link -->
+            <a href="{{ route('admin.scanner.index') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-zinc-950 hover:bg-black rounded-xl shadow-2xs transition-all">
+                <i data-lucide="qr-code" class="w-3.5 h-3.5 text-orange-400"></i>
+                <span>Meja Scanner</span>
+            </a>
+
             <a href="{{ route('admin.reports.export') }}" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200/80 rounded-xl hover:bg-zinc-50 shadow-2xs transition-all">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i>
                 <span>Ekspor CSV</span>

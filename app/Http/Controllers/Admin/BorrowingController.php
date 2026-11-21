@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -115,6 +117,9 @@ class BorrowingController extends Controller
                     'type' => 'success',
                     'link' => route('user.borrowings.index'),
                 ]);
+
+                // Record Audit Log
+                AuditLog::record('approve_borrowing', "Menyetujui peminjaman {$borrowing->borrowing_code} ('{$book->title}') untuk anggota {$borrowing->user->name}.", $borrowing);
             });
 
             return back()->with('success', "Peminjaman dengan kode {$borrowing->borrowing_code} berhasil disetujui dan stok buku telah diperbarui.");
@@ -149,6 +154,8 @@ class BorrowingController extends Controller
             'type' => 'danger',
             'link' => route('user.borrowings.index'),
         ]);
+
+        AuditLog::record('reject_borrowing', "Menolak permohonan peminjaman {$borrowing->borrowing_code} ('{$borrowing->book->title}') anggota {$borrowing->user->name}.", $borrowing);
 
         return back()->with('success', "Pengajuan peminjaman {$borrowing->borrowing_code} telah ditolak.");
     }
@@ -204,11 +211,24 @@ class BorrowingController extends Controller
                     'type' => 'info',
                     'link' => route('user.borrowings.index'),
                 ]);
+
+                // Record Audit Log
+                AuditLog::record('return_book', "Menerima pengembalian buku {$borrowing->borrowing_code} ('{$book->title}') dari {$borrowing->user->name}.".($fineAmount > 0 ? " Denda: Rp {$fineAmount}" : ''), $borrowing);
             });
 
             return back()->with('success', "Pengembalian buku {$borrowing->book->title} berhasil dicatat!");
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal memproses pengembalian: '.$e->getMessage());
         }
+    }
+
+    /**
+     * Trigger manual calculation of overdue fines.
+     */
+    public function runFinesCalculation(): RedirectResponse
+    {
+        Artisan::call('perpus:calculate-fines');
+
+        return back()->with('success', 'Kalkulasi denda dan pengingat jatuh tempo berhasil dieksekusi secara otomatis!');
     }
 }

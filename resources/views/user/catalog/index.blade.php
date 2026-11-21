@@ -23,7 +23,9 @@
                 <input
                     type="text"
                     name="search"
+                    id="catalog-search"
                     value="{{ $search }}"
+                    oninput="liveFilterBooks(this.value)"
                     placeholder="Ketik judul buku, pengarang, atau ISBN..."
                     class="w-full pl-8.5 pr-4 py-1.5 text-xs bg-zinc-50/70 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:bg-white text-zinc-900 placeholder-zinc-400"
                 >
@@ -76,9 +78,14 @@
     </div>
 
     <!-- Book Grid Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
+    <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
         @forelse($books as $book)
-            <div class="bg-white rounded-2xl border border-zinc-200/80 p-3.5 shadow-2xs hover:border-zinc-300 transition-all flex flex-col justify-between group">
+            <div
+                class="book-card bg-white rounded-2xl border border-zinc-200/80 p-3.5 shadow-2xs hover:border-zinc-300 transition-all flex flex-col justify-between group"
+                data-title="{{ strtolower($book->title) }}"
+                data-author="{{ strtolower($book->author) }}"
+                data-isbn="{{ strtolower($book->isbn) }}"
+            >
                 <div class="space-y-2.5">
                     <!-- Cover Aspect Ratio 3:4 -->
                     <div class="aspect-[3/4] rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200/70 relative">
@@ -110,8 +117,8 @@
                             <span class="text-[10px] font-semibold text-brand-orange uppercase tracking-tight">
                                 {{ $book->category->name ?? 'Umum' }}
                             </span>
-                            <span class="text-[10px] font-medium text-amber-500 flex items-center space-x-0.5">
-                                <span>★</span> <span>5.0</span>
+                            <span class="text-[10px] font-medium text-amber-500 flex items-center space-x-0.5" title="Rating pembaca">
+                                <span>★</span> <span>{{ $book->average_rating }}</span>
                             </span>
                         </div>
                         <h3 class="font-semibold text-xs text-zinc-900 line-clamp-2 mt-0.5 group-hover:text-brand-orange transition-colors" title="{{ $book->title }}">
@@ -236,6 +243,22 @@
 
         function closeBorrowModal() {
             document.getElementById('quick-borrow-modal').classList.add('hidden');
+        }
+
+        // Instant Live Filter without reload
+        function liveFilterBooks(query) {
+            const q = query.trim().toLowerCase();
+            const cards = document.querySelectorAll('.book-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                const author = card.getAttribute('data-author') || '';
+                const isbn = card.getAttribute('data-isbn') || '';
+                if (!q || title.includes(q) || author.includes(q) || isbn.includes(q)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
     </script>
 </x-layouts.app>

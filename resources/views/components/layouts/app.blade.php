@@ -109,6 +109,17 @@
                                     @endif
                                 </a>
 
+                                <!-- Scan QR / Barcode -->
+                                <a href="{{ route('admin.scanner.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.scanner.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('admin.scanner.*'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="qr-code" class="w-4 h-4 {{ request()->routeIs('admin.scanner.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
+                                        <span>Scan QR / Barcode</span>
+                                    </div>
+                                </a>
+
                                 <!-- Data Anggota -->
                                 <a href="{{ route('admin.users.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.users.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
                                     @if(request()->routeIs('admin.users.*'))
@@ -191,6 +202,18 @@
                                 <a href="{{ route('admin.reports.export') }}" class="group flex items-center space-x-2.5 px-3 py-2 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">
                                     <i data-lucide="download" class="w-4 h-4 text-zinc-400 group-hover:text-zinc-600"></i>
                                     <span>Unduh Laporan CSV</span>
+                                </a>
+
+                                <!-- Audit Log -->
+                                <a href="{{ route('admin.audit-logs.index') }}" class="group relative flex items-center justify-between px-3 py-2 rounded-xl transition-colors {{ request()->routeIs('admin.audit-logs.*') ? 'bg-zinc-100/80 text-zinc-950 font-bold' : 'hover:bg-zinc-50 hover:text-zinc-900' }}">
+                                    @if(request()->routeIs('admin.audit-logs.*'))
+                                        <span class="absolute -left-3 top-1.5 bottom-1.5 w-1 bg-orange-600 rounded-r-md"></span>
+                                    @endif
+                                    <div class="flex items-center space-x-2.5">
+                                        <i data-lucide="shield-alert" class="w-4 h-4 {{ request()->routeIs('admin.audit-logs.*') ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-600' }}"></i>
+                                        <span>Audit Log</span>
+                                    </div>
+                                    <span class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold bg-zinc-200 text-zinc-700">Security</span>
                                 </a>
                             </div>
                         @endif

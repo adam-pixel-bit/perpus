@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\AuditLog;
 use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Category;
 use App\Models\Notification;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -319,5 +321,34 @@ class DatabaseSeeder extends Seeder
                 'link' => '/user/borrowings',
             ]
         );
+
+        // 7. Create Sample Reviews
+        Review::firstOrCreate(
+            ['user_id' => $user1->id, 'book_id' => $createdBooks[5]->id],
+            [
+                'borrowing_id' => 4,
+                'rating' => 5,
+                'comment' => 'Buku The Lean Startup sangat membuka wawasan tentang cara membangun produk dengan efisien melalui validasi nyata.',
+            ]
+        );
+
+        Review::firstOrCreate(
+            ['user_id' => $user1->id, 'book_id' => $createdBooks[0]->id],
+            [
+                'borrowing_id' => 1,
+                'rating' => 5,
+                'comment' => 'Clean Code wajib dibaca setiap software engineer! Pembahasannya tentang penamaan variabel dan fungsi sangat relevan.',
+            ]
+        );
+
+        // 8. Create Initial Audit Log
+        AuditLog::create([
+            'user_id' => $admin->id,
+            'action' => 'system_initialized',
+            'description' => 'Inisialisasi sistem perpustakaan SIPUS Digital berhasil dijalankan.',
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'Database Seeder',
+            'created_at' => now(),
+        ]);
     }
 }

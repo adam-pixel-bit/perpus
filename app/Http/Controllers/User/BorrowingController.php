@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BorrowBookRequest;
+use App\Models\AuditLog;
 use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Notification;
@@ -121,5 +122,43 @@ class BorrowingController extends Controller
         $borrowing->delete();
 
         return back()->with('success', "Pengajuan peminjaman buku '{$bookTitle}' berhasil dibatalkan.");
+    }
+
+    /**
+     * Request a one-time 7-day renewal for an active borrowing.
+     */
+    public function renew(Borrowing $borrowing): RedirectResponse
+    {
+        if ($borrowing->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        if ($borrowing->status !== 'borrowed') {
+            return back()->with('error', 'Hanya buku yang sedang dipinjam aktif yang dapat diperpanjang.');
+        }
+
+        if ($borrowing->return_due_date < Carbon::today()) {
+            return back()->with('error', 'Buku yang sudah melewati batas tempo pengembalian (terlambat) tidak dapat diperpanjang.');
+        }
+
+        if ($borrowing->renewed_count >= 1) {
+            return back()->with('error', 'Peminjaman ini sudah pernah diperpanjang sebelumnya (maksimal perpanjangan 1x).');
+        }
+
+        $borrowing->return_due_date = $borrowing->return_due_date->addDays(7);
+        $borrowing->renewed_count += 1;
+        $borrowing->save();
+
+        Notification::create([
+            'user_id' => Auth::id(),
+            'title' => 'Perpanjangan Berhasil',
+            'message' => "Masa peminjaman buku '{$borrowing->book->title}' berhasil diperpanjang 7 hari. Batas pengembalian baru: {$borrowing->return_due_date->format('d M Y')}.",
+            'type' => 'success',
+            'link' => route('user.borrowings.index'),
+        ]);
+
+        AuditLog::record('renew_borrowing', "Anggota {$borrowing->user->name} memperpanjang peminjaman [{$borrowing->borrowing_code}] (+7 hari hingga {$borrowing->return_due_date->format('d/m/Y')}).", $borrowing);
+
+        return back()->with('success', "Masa peminjaman berhasil diperpanjang 7 hari! Batas pengembalian baru: {$borrowing->return_due_date->format('d M Y')}.");
     }
 }

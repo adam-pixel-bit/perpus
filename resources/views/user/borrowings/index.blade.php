@@ -124,19 +124,45 @@
 
                             <!-- Actions -->
                             <td class="py-3.5 px-4 text-right">
-                                @if($b->status === 'pending')
-                                    <form method="POST" action="{{ route('user.borrowings.cancel', $b->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan permohonan peminjaman buku ini?');" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="px-2.5 py-1 bg-white hover:bg-red-50 text-red-600 border border-zinc-200/80 hover:border-red-200 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer">
-                                            Batalkan
-                                        </button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors">
+                                <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                                    <!-- QR Pass Button -->
+                                    <button
+                                        type="button"
+                                        onclick="showQrPass('{{ $b->borrowing_code }}', '{{ addslashes($b->book->title) }}', '{{ $b->status }}', '{{ $b->return_due_date->format('d M Y') }}')"
+                                        class="px-2 py-1 bg-zinc-100 hover:bg-orange-50 hover:text-orange-600 border border-zinc-200 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors flex items-center gap-1 cursor-pointer"
+                                        title="Lihat Tiket QR"
+                                    >
+                                        <i data-lucide="qr-code" class="w-3 h-3"></i>
+                                        <span>QR</span>
+                                    </button>
+
+                                    @if($b->status === 'pending')
+                                        <form method="POST" action="{{ route('user.borrowings.cancel', $b->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan permohonan peminjaman buku ini?');" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-2.5 py-1 bg-white hover:bg-red-50 text-red-600 border border-zinc-200/80 hover:border-red-200 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    @elseif($b->status === 'borrowed' && ! $b->isOverdue() && ($b->renewed_count ?? 0) < 1)
+                                        <form method="POST" action="{{ route('user.borrowings.renew', $b->id) }}" onsubmit="return confirm('Perpanjang masa peminjaman selama 7 hari ke depan?');" class="inline">
+                                            @csrf
+                                            <button type="submit" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer flex items-center gap-1">
+                                                <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                                                <span>+7 Hari</span>
+                                            </button>
+                                        </form>
+                                    @elseif($b->status === 'returned')
+                                        <a href="{{ route('user.catalog.show', $b->book->slug) }}#review-section" class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-lg font-semibold text-[11px] transition-colors flex items-center gap-1">
+                                            <i data-lucide="star" class="w-3 h-3"></i>
+                                            <span>Ulas</span>
+                                        </a>
+                                    @endif
+
+                                    <a href="{{ route('user.catalog.show', $b->book->slug) }}" class="px-2 py-1 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 text-zinc-700 rounded-lg font-semibold text-[11px] transition-colors">
                                         Detail
                                     </a>
-                                @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -158,4 +184,43 @@
             </div>
         @endif
     </div>
+
+    <!-- QR Pass Modal -->
+    <div id="qrModal" class="fixed inset-0 z-50 hidden bg-zinc-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-zinc-100 transform transition-all">
+            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="qr-code" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-bold text-zinc-900">Tiket Sirkulasi Buku</h3>
+            <p id="qrBookTitle" class="text-xs text-zinc-500 font-medium mt-1 truncate px-4"></p>
+
+            <!-- QR Container -->
+            <div class="my-5 p-4 bg-zinc-50 rounded-2xl border border-zinc-200/80 inline-block shadow-inner">
+                <img id="qrImage" src="" alt="QR Code Peminjaman" class="w-44 h-44 mx-auto rounded-lg">
+                <p id="qrCodeText" class="mt-2.5 font-mono font-bold text-xs text-zinc-800 tracking-wider"></p>
+            </div>
+
+            <div class="text-[11px] text-zinc-400 bg-zinc-50 p-2.5 rounded-xl border border-zinc-100 mb-4">
+                Tunjukkan QR Code ini kepada petugas perpustakaan di meja layanan untuk serah terima buku.
+            </div>
+
+            <button type="button" onclick="closeQrPass()" class="w-full py-2.5 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-xl transition cursor-pointer">
+                Tutup Tiket
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showQrPass(code, title, status, dueDate) {
+            document.getElementById('qrCodeText').textContent = code;
+            document.getElementById('qrBookTitle').textContent = title;
+            // Use reliable qr server API for crisp vector QR code
+            document.getElementById('qrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(code);
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQrPass() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+    </script>
 </x-layouts.app>

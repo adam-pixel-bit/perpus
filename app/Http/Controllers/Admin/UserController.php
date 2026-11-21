@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -98,6 +99,8 @@ class UserController extends Controller
 
         $user->update($validated);
 
+        AuditLog::record('update_user', "Admin memperbarui data pengguna '{$user->name}' ({$user->email}, Role: {$user->role})", $user);
+
         return redirect()->route('admin.users.index')
             ->with('success', 'Data pengguna "'.$user->name.'" berhasil diperbarui.');
     }
@@ -113,6 +116,9 @@ class UserController extends Controller
 
         $user->is_active = ! $user->is_active;
         $user->save();
+
+        $actionWord = $user->is_active ? 'mengaktifkan' : 'menonaktifkan';
+        AuditLog::record('toggle_user_status', "Admin {$actionWord} akun pengguna '{$user->name}' ({$user->email})", $user);
 
         $statusStr = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
