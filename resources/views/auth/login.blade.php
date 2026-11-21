@@ -1,33 +1,59 @@
-<x-layouts.auth title="Masuk ke Akun — Sistem Informasi Perpustakaan">
-    <div class="bg-white rounded-[32px] border border-blue-100/80 shadow-2xl shadow-blue-900/10 p-5 sm:p-7 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<x-layouts.auth title="Masuk — Sistem Informasi Perpustakaan">
+    <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(92vh-2.5rem)] divide-y lg:divide-y-0 lg:divide-x divide-zinc-200/80">
         
-        <!-- LEFT PANEL: LOGIN FORM (Exact Layout from Reference Image) -->
-        <div class="lg:col-span-6 flex flex-col justify-between p-2 sm:p-4">
-            <!-- Brand Mark Top Left -->
-            <div class="flex items-center space-x-2.5">
-                <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center shadow-xs">
-                    P
-                </div>
-                <div class="leading-tight">
-                    <span class="text-xs font-bold text-zinc-900 tracking-tight block">SIPUS Digital</span>
-                    <span class="text-[10px] text-zinc-400 font-medium">Sistem Perpustakaan</span>
-                </div>
-            </div>
-
-            <!-- Form Center Content -->
-            <div class="my-6 space-y-5">
-                <!-- Faint Grid Background & Central Blue Icon -->
-                <div class="relative flex flex-col items-center justify-center py-2">
-                    <div class="absolute w-40 h-20 pointer-events-none opacity-20" style="background-image: radial-gradient(#2563eb 1.5px, transparent 1.5px); background-size: 12px 12px;"></div>
-                    <div class="relative w-13 h-13 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/35 border border-white/80">
-                        <i data-lucide="key-round" class="w-6 h-6"></i>
+        <!-- LEFT PANEL: LOGIN FORM & WORKSPACE AUTH -->
+        <div class="lg:col-span-4 xl:col-span-4 p-6 sm:p-8 flex flex-col justify-between bg-white">
+            <div class="space-y-6">
+                <!-- Brand / Workspace Switcher (Exact as Reference Image) -->
+                <div class="flex items-center justify-between pb-4 border-b border-zinc-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-zinc-950 text-white font-black text-lg flex items-center justify-center tracking-tighter shadow-xs">
+                            w.
+                        </div>
+                        <div class="leading-tight">
+                            <h2 class="text-xs font-bold text-zinc-900 tracking-tight flex items-center space-x-1">
+                                <span>Uxerflow Inc.</span>
+                            </h2>
+                            <span class="text-[10px] text-zinc-400 font-medium">SIPUS Cloud • Free Plan</span>
+                        </div>
                     </div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight text-center mt-3">
-                        Login to your account!
-                    </h2>
-                    <p class="text-xs text-zinc-400 text-center mt-1">
-                        Selamat Datang Kembali! Masukkan email dan kata sandi Anda untuk login.
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-700 border border-orange-200/60">
+                        Portal Masuk
+                    </span>
+                </div>
+
+                <!-- Page Header Title -->
+                <div>
+                    <h1 class="text-lg font-bold text-zinc-950 tracking-tight">Masuk ke Akun</h1>
+                    <p class="text-xs text-zinc-400 mt-0.5">
+                        Selamat Datang Kembali — Masukkan email dan kata sandi Anda.
                     </p>
+                </div>
+
+                <!-- Quick Demo 1-Click Fill Cards -->
+                <div class="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
+                    <p class="text-[11px] font-bold text-zinc-600 flex items-center space-x-1.5">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-orange-600"></i>
+                        <span>Akses Cepat Akun Demo (Klik untuk mengisi):</span>
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <button
+                            type="button"
+                            onclick="fillCredentials('admin@perpustakaan.com', 'password123')"
+                            class="p-2 rounded-xl bg-white border border-zinc-200/90 hover:border-zinc-400 text-left transition-all cursor-pointer shadow-2xs group"
+                        >
+                            <span class="text-[11px] font-bold text-zinc-900 group-hover:text-orange-600 block">👤 Administrator</span>
+                            <span class="text-[10px] text-zinc-400 block truncate">admin@perpustakaan.com</span>
+                        </button>
+                        <button
+                            type="button"
+                            onclick="fillCredentials('budi@perpustakaan.com', 'password123')"
+                            class="p-2 rounded-xl bg-white border border-zinc-200/90 hover:border-zinc-400 text-left transition-all cursor-pointer shadow-2xs group"
+                        >
+                            <span class="text-[11px] font-bold text-zinc-900 group-hover:text-orange-600 block">📖 Anggota (User)</span>
+                            <span class="text-[10px] text-zinc-400 block truncate">budi@perpustakaan.com</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Flash Messages -->
@@ -51,10 +77,12 @@
 
                     <!-- Email Field -->
                     <div>
-                        <label for="email" class="block text-xs font-semibold text-zinc-700 mb-1.5">Email</label>
+                        <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-600 mb-1">
+                            Alamat Email
+                        </label>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
-                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                                <i data-lucide="mail" class="w-3.5 h-3.5"></i>
                             </div>
                             <input
                                 id="email"
@@ -63,8 +91,8 @@
                                 value="{{ old('email', 'admin@perpustakaan.com') }}"
                                 required
                                 autofocus
-                                placeholder="eg. pixelcot@gmail.com"
-                                class="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-zinc-900 placeholder-zinc-400 transition-colors shadow-2xs"
+                                placeholder="nama@perpustakaan.com"
+                                class="w-full pl-8.5 pr-3 py-2 text-xs bg-zinc-50 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 focus:bg-white text-zinc-900 placeholder-zinc-400 transition-colors"
                             >
                         </div>
                         @error('email')
@@ -74,10 +102,15 @@
 
                     <!-- Password Field -->
                     <div>
-                        <label for="password" class="block text-xs font-semibold text-zinc-700 mb-1.5">Password</label>
+                        <div class="flex items-center justify-between mb-1">
+                            <label for="password" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-600">
+                                Kata Sandi
+                            </label>
+                            <span class="text-[10px] text-zinc-400 font-medium">Min. 6 Karakter</span>
+                        </div>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
-                                <i data-lucide="lock" class="w-4 h-4"></i>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                                <i data-lucide="lock" class="w-3.5 h-3.5"></i>
                             </div>
                             <input
                                 id="password"
@@ -85,16 +118,16 @@
                                 name="password"
                                 value="password123"
                                 required
-                                placeholder="••••••••••••"
-                                class="w-full pl-10 pr-10 py-2.5 text-xs bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-zinc-900 placeholder-zinc-400 transition-colors shadow-2xs"
+                                placeholder="••••••••"
+                                class="w-full pl-8.5 pr-9 py-2 text-xs bg-zinc-50 border border-zinc-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 focus:bg-white text-zinc-900 placeholder-zinc-400 transition-colors"
                             >
                             <button
                                 type="button"
                                 onclick="togglePasswordVisibility()"
-                                class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-400 hover:text-zinc-600 cursor-pointer"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600 cursor-pointer"
                                 title="Lihat/Sembunyikan Kata Sandi"
                             >
-                                <i id="eye-icon" data-lucide="eye" class="w-4 h-4"></i>
+                                <i id="eye-icon" data-lucide="eye" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
                         @error('password')
@@ -102,183 +135,292 @@
                         @enderror
                     </div>
 
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between text-xs">
-                        <label class="flex items-center space-x-2 cursor-pointer select-none">
-                            <input
-                                type="checkbox"
-                                name="remember"
-                                checked
-                                class="w-3.5 h-3.5 rounded border-zinc-300 text-blue-600 focus:ring-0 cursor-pointer"
-                            >
-                            <span class="text-zinc-500 font-medium">Remember me</span>
+                    <!-- Remember Me Toggle (Matches Screenshot Toggle Style) -->
+                    <div class="flex items-center justify-between text-xs pt-1">
+                        <label class="inline-flex items-center space-x-2 cursor-pointer select-none">
+                            <div class="relative inline-block w-7 h-4 transition duration-200 ease-in-out align-middle select-none">
+                                <input
+                                    type="checkbox"
+                                    name="remember"
+                                    id="remember-toggle"
+                                    checked
+                                    class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 border-zinc-300 appearance-none cursor-pointer transition-all duration-200 checked:right-0 checked:bg-orange-600 checked:border-orange-600"
+                                />
+                                <label for="remember-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-200 cursor-pointer"></label>
+                            </div>
+                            <span class="text-xs text-zinc-600 font-medium">Ingat saya</span>
                         </label>
-                        <button type="button" onclick="fillCredentials('admin@perpustakaan.com', 'password123')" class="font-semibold text-blue-600 hover:text-blue-700 transition-colors cursor-pointer">
-                            Isi Akun Admin?
-                        </button>
-                    </div>
-
-                    <!-- Primary Blue Login Button -->
-                    <button
-                        type="submit"
-                        class="w-full py-2.5 px-4 bg-[#1860E8] hover:bg-[#1350C7] text-white text-xs font-bold rounded-xl shadow-md shadow-blue-600/25 transition-all active:scale-[0.99] flex items-center justify-center space-x-2 cursor-pointer"
-                    >
-                        <span>Login</span>
-                    </button>
-                </form>
-
-                <!-- Or Login With / Quick Demo Switcher -->
-                <div class="space-y-3 pt-1">
-                    <div class="relative flex items-center justify-center">
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-zinc-200/80"></div>
-                        </div>
-                        <span class="relative px-3 bg-white text-[11px] text-zinc-400 font-medium">
-                            Or login with
-                        </span>
-                    </div>
-
-                    <!-- 3 Quick Action Cards (Google, Apple, Microsoft style in reference) -->
-                    <div class="grid grid-cols-3 gap-2.5">
-                        <!-- Admin Quick Login -->
-                        <button
-                            type="button"
-                            onclick="fillCredentials('admin@perpustakaan.com', 'password123')"
-                            class="p-2.5 rounded-xl border border-zinc-200/90 hover:border-blue-400 hover:bg-blue-50/40 transition-all flex flex-col items-center justify-center text-center group cursor-pointer shadow-2xs"
-                            title="Klik untuk mengisi data Administrator"
-                        >
-                            <div class="w-5 h-5 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
-                                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                            </div>
-                            <span class="text-[10px] font-bold text-zinc-700 group-hover:text-blue-600 mt-1">Admin</span>
-                        </button>
-
-                        <!-- Member Quick Login -->
-                        <button
-                            type="button"
-                            onclick="fillCredentials('budi@perpustakaan.com', 'password123')"
-                            class="p-2.5 rounded-xl border border-zinc-200/90 hover:border-emerald-400 hover:bg-emerald-50/40 transition-all flex flex-col items-center justify-center text-center group cursor-pointer shadow-2xs"
-                            title="Klik untuk mengisi data Anggota"
-                        >
-                            <div class="w-5 h-5 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
-                                <i data-lucide="user-check" class="w-4 h-4"></i>
-                            </div>
-                            <span class="text-[10px] font-bold text-zinc-700 group-hover:text-emerald-600 mt-1">Anggota</span>
-                        </button>
-
-                        <!-- Register New Account -->
-                        <a
-                            href="{{ route('register') }}"
-                            class="p-2.5 rounded-xl border border-zinc-200/90 hover:border-purple-400 hover:bg-purple-50/40 transition-all flex flex-col items-center justify-center text-center group shadow-2xs"
-                            title="Registrasi Akun Anggota Baru"
-                        >
-                            <div class="w-5 h-5 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
-                                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                            </div>
-                            <span class="text-[10px] font-bold text-zinc-700 group-hover:text-purple-600 mt-1">Daftar</span>
+                        <a href="{{ route('register') }}" class="text-xs font-semibold text-orange-600 hover:text-orange-700">
+                            Daftar Anggota →
                         </a>
                     </div>
-                </div>
+
+                    <!-- High-Contrast Black Button (Exact Uxerflow Style) -->
+                    <button
+                        type="submit"
+                        class="w-full py-2.5 px-4 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-xl shadow-md shadow-zinc-950/20 transition-all active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer mt-2"
+                    >
+                        <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+                        <span>Masuk ke Dashboard</span>
+                    </button>
+                </form>
             </div>
 
-            <!-- Footer Link -->
-            <div class="text-center pt-2">
-                <p class="text-[11px] text-zinc-400">
-                    Belum punya akun anggota?
-                    <a href="{{ route('register') }}" class="font-bold text-blue-600 hover:underline">
-                        Daftar sekarang
-                    </a>
-                </p>
+            <!-- Footer Section -->
+            <div class="pt-6 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-400">
+                <span>Belum punya akun?</span>
+                <a href="{{ route('register') }}" class="font-bold text-zinc-900 hover:text-orange-600 transition-colors">
+                    Registrasi Akun Baru →
+                </a>
             </div>
         </div>
 
-        <!-- RIGHT PANEL: HERO SHOWCASE (Concentric Radar Orbits & Illustration) -->
-        <div class="lg:col-span-6 bg-gradient-to-b from-[#EBF3FE] via-[#F3F7FF] to-[#EAF2FE] rounded-[28px] border border-blue-100/90 p-6 sm:p-8 lg:p-10 flex flex-col justify-between items-center text-center relative overflow-hidden shadow-inner min-h-[480px]">
-            <!-- Top Headline -->
-            <div class="space-y-1 z-10">
-                <h3 class="text-xl sm:text-2xl font-extrabold text-zinc-900 tracking-tight">
-                    Write Better <span class="text-blue-600">Everywhere</span>
-                </h3>
-                <p class="text-xs text-zinc-500 font-medium">
-                    Sistem otomasi dan sirkulasi perpustakaan modern
-                </p>
+        <!-- RIGHT PANEL: UXERFLOW DASHBOARD & LIVE CATALOG PREVIEW (Exact match to screenshot) -->
+        <div class="lg:col-span-8 xl:col-span-8 p-6 sm:p-8 space-y-5 bg-white overflow-hidden">
+            <!-- Top Controls Toolbar (Table View, Filter, Sort, Show Statistics, Export, Add New) -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <div class="flex items-center flex-wrap gap-2.5">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-800 shadow-2xs">
+                        <i data-lucide="table" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>Table View</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400 ml-1"></i>
+                    </div>
+
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-800 shadow-2xs">
+                        <i data-lucide="filter" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>Filter</span>
+                    </div>
+
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-800 shadow-2xs">
+                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>Sort</span>
+                    </div>
+
+                    <!-- Orange Show Statistics Toggle Switch -->
+                    <label class="inline-flex items-center space-x-2 ml-1 text-xs font-semibold text-zinc-700 select-none">
+                        <span>Show Statistics</span>
+                        <div class="relative inline-block w-8 h-4 transition duration-200 ease-in-out align-middle select-none">
+                            <input
+                                type="checkbox"
+                                id="toggle-preview-stats"
+                                checked
+                                onchange="togglePreviewStats(this)"
+                                class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 border-zinc-300 appearance-none transition-all duration-200 checked:right-0 checked:bg-orange-600 checked:border-orange-600"
+                            />
+                            <label for="toggle-preview-stats" class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-200"></label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Right Action Buttons -->
+                <div class="flex items-center space-x-2">
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-700 shadow-2xs">
+                        <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>Customize</span>
+                    </div>
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/90 bg-white text-xs font-semibold text-zinc-700 shadow-2xs">
+                        <i data-lucide="upload" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>Export</span>
+                    </div>
+                    <a
+                        href="{{ route('register') }}"
+                        class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all shadow-md shadow-zinc-950/20 active:scale-[0.98]"
+                    >
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>+ Add New Product</span>
+                    </a>
+                </div>
             </div>
 
-            <!-- Center Planetary Orbit Graphic (Concentric Rings matching Reference) -->
-            <div class="relative w-72 h-72 my-4 flex items-center justify-center">
-                <!-- Outer Orbit Ring (Ring 3) -->
-                <div class="absolute w-64 h-64 rounded-full border border-blue-200/60 flex items-center justify-center"></div>
+            <!-- 4 Divided Horizontal KPI Statistics Cards (Exact match to screenshot) -->
+            <div id="preview-statistics" class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+                <div class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200/80">
+                    <!-- Metric 1: Total Product -->
+                    <div class="p-4 space-y-1.5">
+                        <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
+                            <span>Total Product</span>
+                            <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-zinc-950 tracking-tight">
+                            {{ max(250, \App\Models\Book::count()) }}
+                        </div>
+                        <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
+                            <span>vs last month</span>
+                            <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
+                                + 3 product
+                            </span>
+                        </div>
+                    </div>
 
-                <!-- Middle Orbit Ring (Ring 2) -->
-                <div class="absolute w-48 h-48 rounded-full border border-blue-200/80 flex items-center justify-center"></div>
+                    <!-- Metric 2: Product Revenue -->
+                    <div class="p-4 space-y-1.5">
+                        <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
+                            <span>Product Revenue</span>
+                            <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-zinc-950 tracking-tight">
+                            $15,490
+                        </div>
+                        <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
+                            <span>vs last month</span>
+                            <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
+                                + 9%
+                            </span>
+                        </div>
+                    </div>
 
-                <!-- Inner Orbit Ring (Ring 1) -->
-                <div class="absolute w-32 h-32 rounded-full border border-blue-300 flex items-center justify-center"></div>
+                    <!-- Metric 3: Product Sold -->
+                    <div class="p-4 space-y-1.5">
+                        <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
+                            <span>Product Sold</span>
+                            <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-zinc-950 tracking-tight">
+                            2,355
+                        </div>
+                        <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
+                            <span>vs last month</span>
+                            <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
+                                + 7%
+                            </span>
+                        </div>
+                    </div>
 
-                <!-- Central Glowing Brand Orb -->
-                <div class="relative z-20 w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 text-white flex items-center justify-center shadow-xl shadow-blue-500/40 border-4 border-white">
-                    <div class="flex items-center justify-center text-white font-black text-xl tracking-tighter">
-                        <i data-lucide="book-open-check" class="w-7 h-7"></i>
+                    <!-- Metric 4: Avg. Monthly Sales -->
+                    <div class="p-4 space-y-1.5">
+                        <div class="flex items-center space-x-1.5 text-xs font-medium text-zinc-500">
+                            <span>Avg. Monthly Sales</span>
+                            <i data-lucide="info" class="w-3 h-3 text-zinc-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-zinc-950 tracking-tight">
+                            890
+                        </div>
+                        <div class="flex items-center space-x-1.5 text-[11px] text-zinc-400">
+                            <span>vs last month</span>
+                            <span class="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-md">
+                                + 5%
+                            </span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Orbiting App Badges (Floating nodes matching Chrome, Edge, Apple, etc.) -->
-                <!-- Node 1: Edge / Sirkulasi (Top Right of Ring 3) -->
-                <div class="absolute -top-1 right-20 w-8 h-8 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-cyan-600 z-10 hover:scale-110 transition-transform cursor-pointer" title="Sirkulasi Peminjaman">
-                    <i data-lucide="repeat" class="w-4 h-4"></i>
+            <!-- Uxerflow Product Data Table (Exact visual layout and badges) -->
+            <div class="bg-white rounded-2xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-zinc-50/60 border-b border-zinc-200/80 text-[11px] font-semibold text-zinc-500">
+                                <th class="py-2.5 px-3.5 w-10">
+                                    <input type="checkbox" class="w-3.5 h-3.5 rounded text-orange-600 border-zinc-300 focus:ring-0">
+                                </th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Product</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Price</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Sales</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Revenue</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Stock</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Status</th>
+                                <th class="py-2.5 px-3.5 font-semibold text-zinc-700">Rating</th>
+                                <th class="py-2.5 px-3.5 text-center w-8 text-zinc-400 font-bold">+</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 text-zinc-700 text-xs">
+                            @php
+                                $sampleProducts = [
+                                    ['name' => 'Uxerflow T-Shirt #10 - White', 'price' => '$1.35', 'sales' => '471 pcs', 'revenue' => '$635.85', 'stock' => 100, 'status' => 'In Stock', 'badge' => 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]', 'rating' => '5.0', 'checked' => false],
+                                    ['name' => 'Uxerflow T-Shirt #10 - Black', 'price' => '$1.35', 'sales' => '402 pcs', 'revenue' => '$544.05', 'stock' => 0, 'status' => 'Out of Stock', 'badge' => 'bg-[#FDF2F2] text-[#D84545] border-[#FCDADA]', 'rating' => '5.0', 'checked' => true],
+                                    ['name' => 'Uxerflow T-Shirt #19 - White', 'price' => '$1.35', 'sales' => '455 pcs', 'revenue' => '$645.25', 'stock' => 20, 'status' => 'Restock', 'badge' => 'bg-[#FFF8EB] text-[#B87A04] border-[#FDEBC8]', 'rating' => '4.9', 'checked' => false],
+                                    ['name' => 'SmartHome Hub', 'price' => '$150', 'sales' => '7 pcs', 'revenue' => '$1,050.00', 'stock' => 12, 'status' => 'In Stock', 'badge' => 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]', 'rating' => '4.8', 'checked' => true],
+                                    ['name' => 'UltraSound Wireless Earbuds', 'price' => '$200', 'sales' => '5 pcs', 'revenue' => '$1,000.00', 'stock' => 0, 'status' => 'Out of Stock', 'badge' => 'bg-[#FDF2F2] text-[#D84545] border-[#FCDADA]', 'rating' => '4.8', 'checked' => false],
+                                    ['name' => 'ProVision 4K Monitor', 'price' => '$400.25', 'sales' => '1 pcs', 'revenue' => '$400.25', 'stock' => 3, 'status' => 'Restock', 'badge' => 'bg-[#FFF8EB] text-[#B87A04] border-[#FDEBC8]', 'rating' => '5.0', 'checked' => false],
+                                    ['name' => 'Uxerflow Retro Wave Shirt', 'price' => '$1.35', 'sales' => '120 pcs', 'revenue' => '$162.40', 'stock' => 20, 'status' => 'In Stock', 'badge' => 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]', 'rating' => '4.7', 'checked' => false],
+                                    ['name' => 'EchoWave Bluetooth Speaker', 'price' => '$55.5', 'sales' => '10 pcs', 'revenue' => '$555.00', 'stock' => 20, 'status' => 'In Stock', 'badge' => 'bg-[#F0F2FE] text-[#5552D9] border-[#E2E5FD]', 'rating' => '5.0', 'checked' => false],
+                                ];
+                            @endphp
+
+                            @foreach($sampleProducts as $p)
+                                <tr class="transition-colors {{ $p['checked'] ? 'bg-[#FFF7F2] border-l-4 border-l-orange-500' : 'hover:bg-zinc-50/70' }}">
+                                    <td class="py-2.5 px-3.5">
+                                        <input
+                                            type="checkbox"
+                                            {{ $p['checked'] ? 'checked' : '' }}
+                                            class="w-3.5 h-3.5 rounded text-orange-600 border-zinc-300 focus:ring-0 cursor-pointer"
+                                        >
+                                    </td>
+                                    <td class="py-2.5 px-3.5 font-medium text-zinc-900 truncate max-w-xs">
+                                        {{ $p['name'] }}
+                                    </td>
+                                    <td class="py-2.5 px-3.5 text-zinc-600 font-mono">{{ $p['price'] }}</td>
+                                    <td class="py-2.5 px-3.5 text-zinc-600">{{ $p['sales'] }}</td>
+                                    <td class="py-2.5 px-3.5 text-zinc-900 font-semibold font-mono">{{ $p['revenue'] }}</td>
+                                    <td class="py-2.5 px-3.5 text-zinc-600">{{ $p['stock'] }}</td>
+                                    <td class="py-2.5 px-3.5">
+                                        <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-medium border {{ $p['badge'] }}">
+                                            {{ $p['status'] }}
+                                        </span>
+                                    </td>
+                                    <td class="py-2.5 px-3.5">
+                                        <div class="flex items-center space-x-1 font-semibold text-zinc-700">
+                                            <span class="text-amber-400 text-xs">★</span>
+                                            <span>{{ $p['rating'] }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-2.5 px-3.5 text-center text-zinc-400">+</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
-                <!-- Node 2: Android / Mobile (Top Left of Ring 2) -->
-                <div class="absolute top-12 left-5 w-7 h-7 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-emerald-500 z-10 hover:scale-110 transition-transform cursor-pointer" title="Aksesibilitas Mobile">
-                    <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
-                </div>
-
-                <!-- Node 3: Outlook / Notifikasi (Top Center of Ring 2) -->
-                <div class="absolute top-10 right-28 w-7 h-7 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-blue-600 z-10 hover:scale-110 transition-transform cursor-pointer" title="Notifikasi Sistem">
-                    <i data-lucide="bell" class="w-3.5 h-3.5"></i>
-                </div>
-
-                <!-- Node 4: Messenger / Transaksi (Far Right of Ring 3) -->
-                <div class="absolute top-24 right-2 w-7 h-7 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-indigo-500 z-10 hover:scale-110 transition-transform cursor-pointer" title="Riwayat Transaksi">
-                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                </div>
-
-                <!-- Node 5: Apple / Pengguna (Bottom Right of Ring 3) -->
-                <div class="absolute bottom-16 right-5 w-8 h-8 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-zinc-900 z-10 hover:scale-110 transition-transform cursor-pointer" title="Data Anggota">
-                    <i data-lucide="users" class="w-4 h-4"></i>
-                </div>
-
-                <!-- Node 6: Chrome / Katalog (Far Left of Ring 3) -->
-                <div class="absolute bottom-20 left-10 w-8 h-8 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-amber-500 z-10 hover:scale-110 transition-transform cursor-pointer" title="Katalog Koleksi">
-                    <i data-lucide="book" class="w-4 h-4"></i>
-                </div>
-
-                <!-- Node 7: Yahoo / Denda (Bottom of Ring 1) -->
-                <div class="absolute -bottom-2 left-32 w-7 h-7 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-purple-600 z-10 hover:scale-110 transition-transform cursor-pointer" title="Kalkulasi Denda">
-                    <i data-lucide="coins" class="w-3.5 h-3.5"></i>
-                </div>
-
-                <!-- Node 8: LinkedIn / Supabase PostgreSQL (Far Bottom Right of Ring 3) -->
-                <div class="absolute -bottom-1 right-20 w-8 h-8 rounded-full bg-white shadow-md border border-blue-100 flex items-center justify-center text-blue-700 z-10 hover:scale-110 transition-transform cursor-pointer" title="Supabase PostgreSQL">
-                    <i data-lucide="database" class="w-4 h-4"></i>
+                <!-- Add Column Bottom Row -->
+                <div class="px-3.5 py-2 border-t border-zinc-100 bg-white flex items-center">
+                    <span class="inline-flex items-center space-x-1.5 text-[11px] font-semibold text-zinc-400">
+                        <i data-lucide="plus" class="w-3 h-3"></i>
+                        <span>Add Column</span>
+                    </span>
                 </div>
             </div>
 
-            <!-- Bottom Description & Carousel Indicators -->
-            <div class="space-y-3 z-10">
-                <p class="text-xs text-zinc-500 max-w-sm leading-relaxed px-2">
-                    Compatible with <strong>Gmail</strong>, <strong>Outlook Web</strong>, <strong>LinkedIn</strong> and most web editors for a smooth writing experience anywhere online.
-                </p>
-                <div class="flex items-center justify-center space-x-1.5 pt-1">
-                    <span class="w-6 h-1.5 bg-blue-600 rounded-full shadow-xs"></span>
-                    <span class="w-1.5 h-1.5 bg-blue-200 rounded-full"></span>
-                    <span class="w-1.5 h-1.5 bg-blue-200 rounded-full"></span>
+            <!-- Bottom Floating Action Bar & Numeric Pagination (Exact as Screenshot) -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 text-xs text-zinc-500">
+                <!-- Showing Per Page Dropdown -->
+                <div class="flex items-center space-x-2">
+                    <span>Showing per page</span>
+                    <select class="px-2 py-0.5 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-800 focus:outline-none">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+
+                <!-- Center Numeric Pagination with Active Orange Pill "1" -->
+                <div class="flex items-center space-x-1 font-semibold">
+                    <span class="px-2 py-0.5 text-zinc-400">«</span>
+                    <span class="px-2 py-0.5 text-zinc-400"><</span>
+                    <span class="w-6 h-6 rounded-md bg-orange-600 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                        1
+                    </span>
+                    <span class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs cursor-pointer">2</span>
+                    <span class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs cursor-pointer">3</span>
+                    <span class="px-1 text-zinc-400">...</span>
+                    <span class="w-6 h-6 rounded-md text-zinc-600 hover:bg-zinc-100 flex items-center justify-center text-xs cursor-pointer">25</span>
+                    <span class="px-2 py-0.5 text-zinc-400 cursor-pointer">></span>
+                    <span class="px-2 py-0.5 text-zinc-400 cursor-pointer">»</span>
+                </div>
+
+                <!-- Go to Page Input -->
+                <div class="flex items-center space-x-2">
+                    <span>Go to page</span>
+                    <input type="text" value="1" class="w-8 px-1 py-0.5 bg-white border border-zinc-200 rounded-lg text-xs text-center font-bold text-zinc-800 focus:outline-none">
+                    <button type="button" class="font-bold text-zinc-800 hover:text-orange-600 transition-colors cursor-pointer">
+                        Go >
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Interactive Scripts -->
+    <!-- Client-side Scripts -->
     <script>
         function fillCredentials(email, password) {
             const emailInput = document.getElementById('email');
@@ -286,13 +428,12 @@
             emailInput.value = email;
             passInput.value = password;
 
-            // Subtle visual feedback
-            emailInput.classList.add('ring-2', 'ring-blue-500/30');
-            passInput.classList.add('ring-2', 'ring-blue-500/30');
+            emailInput.classList.add('ring-2', 'ring-orange-500/40');
+            passInput.classList.add('ring-2', 'ring-orange-500/40');
             setTimeout(() => {
-                emailInput.classList.remove('ring-2', 'ring-blue-500/30');
-                passInput.classList.remove('ring-2', 'ring-blue-500/30');
-            }, 600);
+                emailInput.classList.remove('ring-2', 'ring-orange-500/40');
+                passInput.classList.remove('ring-2', 'ring-orange-500/40');
+            }, 500);
         }
 
         function togglePasswordVisibility() {
@@ -307,6 +448,17 @@
             }
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
+            }
+        }
+
+        function togglePreviewStats(checkbox) {
+            const container = document.getElementById('preview-statistics');
+            if (container) {
+                if (checkbox.checked) {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                }
             }
         }
     </script>

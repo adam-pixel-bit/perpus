@@ -3,24 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Sistem Informasi Perpustakaan' }}</title>
+    <title>{{ $title ?? 'Masuk — Sistem Informasi Perpustakaan' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#F0F4FA] text-zinc-900 font-sans antialiased min-h-screen flex items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden">
+<body class="bg-[#F4F5F7] text-zinc-900 font-sans antialiased min-h-screen p-2 sm:p-4 lg:p-6 flex flex-col justify-center">
 
-    <!-- Ambient Background Glows matching Reference UI -->
-    <div class="fixed top-0 left-0 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="fixed bottom-0 right-0 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl pointer-events-none translate-x-1/3 translate-y-1/3"></div>
+    <!-- macOS / Browser Window Frame Container (Exact match to Uxerflow Reference UI) -->
+    <div class="w-full max-w-[1520px] mx-auto bg-white rounded-3xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 overflow-hidden flex flex-col min-h-[92vh]">
+        
+        <!-- Browser Chrome Window Topbar -->
+        <div class="h-10 px-4 border-b border-zinc-200/80 bg-zinc-50/80 flex items-center justify-between flex-shrink-0 select-none">
+            <!-- Left: macOS Traffic Light Buttons + History Controls -->
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] inline-block"></span>
+                </div>
+                <div class="hidden sm:flex items-center space-x-2 text-zinc-400">
+                    <i data-lucide="chevron-left" class="w-3.5 h-3.5 cursor-pointer hover:text-zinc-600"></i>
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 cursor-pointer hover:text-zinc-600"></i>
+                    <i data-lucide="rotate-cw" class="w-3 h-3 cursor-pointer hover:text-zinc-600"></i>
+                </div>
+            </div>
 
-    <div class="w-full max-w-5xl mx-auto relative z-10">
-        {{ $slot }}
+            <!-- Center: URL Omnibox (Matching Screenshot uxerflow.orbit.com) -->
+            <div class="flex items-center space-x-1.5 px-3 py-1 bg-white border border-zinc-200/80 rounded-lg text-[11px] font-mono text-zinc-500 shadow-2xs w-60 sm:w-80 justify-center">
+                <i data-lucide="paperclip" class="w-3 h-3 text-zinc-400"></i>
+                <span class="truncate">uxerflow.orbit.com{{ request()->path() === 'login' ? '/auth/login' : '/auth/register' }}</span>
+            </div>
+
+            <!-- Right: Workspace Status -->
+            <div class="flex items-center space-x-2 text-zinc-400">
+                <span class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider hidden sm:inline">Uxerflow Cloud</span>
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-zinc-400"></i>
+            </div>
+        </div>
+
+        <!-- Window Inner Workspace Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto bg-white">
+            {{ $slot }}
+        </div>
     </div>
 
     <script>
+        // Universal image error fallback to ensure no broken images appear anywhere in the app
+        const FALLBACK_BOOK_COVER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160" fill="%23f3f4f6"><rect width="120" height="160" rx="6" fill="%23f4f5f7"/><path d="M38 55h44M38 72h32M38 89h40" stroke="%239ca3af" stroke-width="3" stroke-linecap="round"/><rect x="26" y="32" width="68" height="96" rx="6" fill="none" stroke="%23cbd5e1" stroke-width="2.5"/><text x="60" y="145" font-family="sans-serif" font-size="9" fill="%2394a3b8" text-anchor="middle" font-weight="bold">BUKU</text></svg>';
+
+        document.addEventListener('error', function (e) {
+            if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+                if (!e.target.dataset.triedFallback) {
+                    e.target.dataset.triedFallback = 'true';
+                    e.target.src = FALLBACK_BOOK_COVER;
+                }
+            }
+        }, true);
+
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
