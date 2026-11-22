@@ -6,11 +6,11 @@
             <!-- Brand Logo Top Left -->
             <div class="flex items-center space-x-2.5">
                 <div class="w-8 h-8 rounded-xl bg-zinc-950 text-white font-black text-sm flex items-center justify-center tracking-tighter shadow-xs">
-                    w.
+                    P
                 </div>
                 <div class="leading-tight">
                     <span class="text-xs font-bold text-zinc-900 tracking-tight block">SIPUS Digital</span>
-                    <span class="text-[10px] text-zinc-400 font-medium">Uxerflow Library Cloud</span>
+                    <span class="text-[10px] text-zinc-400 font-medium">Sistem Informasi Perpustakaan Terpadu</span>
                 </div>
             </div>
 
@@ -180,12 +180,12 @@
                     </button>
                 </form>
 
-                <!-- Help / Support Footer Link (as seen in image) -->
+                <!-- Help / Register Footer Link -->
                 <div class="text-center pt-2">
-                    <p class="text-xs text-zinc-400 font-medium">
-                        Facing Problems in signing in?
+                    <p class="text-xs text-zinc-500 font-medium">
+                        Belum memiliki akun anggota perpustakaan?
                         <a href="{{ route('register') }}" class="font-bold text-zinc-900 hover:text-orange-600 underline underline-offset-2 transition-colors">
-                            Contact Support
+                            Daftar Anggota Baru
                         </a>
                     </p>
                 </div>
@@ -193,102 +193,98 @@
 
             <!-- Copyright Bottom Left -->
             <div class="pt-6 border-t border-zinc-100 text-[11px] text-zinc-400">
-                © {{ date('Y') }} SIPUS Digital • Pacific Analytics Platform
+                © {{ date('Y') }} SIPUS Digital • Sistem Informasi Perpustakaan Terintegrasi
             </div>
         </div>
 
-        <!-- RIGHT PANEL: HERO SHOWCASE (Matching structure & dashboard palette) -->
+        <!-- RIGHT PANEL: ENTERPRISE LIBRARY HERO SHOWCASE -->
         <div class="lg:col-span-6 xl:col-span-6 p-4 sm:p-8 lg:p-10 flex flex-col justify-center items-center bg-[#F8F9FB]">
             <!-- Inner Hero Card -->
-            <div class="w-full max-w-lg bg-zinc-950 text-white rounded-[24px] sm:rounded-[28px] border border-zinc-800 shadow-2xl p-4 sm:p-7 lg:p-8 flex flex-col justify-between relative overflow-hidden min-h-[460px] sm:min-h-[500px]">
+            <div class="w-full max-w-lg bg-zinc-950 text-white rounded-[24px] sm:rounded-[28px] border border-zinc-800 shadow-2xl p-6 sm:p-8 lg:p-9 flex flex-col justify-between relative overflow-hidden min-h-[480px] sm:min-h-[540px]">
                 
-                <!-- Ambient Subtle Glows -->
-                <div class="absolute -top-16 -right-16 w-48 h-48 bg-orange-600/20 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-zinc-700/20 rounded-full blur-3xl pointer-events-none"></div>
+                <!-- Ambient Subtle Lighting -->
+                <div class="absolute -top-20 -right-20 w-56 h-56 bg-orange-600/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                <!-- Floating Badge Top Left (Wave/Sparkle Badge as in image) -->
-                <div class="absolute top-6 left-6 z-20">
-                    <div class="w-10 h-10 rounded-full bg-white text-zinc-950 shadow-md flex items-center justify-center border border-zinc-200">
-                        <i data-lucide="sparkles" class="w-4 h-4 text-orange-600"></i>
+                <!-- Top Header Row -->
+                <div class="z-10 text-left space-y-3">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-semibold text-orange-400 shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                        <span>Portal Layanan Perpustakaan Digital</span>
                     </div>
-                </div>
 
-                <!-- Headline (Elevating You Towards The Right Direction) -->
-                <div class="pt-10 sm:pt-12 z-10 text-left">
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
-                        Elevating You Towards The<br>Right Direction
+                    <h2 class="text-xl sm:text-2xl lg:text-[26px] font-extrabold text-white tracking-tight leading-snug">
+                        Pusat Literasi Digital &<br>Sirkulasi Cerdas
                     </h2>
-                    <p class="text-xs text-zinc-400 mt-1">
-                        Sistem Informasi Perpustakaan & Sirkulasi Digital
+                    <p class="text-xs text-zinc-400 leading-relaxed max-w-md">
+                        Satu platform terpadu untuk penelusuran katalog buku, sirkulasi peminjaman mandiri dengan tiket QR Code, kartu anggota digital, dan pelaporan perpustakaan yang akuntabel.
                     </p>
                 </div>
 
-                <!-- Centered Dashboard Mockup Card (Layered Preview as in image) -->
-                <div class="my-6 relative z-10">
-                    <div class="bg-white text-zinc-900 rounded-2xl border border-zinc-200/90 shadow-2xl p-4 space-y-3 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
-                        <!-- Mini Topbar -->
-                        <div class="flex items-center justify-between border-b border-zinc-100 pb-2">
-                            <div class="flex items-center space-x-1.5">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                            </div>
-                            <span class="text-[10px] font-mono text-zinc-400">sipus.digital/dashboard</span>
-                            <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-orange-50 text-orange-700">Live</span>
+                <!-- Feature Pillars Showcase Cards -->
+                <div class="my-6 space-y-2.5 z-10 text-left">
+                    <!-- Feature 1: QR & Scanner -->
+                    <div class="p-3.5 rounded-2xl bg-zinc-900/80 hover:bg-zinc-900 border border-zinc-800/90 transition-all flex items-start space-x-3.5 group">
+                        <div class="w-9 h-9 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <i data-lucide="qr-code" class="w-4 h-4"></i>
                         </div>
-
-                        <!-- 3 Mini Metric Cards -->
-                        <div class="grid grid-cols-3 gap-2 text-left">
-                            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-100">
-                                <span class="text-[9px] text-zinc-400 block font-medium">Total Buku</span>
-                                <span class="text-xs font-bold text-zinc-900 block mt-0.5">{{ max(250, \App\Models\Book::count()) }}</span>
-                                <span class="text-[8px] text-emerald-600 font-bold">+3 baru</span>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold text-white">Tiket QR & Meja Scanner Cerdas</h3>
+                                <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">Real-Time</span>
                             </div>
-                            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-100">
-                                <span class="text-[9px] text-zinc-400 block font-medium">Sirkulasi</span>
-                                <span class="text-xs font-bold text-zinc-900 block mt-0.5">{{ max(2355, \App\Models\Borrowing::count()) }}</span>
-                                <span class="text-[8px] text-emerald-600 font-bold">+7%</span>
-                            </div>
-                            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-100">
-                                <span class="text-[9px] text-zinc-400 block font-medium">Kas Denda</span>
-                                <span class="text-xs font-bold text-zinc-900 block mt-0.5">Rp 15.490</span>
-                                <span class="text-[8px] text-emerald-600 font-bold">+9%</span>
-                            </div>
-                        </div>
-
-                        <!-- Mini Data Row Preview with Badges -->
-                        <div class="space-y-1.5 pt-1">
-                            <div class="flex items-center justify-between p-1.5 rounded-lg bg-zinc-50/70 text-[10px]">
-                                <span class="font-medium text-zinc-800 truncate max-w-[120px]">Clean Code: Robert C.</span>
-                                <span class="px-1.5 py-0.2 rounded font-semibold text-[9px] bg-[#F0F2FE] text-[#5552D9]">In Stock</span>
-                            </div>
-                            <div class="flex items-center justify-between p-1.5 rounded-lg bg-[#FFF7F2] border-l-2 border-l-orange-500 text-[10px]">
-                                <span class="font-medium text-zinc-800 truncate max-w-[120px]">Atomic Habits: Clear</span>
-                                <span class="px-1.5 py-0.2 rounded font-semibold text-[9px] bg-[#FFF8EB] text-[#B87A04]">Restock</span>
-                            </div>
+                            <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed">
+                                Validasi sirkulasi cepat via kamera webcam, cetak struk kasir termal 80mm, dan kartu anggota KTA digital.
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Floating Circular Icon Badge Left (Analytics icon) -->
-                    <div class="absolute -bottom-3 -left-3 z-20">
-                        <div class="w-9 h-9 rounded-full bg-white text-zinc-900 shadow-xl flex items-center justify-center border border-zinc-200">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-orange-600"></i>
+                    <!-- Feature 2: Katalog Koleksi & Stok Fisik -->
+                    <div class="p-3.5 rounded-2xl bg-zinc-900/80 hover:bg-zinc-900 border border-zinc-800/90 transition-all flex items-start space-x-3.5 group">
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold text-white">Katalog Terkurasi & Stok Fisik</h3>
+                                <span class="text-[9px] font-mono text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded">Multi-Kategori</span>
+                            </div>
+                            <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed">
+                                Pantau ketersediaan buku di rak secara real-time, perpanjang pinjaman mandiri, dan beri ulasan rating koleksi.
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Floating Circular Icon Badge Right (Brain/User icon) -->
-                    <div class="absolute -bottom-3 -right-3 z-20">
-                        <div class="w-9 h-9 rounded-full bg-white text-zinc-900 shadow-xl flex items-center justify-center border border-zinc-200">
-                            <i data-lucide="user-check" class="w-4 h-4 text-emerald-600"></i>
+                    <!-- Feature 3: Keamanan & Akuntabilitas -->
+                    <div class="p-3.5 rounded-2xl bg-zinc-900/80 hover:bg-zinc-900 border border-zinc-800/90 transition-all flex items-start space-x-3.5 group">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold text-white">Akuntabilitas & Audit Trail</h3>
+                                <span class="text-[9px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">Otomatis</span>
+                            </div>
+                            <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed">
+                                Penghitungan denda harian otomatis, pencatatan kasir denda, laporan A4 resmi bertanda tangan, dan audit log lengkap.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom Quote / Description (as seen in image) -->
-                <div class="z-10 text-left pt-2">
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Even the most analytical thinkers are predictably irrational; the really smart ones acknowledge and address their irrationalities. Right Direction
-                    </p>
+                <!-- Bottom Metric Badges / Quote -->
+                <div class="z-10 pt-3 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400">
+                    <div class="flex items-center space-x-3 sm:space-x-4">
+                        <span class="flex items-center space-x-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span class="font-medium text-zinc-300">Cloud PostgreSQL</span>
+                        </span>
+                        <span class="flex items-center space-x-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                            <span class="font-medium text-zinc-300">RBAC Terproteksi</span>
+                        </span>
+                    </div>
+                    <span class="font-mono text-[10px] text-zinc-500">v2.4 Enterprise</span>
                 </div>
             </div>
         </div>

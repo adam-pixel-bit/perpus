@@ -31,16 +31,16 @@
                 </div>
             </div>
 
-            <!-- Center: URL Omnibox (Matching Screenshot uxerflow.orbit.com) -->
+            <!-- Center: URL Omnibox -->
             <div class="flex items-center space-x-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-white border border-zinc-200/80 rounded-lg text-[10px] sm:text-[11px] font-mono text-zinc-500 shadow-2xs w-44 sm:w-72 md:w-80 justify-center">
-                <i data-lucide="paperclip" class="w-3 h-3 text-zinc-400 shrink-0"></i>
-                <span class="truncate">uxerflow.orbit.com{{ request()->path() === 'login' ? '/auth/login' : '/auth/register' }}</span>
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                <span class="truncate">sipus.perpus.id/{{ request()->path() }}</span>
             </div>
 
             <!-- Right: Workspace Status -->
             <div class="flex items-center space-x-1.5 sm:space-x-2 text-zinc-400 shrink-0">
-                <span class="text-[9px] sm:text-[10px] font-semibold text-zinc-400 uppercase tracking-wider hidden sm:inline">Uxerflow Cloud</span>
-                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-zinc-400"></i>
+                <span class="text-[9px] sm:text-[10px] font-semibold text-zinc-500 uppercase tracking-wider hidden sm:inline">SIPUS Cloud Security</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             </div>
         </div>
 

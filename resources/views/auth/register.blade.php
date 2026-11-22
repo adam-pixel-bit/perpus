@@ -6,11 +6,11 @@
             <!-- Brand Mark Top Left -->
             <div class="flex items-center space-x-2.5">
                 <div class="w-8 h-8 rounded-xl bg-zinc-950 text-white font-black text-sm flex items-center justify-center tracking-tighter shadow-xs">
-                    w.
+                    P
                 </div>
                 <div class="leading-tight">
                     <span class="text-xs font-bold text-zinc-900 tracking-tight block">SIPUS Digital</span>
-                    <span class="text-[10px] text-zinc-400 font-medium">Uxerflow Library Cloud</span>
+                    <span class="text-[10px] text-zinc-400 font-medium">Sistem Informasi Perpustakaan Terpadu</span>
                 </div>
             </div>
 
