@@ -13,6 +13,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\User\BookCatalogController as UserBookCatalogController;
 use App\Http\Controllers\User\BookRequestController as UserBookRequestController;
 use App\Http\Controllers\User\BorrowingController as UserBorrowingController;
@@ -44,6 +45,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+    // Social Login OAuth Routes (Google & Facebook)
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('auth.social.redirect');
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('auth.social.callback');
 
     // Password Reset Flow
     Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
